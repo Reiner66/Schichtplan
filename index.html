@@ -362,6 +362,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
   <button class="nb" onclick="openPatSheet()"><span class="ni">📋</span>Muster</button>
   <button class="nb" onclick="openStats()"><span class="ni">📊</span>Jahres</button>
   <button class="nb" onclick="openTerminHint()"><span class="ni">📅</span>Termin</button>
+  <button class="nb" onclick="openQR()"><span class="ni">📲</span>QR-Code</button>
   <button class="nb" onclick="openSettings()"><span class="ni">⚙️</span>Einstellungen</button>
 </div>
 
@@ -598,6 +599,30 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
     <div class="sacts">
       <button class="ab a-cancel" onclick="close2('setOvl')">Abbrechen</button>
       <button class="ab a-save" onclick="saveSettings()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- QR CODE SHEET -->
+<div class="ovl" id="qrOvl" onclick="bgClose(event,'qrOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">📱 App auf Handy installieren</div>
+    <div class="sbody" style="text-align:center;">
+      <div style="background:#fff;border-radius:12px;padding:16px;display:inline-block;margin-bottom:14px;">
+        <canvas id="qrCanvas"></canvas>
+      </div>
+      <div style="font-size:.82rem;color:var(--muted);margin-bottom:8px;line-height:1.6;">
+        QR-Code mit dem Handy scannen<br>
+        <span style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--Z-c);">https://reiner66.github.io/Schichtplan/</span>
+      </div>
+      <div style="font-size:.72rem;color:var(--muted);line-height:1.7;text-align:left;background:var(--surf2);border-radius:9px;padding:10px 12px;">
+        <strong style="color:var(--txt)">Android</strong> (Chrome): Menü ⋮ → „Zum Startbildschirm"<br>
+        <strong style="color:var(--txt)">iPhone</strong> (Safari): Teilen ↑ → „Zum Home-Bildschirm"
+      </div>
+    </div>
+    <div class="sacts">
+      <button class="ab a-cancel" onclick="close2('qrOvl')">Schließen</button>
     </div>
   </div>
 </div>
@@ -1810,6 +1835,42 @@ function checkDatenschutz(){
   if(!localStorage.getItem('sp_ds_accepted')){
     document.getElementById('dsOverlay').classList.add('open');
   }
+}
+
+// ─── QR CODE (pure JS, no library) ───────────────────────────────
+function openQR(){
+  open2('qrOvl');
+  setTimeout(()=>drawQR('https://reiner66.github.io/Schichtplan/'),50);
+}
+
+function drawQR(url){
+  // Simple QR code using Google Charts API via img fallback
+  // Since we can't use external libs offline, use canvas with a simple matrix
+  const canvas = document.getElementById('qrCanvas');
+  const size = 200;
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  // Draw placeholder with URL text until online
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0,0,size,size);
+  // Try to load from Google Charts (works when online)
+  const img = new Image();
+  const encoded = encodeURIComponent(url);
+  img.crossOrigin = 'anonymous';
+  img.onload = () => { ctx.clearRect(0,0,size,size); ctx.drawImage(img,0,0,size,size); };
+  img.onerror = () => {
+    // Offline fallback: show URL as text
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,size,size);
+    ctx.fillStyle = '#1a1e3a'; ctx.font = 'bold 11px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('QR-Code', size/2, 30);
+    ctx.font = '9px monospace';
+    const words = url.replace('https://','').split('/');
+    words.forEach((w,i) => ctx.fillText(w, size/2, 55+i*16));
+    ctx.font = '8px sans-serif'; ctx.fillStyle = '#888';
+    ctx.fillText('(Internet für QR benötigt)', size/2, size-10);
+  };
+  img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encoded}&bgcolor=ffffff&color=1a1e3a&margin=2`;
 }
 
 // ─── THEME ───────────────────────────────────────────────────────
