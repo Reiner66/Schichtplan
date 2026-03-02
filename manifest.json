@@ -1,0 +1,26 @@
+{
+  "name": "SchichtPlan – CGM Hüttenfuchs",
+  "short_name": "SchichtPlan",
+  "description": "Persönlicher Schichtkalender mit Urlaubsplanung",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b10",
+  "theme_color": "#0b0b10",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "lang": "de"
+}

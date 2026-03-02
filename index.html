@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SchichtPlan</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0b10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SchichtPlan">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="SchichtPlan">
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── THEME: MIDNIGHT (sehr dunkel – Standard) ── */
+:root {
+  --bg:#0b0b10; --surf:#14141c; --surf2:#1c1c28; --surf3:#222232; --bdr:#26263a;
+  --txt:#ebebf5; --muted:#5a5a8a; --muted2:#3a3a5a;
+  --F-c:#f59e0b; --F-b:rgba(245,158,11,.16);
+  --S-c:#38bdf8; --S-b:rgba(56,189,248,.15);
+  --N-c:#a78bfa; --N-b:rgba(167,139,250,.15);
+  --B-c:#34d399; --B-b:rgba(52,211,153,.15);
+  --fr-c:#2a2a42; --fr-t:#55557a;
+  --U-c:#f43f5e; --U-b:rgba(244,63,94,.18);
+  --Z-c:#22d3ee; --Z-b:rgba(34,211,238,.15);
+  --V-c:#fb923c; --V-b:rgba(251,146,60,.16);
+  --NF-c:#a78bfa; --NF-b:rgba(167,139,250,.22);
+  --SU-c:#e879f9; --SU-b:rgba(232,121,249,.16);
+  --W-c:#fbbf24; --W-b:rgba(251,191,36,.15);
+  --ok:#34d399; --warn:#fb923c; --err:#f43f5e;
+}
+
+/* ── THEME: DUSK (mittel-dunkel) ── */
+[data-theme="dusk"] {
+  --bg:#181824; --surf:#22223a; --surf2:#2a2a46; --surf3:#32324e; --bdr:#3a3a5c;
+  --txt:#e8e8f8; --muted:#7070aa; --muted2:#4a4a78;
+  --F-c:#fbbf24; --F-b:rgba(251,191,36,.18);
+  --S-c:#60c8f8; --S-b:rgba(96,200,248,.16);
+  --N-c:#b8a0ff; --N-b:rgba(184,160,255,.16);
+  --B-c:#4eeaaa; --B-b:rgba(78,234,170,.16);
+  --fr-c:#32325a; --fr-t:#6868a0;
+  --U-c:#ff6088; --U-b:rgba(255,96,136,.18);
+  --Z-c:#40e0f0; --Z-b:rgba(64,224,240,.16);
+  --V-c:#ff9f50; --V-b:rgba(255,159,80,.18);
+  --NF-c:#b8a0ff; --NF-b:rgba(184,160,255,.24);
+  --SU-c:#f090ff; --SU-b:rgba(240,144,255,.18);
+  --W-c:#ffd050; --W-b:rgba(255,208,80,.16);
+  --ok:#4eeaaa; --warn:#ff9f50; --err:#ff6088;
+}
+
+/* ── THEME: SLATE (hell-dunkel / mittel) ── */
+[data-theme="slate"] {
+  --bg:#1e2235; --surf:#262d45; --surf2:#2e3655; --surf3:#363f62; --bdr:#404878;
+  --txt:#dde4f8; --muted:#7888cc; --muted2:#4a5280;
+  --F-c:#ffc040; --F-b:rgba(255,192,64,.18);
+  --S-c:#50d0ff; --S-b:rgba(80,208,255,.16);
+  --N-c:#c0a8ff; --N-b:rgba(192,168,255,.16);
+  --B-c:#40f0b0; --B-b:rgba(64,240,176,.16);
+  --fr-c:#30385a; --fr-t:#6070a8;
+  --U-c:#ff5580; --U-b:rgba(255,85,128,.18);
+  --Z-c:#30e8f8; --Z-b:rgba(48,232,248,.16);
+  --V-c:#ff8840; --V-b:rgba(255,136,64,.18);
+  --NF-c:#c0a8ff; --NF-b:rgba(192,168,255,.24);
+  --SU-c:#e870ff; --SU-b:rgba(232,112,255,.18);
+  --W-c:#ffd040; --W-b:rgba(255,208,64,.16);
+  --ok:#40f0b0; --warn:#ff8840; --err:#ff5580;
+}
+
+/* ── THEME: DAY (hell) ── */
+[data-theme="day"] {
+  --bg:#f0f2f8; --surf:#ffffff; --surf2:#e8ecf8; --surf3:#dde2f5; --bdr:#c8d0ec;
+  --txt:#1a1e3a; --muted:#7080b0; --muted2:#a8b4d8;
+  --F-c:#d08000; --F-b:rgba(208,128,0,.12);
+  --S-c:#0080c8; --S-b:rgba(0,128,200,.10);
+  --N-c:#6040c8; --N-b:rgba(96,64,200,.10);
+  --B-c:#008060; --B-b:rgba(0,128,96,.10);
+  --fr-c:#dde2f5; --fr-t:#9098c8;
+  --U-c:#c81840; --U-b:rgba(200,24,64,.10);
+  --Z-c:#0098b0; --Z-b:rgba(0,152,176,.10);
+  --V-c:#c85000; --V-b:rgba(200,80,0,.12);
+  --NF-c:#6040c8; --NF-b:rgba(96,64,200,.14);
+  --SU-c:#9020c0; --SU-b:rgba(144,32,192,.10);
+  --W-c:#b06800; --W-b:rgba(176,104,0,.12);
+  --ok:#008060; --warn:#c85000; --err:#c81840;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
+  max-width:560px;margin:0 auto;display:flex;flex-direction:column;
+  min-height:100vh;padding-bottom:68px;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:60;background:var(--bg);
+  border-bottom:1px solid var(--bdr);padding:10px 14px 8px;}
+.tb1{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.logo{font-size:1.1rem;font-weight:700;letter-spacing:-.02em;}
+.logo em{color:var(--F-c);font-style:normal;}
+.username{font-size:.75rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.mnav{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.nbtn{background:var(--surf);border:1px solid var(--bdr);color:var(--txt);
+  width:42px;height:42px;border-radius:10px;font-size:1.4rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .15s;user-select:none;flex-shrink:0;}
+.nbtn:active{background:var(--surf2);}
+.mlbl{text-align:center;flex:1;}
+.mname{font-size:1.05rem;font-weight:700;}
+.myear{font-size:.85rem;color:var(--muted);font-weight:400;margin-left:4px;}
+
+/* PATTERN BANNER */
+.pat-banner{background:var(--surf);border-bottom:1px solid var(--bdr);
+  padding:8px 14px;display:flex;align-items:center;gap:8px;
+  cursor:pointer;transition:background .15s;min-height:40px;}
+.pat-banner:active{background:var(--surf2);}
+.pat-chips{display:flex;gap:3px;flex-wrap:nowrap;overflow:hidden;flex:1;align-items:center;}
+.pch{font-family:'DM Mono',monospace;font-size:.7rem;font-weight:600;
+  padding:3px 6px;border-radius:5px;flex-shrink:0;}
+.pat-hint{font-size:.62rem;color:var(--muted);flex-shrink:0;white-space:nowrap;}
+
+/* DOW */
+.dow-row{display:grid;grid-template-columns:repeat(7,1fr);padding:7px 6px 2px;}
+.dow{text-align:center;font-size:.65rem;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.05em;}
+.dow.we{color:var(--S-c);}
+
+/* CALENDAR */
+.cal{padding:3px 6px 6px;}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.dc{border-radius:9px;min-height:70px;padding:5px 4px 4px;cursor:pointer;
+  background:var(--surf);display:flex;flex-direction:column;gap:2px;
+  transition:background .12s;user-select:none;position:relative;}
+.dc:active{background:var(--surf2);}
+.dc.other{opacity:.2;pointer-events:none;}
+.dc.today{box-shadow:0 0 0 1.5px var(--F-c);}
+.dc.we-bg{background:rgba(56,189,248,.04);}
+.dc.feiertag{background:rgba(244,63,94,.10);box-shadow:inset 0 0 0 1px rgba(244,63,94,.25);}
+.dc.ferien{background:rgba(251,191,36,.07);}
+.dc.feiertag.ferien{background:rgba(244,63,94,.13);}
+.fhlbl{font-size:.48rem;font-weight:700;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--U-c);}
+.ferhlbl{font-size:.48rem;text-align:center;color:var(--W-c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.dn{font-family:'DM Mono',monospace;font-size:.7rem;font-weight:600;
+  color:var(--muted);line-height:1;}
+.dc.today .dn{color:var(--F-c);}
+.sc{border-radius:5px;font-family:'DM Mono',monospace;font-size:.76rem;
+  font-weight:700;text-align:center;padding:3px 2px;line-height:1.25;}
+.ovc{border-radius:5px;font-family:'DM Mono',monospace;font-size:.6rem;
+  font-weight:700;text-align:center;padding:2px 3px;line-height:1.3;}
+.sc.faded{opacity:.25;}
+.hlbl{font-size:.49rem;color:var(--muted);text-align:center;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.plan-dot{position:absolute;top:4px;right:4px;width:5px;height:5px;
+  border-radius:50%;background:var(--S-c);opacity:.6;}
+.termin-chip{font-size:.58rem;text-align:center;line-height:1.3;
+  background:rgba(251,191,36,.12);border-radius:4px;padding:1px 3px;
+  color:var(--W-c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.termin-dot{position:absolute;bottom:4px;right:4px;font-size:.65rem;}
+
+/* STATS BAR */
+.stats{display:flex;margin:5px 6px 0;background:var(--surf);
+  border-radius:10px;border:1px solid var(--bdr);overflow:hidden;}
+.si{flex:1;text-align:center;padding:7px 2px;border-right:1px solid var(--bdr);}
+.si:last-child{border-right:none;}
+.sv{font-family:'DM Mono',monospace;font-size:1rem;font-weight:600;line-height:1;margin-bottom:2px;}
+.sl{font-size:.54rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+
+/* JAHRES CARD */
+.jahres-card{margin:6px 6px 0;background:var(--surf);border-radius:10px;
+  border:1px solid var(--bdr);padding:12px 14px;}
+.jc-title{font-size:.72rem;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
+.jc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.jc-item{background:var(--surf2);border-radius:8px;padding:9px 10px;}
+.jc-val{font-family:'DM Mono',monospace;font-size:1.15rem;font-weight:700;line-height:1;margin-bottom:3px;}
+.jc-lbl{font-size:.62rem;color:var(--muted);}
+.jc-sub{font-size:.6rem;margin-top:2px;}
+.badge-ok{color:var(--ok);}
+.badge-warn{color:var(--warn);}
+.badge-err{color:var(--err);}
+.badge-info{color:var(--Z-c);}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:560px;background:var(--surf);
+  border-top:1px solid var(--bdr);display:flex;z-index:60;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:8px 0;gap:2px;font-size:.6rem;
+  color:var(--muted);cursor:pointer;background:none;border:none;
+  font-family:'Sora',sans-serif;transition:color .15s;user-select:none;}
+.nb.on{color:var(--F-c);}
+.ni{font-size:1.1rem;}
+
+/* OVERLAY */
+.ovl{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);
+  z-index:200;align-items:flex-end;justify-content:center;}
+.ovl.open{display:flex;}
+.sheet{background:var(--surf);border-radius:20px 20px 0 0;
+  width:100%;max-width:560px;max-height:92vh;overflow-y:auto;
+  padding-bottom:env(safe-area-inset-bottom,16px);}
+.handle{width:36px;height:4px;background:var(--bdr);border-radius:2px;margin:10px auto 6px;}
+.stitle{font-size:.95rem;font-weight:700;padding:6px 18px 12px;
+  border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px;}
+.sdate{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--F-c);font-weight:400;}
+.sbody{padding:14px 18px;}
+
+/* DAY SHEET */
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px;}
+.oo{padding:13px 8px;border-radius:11px;text-align:center;font-size:.85rem;
+  font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;
+  border:2px solid transparent;transition:all .15s;user-select:none;}
+.oo.sel{border-color:rgba(255,255,255,.45);transform:scale(1.03);}
+.oo:active{transform:scale(.97);}
+.nf-info{background:var(--surf2);border-radius:9px;padding:10px 12px;
+  margin-bottom:12px;font-size:.75rem;color:var(--muted);line-height:1.6;}
+.nf-count{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;}
+
+/* ACTION BUTTONS */
+.sacts{display:flex;gap:9px;padding:4px 18px 8px;}
+.ab{flex:1;padding:13px;border-radius:11px;font-size:.88rem;font-weight:700;
+  cursor:pointer;font-family:'Sora',sans-serif;transition:opacity .15s;border:none;}
+.ab:active{opacity:.75;}
+.a-cancel{background:var(--surf2);color:var(--muted);}
+.a-clear{background:var(--surf2);color:var(--txt);}
+.a-save{background:var(--F-c);color:#000;}
+.a-green{background:var(--ok);color:#000;}
+.a-blue{background:var(--S-c);color:#000;}
+
+/* FORMS */
+.sg{margin-bottom:18px;}
+.slbl{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.07em;display:block;margin-bottom:8px;}
+.sinput{width:100%;background:var(--surf2);border:1px solid var(--bdr);
+  color:var(--txt);padding:12px 13px;border-radius:10px;
+  font-family:'DM Mono',monospace;font-size:.95rem;letter-spacing:.06em;
+  outline:none;transition:border-color .2s;}
+.sinput:focus{border-color:var(--F-c);}
+.shint{font-size:.68rem;color:var(--muted);margin-top:6px;line-height:1.5;}
+
+/* KEYBOARD */
+.kboard{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;}
+.kkey{font-family:'DM Mono',monospace;font-size:.88rem;font-weight:700;
+  padding:10px 14px;border-radius:9px;cursor:pointer;border:none;
+  transition:transform .1s;user-select:none;}
+.kkey:active{transform:scale(.92);}
+.kdel{background:var(--surf3);color:var(--muted);}
+
+/* PATTERN PREVIEW */
+.pat-prev-row{display:flex;gap:3px;flex-wrap:wrap;margin-top:10px;}
+.pp{font-family:'DM Mono',monospace;font-size:.7rem;font-weight:600;
+  padding:3px 6px;border-radius:5px;}
+
+/* PLAN SEGMENTS LIST */
+.seg-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.seg-item{background:var(--surf2);border-radius:10px;padding:11px 13px;
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+  border:1px solid var(--bdr);transition:background .15s;}
+.seg-item:active{background:var(--surf3);}
+.seg-date{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--F-c);white-space:nowrap;}
+.seg-pat{display:flex;gap:2px;flex:1;overflow:hidden;}
+.seg-del{color:var(--err);font-size:1.1rem;flex-shrink:0;padding:4px;}
+
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;
+  background:var(--surf2);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+.toggle-lbl{font-size:.85rem;font-weight:600;}
+.toggle-sub{font-size:.68rem;color:var(--muted);margin-top:2px;}
+.tog{width:44px;height:24px;background:var(--surf3);border-radius:12px;
+  position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.tog.on{background:var(--ok);}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:white;transition:transform .2s;}
+.tog.on::after{transform:translateX(20px);}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--bdr);margin:14px 0;}
+
+/* THEME PICKER */
+.theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px;}
+.theme-card{border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;
+  border:2px solid transparent;transition:all .15s;user-select:none;}
+.theme-card:active{transform:scale(.95);}
+.theme-card.sel{border-color:var(--ok);}
+.tc-preview{display:flex;gap:3px;justify-content:center;margin-bottom:6px;}
+.tc-dot{width:10px;height:10px;border-radius:50%;}
+.tc-name{font-size:.65rem;font-weight:700;line-height:1.2;}
+
+/* DATENSCHUTZ OVERLAY */
+.ds-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);
+  z-index:300;align-items:center;justify-content:center;padding:20px;}
+.ds-overlay.open{display:flex;}
+.ds-box{background:var(--surf);border-radius:18px;padding:24px 20px;
+  max-width:480px;width:100%;text-align:center;}
+.ds-icon{font-size:2.5rem;margin-bottom:12px;}
+.ds-title{font-size:1.1rem;font-weight:700;margin-bottom:10px;}
+.ds-text{font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:18px;text-align:left;}
+.ds-text strong{color:var(--ok);}
+.ds-btn{width:100%;padding:14px;border-radius:11px;font-size:.95rem;
+  font-weight:700;background:var(--ok);color:#000;border:none;
+  cursor:pointer;font-family:'Sora',sans-serif;}
+
+/* EXPORT ROW */
+.exp-row{display:flex;gap:8px;margin-bottom:8px;}
+.exp-btn{flex:1;padding:11px 8px;border-radius:10px;font-size:.8rem;
+  font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;
+  border:none;transition:opacity .15s;}
+.exp-btn:active{opacity:.75;}
+.exp-export{background:var(--Z-b);color:var(--Z-c);border:1px solid var(--Z-c);}
+.exp-import{background:var(--B-b);color:var(--B-c);border:1px solid var(--B-c);}
+
+/* WARN BOX */
+.warn-box{background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);
+  border-radius:9px;padding:10px 12px;font-size:.75rem;color:var(--warn);
+  line-height:1.6;margin-bottom:12px;}
+.info-box{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.25);
+  border-radius:9px;padding:10px 12px;font-size:.75rem;color:var(--Z-c);
+  line-height:1.6;margin-bottom:12px;}
+.ok-box{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);
+  border-radius:9px;padding:10px 12px;font-size:.75rem;color:var(--ok);
+  line-height:1.6;margin-bottom:12px;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb1">
+    <a href="https://cgm.de/" target="_blank" style="display:flex;align-items:center;gap:8px;text-decoration:none;"><img src="data:image/png;base64,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" style="height:36px;width:36px;object-fit:cover;border-radius:6px;flex-shrink:0;" alt="CGM Hüttenfuchs"/><div class="logo">Schicht<em>Plan</em></div></a>
+    <div class="username" id="uname"></div>
+  </div>
+  <div class="mnav">
+    <div class="nbtn" onclick="changeMonth(-1)">‹</div>
+    <div class="mlbl">
+      <span class="mname" id="mName"></span>
+      <span class="myear" id="mYear"></span>
+    </div>
+    <div class="nbtn" onclick="changeMonth(1)">›</div>
+  </div>
+</div>
+
+<div class="pat-banner" id="patBanner" onclick="openPatSheet()">
+  <div class="pat-chips" id="patChips">
+    <span style="color:var(--muted);font-size:.8rem">Kein Muster – tippen zum Eingeben</span>
+  </div>
+  <div class="pat-hint">✏️ bearbeiten</div>
+</div>
+
+<div class="dow-row">
+  <div class="dow">Mo</div><div class="dow">Di</div><div class="dow">Mi</div>
+  <div class="dow">Do</div><div class="dow">Fr</div>
+  <div class="dow we">Sa</div><div class="dow we">So</div>
+</div>
+
+<div class="cal"><div class="cgrid" id="cGrid"></div></div>
+<div class="stats" id="stats"></div>
+<div class="jahres-card" id="jahresCard"></div>
+
+<div class="bnav">
+  <button class="nb on" onclick="goToday()"><span class="ni">⊙</span>Heute</button>
+  <button class="nb" onclick="openPatSheet()"><span class="ni">📋</span>Muster</button>
+  <button class="nb" onclick="openStats()"><span class="ni">📊</span>Jahres</button>
+  <button class="nb" onclick="openTerminHint()"><span class="ni">📅</span>Termin</button>
+  <button class="nb" onclick="openSettings()"><span class="ni">⚙️</span>Einstellungen</button>
+</div>
+
+<!-- TERMIN SHEET -->
+<div class="ovl" id="terminOvl" onclick="bgClose(event,'terminOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">Persönlicher Termin <span class="sdate" id="terminDate"></span></div>
+    <div class="sbody">
+      <div class="sg">
+        <span class="slbl">Emoji wählen</span>
+        <div id="emojiPicker" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;"></div>
+      </div>
+      <div class="sg">
+        <span class="slbl">Bezeichnung</span>
+        <input class="sinput" id="terminText" placeholder="z.B. Tante Heide Geburtstag" maxlength="40"/>
+      </div>
+      <div class="sg">
+        <div class="toggle-row" onclick="toggleTerminRepeat()">
+          <div>
+            <div class="toggle-lbl">Jährlich wiederholen</div>
+            <div class="toggle-sub">Geburtstage, Jubiläen, Hochzeitstage…</div>
+          </div>
+          <div class="tog" id="terminRepeatTog"></div>
+        </div>
+      </div>
+      <div id="terminExisting" style="margin-top:4px;"></div>
+    </div>
+    <div class="sacts">
+      <button class="ab a-cancel" onclick="close2('terminOvl')">Abbrechen</button>
+      <button class="ab a-clear" onclick="deleteTermin()">Löschen</button>
+      <button class="ab a-save" onclick="saveTermin()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- DAY SHEET -->
+<div class="ovl" id="dayOvl" onclick="bgClose(event,'dayOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">Tag bearbeiten <span class="sdate" id="dayDate"></span></div>
+    <div class="sbody">
+      <div id="nfInfo"></div>
+      <div class="ov-grid" id="ovGrid"></div>
+    </div>
+    <div class="sacts">
+      <button class="ab a-cancel" onclick="close2('dayOvl')">Abbrechen</button>
+      <button class="ab a-clear" onclick="clearDay()">← Schicht</button>
+      <button class="ab a-save" onclick="saveDay()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- PATTERN SHEET -->
+<div class="ovl" id="patOvl" onclick="bgClose(event,'patOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">Schichtverlauf</div>
+    <div class="sbody">
+      <div class="sg">
+        <span class="slbl">Aktive Planabschnitte</span>
+        <div class="seg-list" id="segList"></div>
+        <button class="ab a-blue" style="width:100%" onclick="addNewSeg()">+ Neuen Abschnitt hinzufügen</button>
+      </div>
+    </div>
+    <div class="sacts">
+      <button class="ab a-cancel" onclick="close2('patOvl')">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEGMENT EDIT SHEET -->
+<div class="ovl" id="segOvl" onclick="bgClose(event,'segOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle" id="segTitle">Planabschnitt</div>
+    <div class="sbody">
+      <div class="sg">
+        <span class="slbl">Startdatum (Tag 1 dieses Plans)</span>
+        <input type="date" class="sinput" id="segDateIn" onchange="checkStartDatum()"/>
+        <div id="startDatumWarn" style="display:none;margin-top:6px;background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.4);border-radius:8px;padding:9px 11px;font-size:.72rem;color:var(--warn);line-height:1.6;"></div>
+        <div class="shint">Ab diesem Datum gilt dieser Schichtverlauf – endlos wiederholend.</div>
+      </div>
+      <div class="sg">
+        <span class="slbl">Schichtfolge</span>
+        <input class="sinput" id="segPatIn" placeholder="z.B. FFSSNNN----"
+          maxlength="200" oninput="updateSegPreview()"
+          autocomplete="off" autocorrect="off" spellcheck="false"/>
+        <div class="shint">F=Früh · S=Spät · N=Nacht · B=Bereitschaft · -=Frei</div>
+        <div class="kboard" id="segKboard"></div>
+        <div class="pat-prev-row" id="segPrev"></div>
+      </div>
+    </div>
+    <div class="sacts">
+      <button class="ab a-cancel" onclick="close2('segOvl')">Abbrechen</button>
+      <button class="ab a-green" onclick="saveSeg()">✓ Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- JAHRESSTATISTIK SHEET -->
+<div class="ovl" id="statsOvl" onclick="bgClose(event,'statsOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">Jahresstatistik <span class="sdate" id="statsYear"></span></div>
+    <div class="sbody" id="statsBody"></div>
+    <div class="sacts">
+      <button class="ab a-cancel" onclick="close2('statsOvl')">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS SHEET -->
+<div class="ovl" id="setOvl" onclick="bgClose(event,'setOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">Einstellungen</div>
+    <div class="sbody">
+      <div class="sg">
+        <span class="slbl">Name</span>
+        <input class="sinput" id="nameIn" placeholder="z.B. Max Mustermann"/>
+      </div>
+      <div class="sg">
+        <span class="slbl">Bundesland (Feiertage & Schulferien)</span>
+        <select class="sinput" id="blIn" style="cursor:pointer;">
+          <option value="BW">Baden-Württemberg</option>
+          <option value="BY">Bayern</option>
+          <option value="BE">Berlin</option>
+          <option value="BB">Brandenburg</option>
+          <option value="HB">Bremen</option>
+          <option value="HH">Hamburg</option>
+          <option value="HE">Hessen</option>
+          <option value="MV">Mecklenburg-Vorpommern</option>
+          <option value="NI">Niedersachsen</option>
+          <option value="NW" selected>Nordrhein-Westfalen</option>
+          <option value="RP">Rheinland-Pfalz</option>
+          <option value="SL">Saarland</option>
+          <option value="SN">Sachsen</option>
+          <option value="ST">Sachsen-Anhalt</option>
+          <option value="SH">Schleswig-Holstein</option>
+          <option value="TH">Thüringen</option>
+        </select>
+      </div>
+      <div class="divider"></div>
+      <div class="sg">
+        <span class="slbl">🎨 Design / Theme</span>
+        <div class="theme-grid">
+          <div class="theme-card" id="tc-midnight" onclick="setTheme('midnight')" style="background:#14141c;">
+            <div class="tc-preview">
+              <div class="tc-dot" style="background:#f59e0b"></div>
+              <div class="tc-dot" style="background:#38bdf8"></div>
+              <div class="tc-dot" style="background:#a78bfa"></div>
+            </div>
+            <div class="tc-name" style="color:#ebebf5">Midnight</div>
+            <div style="font-size:.55rem;color:#5a5a8a">sehr dunkel</div>
+          </div>
+          <div class="theme-card" id="tc-dusk" onclick="setTheme('dusk')" style="background:#22223a;">
+            <div class="tc-preview">
+              <div class="tc-dot" style="background:#fbbf24"></div>
+              <div class="tc-dot" style="background:#60c8f8"></div>
+              <div class="tc-dot" style="background:#b8a0ff"></div>
+            </div>
+            <div class="tc-name" style="color:#e8e8f8">Dusk</div>
+            <div style="font-size:.55rem;color:#7070aa">dunkel</div>
+          </div>
+          <div class="theme-card" id="tc-slate" onclick="setTheme('slate')" style="background:#262d45;">
+            <div class="tc-preview">
+              <div class="tc-dot" style="background:#ffc040"></div>
+              <div class="tc-dot" style="background:#50d0ff"></div>
+              <div class="tc-dot" style="background:#c0a8ff"></div>
+            </div>
+            <div class="tc-name" style="color:#dde4f8">Slate</div>
+            <div style="font-size:.55rem;color:#7888cc">mittel</div>
+          </div>
+          <div class="theme-card" id="tc-day" onclick="setTheme('day')" style="background:#ffffff;border-color:#c8d0ec;">
+            <div class="tc-preview">
+              <div class="tc-dot" style="background:#d08000"></div>
+              <div class="tc-dot" style="background:#0080c8"></div>
+              <div class="tc-dot" style="background:#6040c8"></div>
+            </div>
+            <div class="tc-name" style="color:#1a1e3a">Day</div>
+            <div style="font-size:.55rem;color:#7080b0">hell</div>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="sg">
+        <span class="slbl">Jahresurlaub (Tage)</span>
+        <input type="number" class="sinput" id="urlaubIn" min="1" max="50" value="30"/>
+        <div class="shint">Standard-Urlaubsanspruch pro Kalenderjahr.</div>
+      </div>
+      <div class="sg">
+        <div class="toggle-row" onclick="toggleAZV()">
+          <div>
+            <div class="toggle-lbl">AZV (4% Arbeitszeitverkürzung)</div>
+            <div class="toggle-sub">Mit AZV: Sollstunden 1792 · Ohne: 1856</div>
+          </div>
+          <div class="tog" id="azvTog"></div>
+        </div>
+      </div>
+      <div class="sg">
+        <div class="toggle-row" onclick="toggleSenior()">
+          <div>
+            <div class="toggle-lbl">Über 45 Jahre oder 10+ Jahre Schicht</div>
+            <div class="toggle-sub">Dann: 4 N-Freischichten pauschal pro Jahr</div>
+          </div>
+          <div class="tog" id="seniorTog"></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="sg">
+        <span class="slbl">Vorjahresübertrag Z-Stunden (AZK-Guthaben)</span>
+        <input type="number" class="sinput" id="uebZIn" min="0" max="9999" value="0"/>
+        <div class="shint">Z.B. 160 Stunden = 20 Z-Tage Übertrag aus dem Vorjahr. Diese werden zuerst verbraucht, bevor neue Z-Tage zählen. Am 31.12. wandern verbleibende Z-Stunden ins AZK!</div>
+      </div>
+      <div class="sg">
+        <span class="slbl">Vorjahresübertrag V-Stunden (Schulden)</span>
+        <input type="number" class="sinput" id="uebVIn" min="0" max="9999" value="0"/>
+        <div class="shint">Stunden die aus dem Vorjahr nachgearbeitet werden müssen (V-Tage Schulden).</div>
+      </div>
+      <div class="divider"></div>
+      <div class="sg">
+        <span class="slbl">💾 Datensicherung</span>
+        <div class="exp-row">
+          <button class="exp-btn exp-export" onclick="exportData()">⬇ Export (JSON)</button>
+          <button class="exp-btn exp-import" onclick="document.getElementById('importFile').click()">⬆ Import (JSON)</button>
+        </div>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"/>
+        <div class="shint">Export: Alle deine Daten als JSON-Datei sichern.<br>Import: Gesicherte Daten wiederherstellen (überschreibt aktuelle Daten!).</div>
+      </div>
+      <div class="divider"></div>
+      <button class="ab a-clear" style="width:100%" onclick="resetAll()">🗑 Alle Daten löschen</button>
+    </div>
+    <div class="sacts">
+      <button class="ab a-cancel" onclick="close2('setOvl')">Abbrechen</button>
+      <button class="ab a-save" onclick="saveSettings()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- DATENSCHUTZ HINWEIS (erster Start) -->
+<div class="ds-overlay" id="dsOverlay">
+  <div class="ds-box">
+    <div class="ds-icon">🔒</div>
+    <div class="ds-title">Deine Daten gehören dir</div>
+    <div class="ds-text">
+      <strong>✓ Alles bleibt auf deinem Gerät!</strong><br><br>
+      SchichtPlan speichert <strong>alle deine Daten ausschließlich lokal</strong> in deinem Browser (localStorage).<br><br>
+      • Schichtverläufe<br>
+      • Urlaub, Z-Tage, V-Tage<br>
+      • Persönliche Termine<br>
+      • Alle Einstellungen<br><br>
+      <strong>Es werden keine Daten an einen Server übertragen.</strong> Niemand außer dir kann deine Daten einsehen.<br><br>
+      <span style="color:var(--warn)">⚠ Tipp: Nutze den Export in den Einstellungen um regelmäßig eine Sicherungskopie zu erstellen!</span>
+    </div>
+    <button class="ds-btn" onclick="acceptDatenschutz()">Verstanden – Los geht's! 🦊</button>
+  </div>
+</div>
+
+<script>
+// ─── CONSTANTS ───────────────────────────────────────────────────
+const SDEFS = {
+  'F':{l:'Früh',   c:'var(--F-c)',b:'var(--F-b)',h:8},
+  'S':{l:'Spät',   c:'var(--S-c)',b:'var(--S-b)',h:8},
+  'N':{l:'Nacht',  c:'var(--N-c)',b:'var(--N-b)',h:8},
+  'B':{l:'Bereit.',c:'var(--B-c)',b:'var(--B-b)',h:8},
+  '-':{l:'Frei',   c:'var(--fr-t)',b:'var(--fr-c)',h:0},
+};
+const OVDEFS = {
+  'U' :{l:'Urlaub',      c:'var(--U-c)', b:'var(--U-b)'},
+  'Z' :{l:'Z-Tag',       c:'var(--Z-c)', b:'var(--Z-b)'},
+  'V' :{l:'V-Tag',       c:'var(--V-c)', b:'var(--V-b)'},
+  'NF':{l:'N-Freischicht',c:'var(--NF-c)',b:'var(--NF-b)'},
+  'SU':{l:'Sonderurlaub',c:'var(--SU-c)',b:'var(--SU-b)'},
+};
+const VALID = new Set(['F','S','N','B','-']);
+const MONTHS = ['Januar','Februar','März','April','Mai','Juni',
+                'Juli','August','September','Oktober','November','Dezember'];
+
+// ─── STATE ───────────────────────────────────────────────────────
+// segments: [{startDate:"YYYY-MM-DD", pattern:"FFSSNNN----"}] sorted by startDate
+let ST = {
+  segments: [],       // plan segments, sorted ascending by startDate
+  overrides: {},      // "YYYY-MM-DD" -> ovKey
+  name: '',
+  urlaubTage: 30,
+  azv: false,
+  senior: false,      // über 45 oder 10J Schicht
+  bundesland: 'NW',   // Bundesland für Feiertage & Schulferien
+  theme: 'midnight',  // Design-Theme
+  termine: {},        // "YYYY-MM-DD" oder "MM-DD" -> {emoji, text, repeat}
+  uebertragZStd: 0,   // Vorjahresübertrag Z-Stunden (z.B. 160)
+  uebertragVStd: 0,   // Vorjahresübertrag V-Stunden (Schulden)
+  vm: new Date().getMonth(),
+  vy: new Date().getFullYear(),
+};
+let editKey=null, editOvSel=null, editSegIdx=-1;
+
+function persist(){
+  try{localStorage.setItem('spv5',JSON.stringify({
+    segments:ST.segments, overrides:ST.overrides,
+    name:ST.name, urlaubTage:ST.urlaubTage,
+    azv:ST.azv, senior:ST.senior, bundesland:ST.bundesland, theme:ST.theme,
+    termine:ST.termine,
+    uebertragZStd:ST.uebertragZStd, uebertragVStd:ST.uebertragVStd
+  }));}catch(e){}
+}
+function restore(){
+  try{
+    const d=JSON.parse(localStorage.getItem('spv5')||'{}');
+    if(d.segments)   ST.segments=d.segments;
+    if(d.overrides)  ST.overrides=d.overrides;
+    if(d.name)       ST.name=d.name;
+    if(d.urlaubTage) ST.urlaubTage=d.urlaubTage;
+    if(d.azv!==undefined) ST.azv=d.azv;
+    if(d.senior!==undefined) ST.senior=d.senior;
+    if(d.bundesland) ST.bundesland=d.bundesland;
+    if(d.theme) ST.theme=d.theme;
+    if(d.termine) ST.termine=d.termine;
+    if(d.uebertragZStd!==undefined) ST.uebertragZStd=d.uebertragZStd;
+    if(d.uebertragVStd!==undefined) ST.uebertragVStd=d.uebertragVStd;
+  }catch(e){}
+}
+
+// ─── SEGMENT LOGIC ───────────────────────────────────────────────
+function sortSegs(){
+  ST.segments.sort((a,b)=>a.startDate.localeCompare(b.startDate));
+}
+
+function segForDate(dt){
+  // Find the segment whose startDate is <= dt (latest one)
+  const ds = toDateStr(dt);
+  let found = null;
+  for(const seg of ST.segments){
+    if(seg.startDate <= ds) found = seg;
+    else break;
+  }
+  return found;
+}
+
+function shiftForDate(dt){
+  const seg = segForDate(dt);
+  if(!seg || !seg.pattern) return null;
+  const start = parseD(seg.startDate);
+  const diff = Math.round((dt - start) / 86400000);
+  if(diff < 0) return null;
+  return seg.pattern[diff % seg.pattern.length];
+}
+
+function cleanPat(s){
+  return [...s.toUpperCase()].filter(c=>VALID.has(c)).join('');
+}
+
+function parseD(s){
+  const [y,m,d]=s.split('-').map(Number);
+  const dt=new Date(y,m-1,d);dt.setHours(0,0,0,0);return dt;
+}
+function toDateStr(dt){
+  return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+}
+function dkey(y,m,d){ return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+function todayStr(){ return toDateStr(new Date()); }
+
+// ─── HOLIDAYS & FERIEN ───────────────────────────────────────────
+function holidays(Y, bl){
+  bl = bl || ST.bundesland || 'NW';
+  const h={};
+  const a=(mo,d,n)=>h[`${Y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`]=n;
+  // Bundesweite Feiertage
+  a(1,1,'Neujahr');a(5,1,'Tag d.Arbeit');a(10,3,'Tag d.Einheit');
+  a(12,25,'1.Weihnacht');a(12,26,'2.Weihnacht');
+  const E=easter(Y);
+  const fmt=dt=>`${Y}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+  const ad=(dt,n,l)=>{const r=new Date(dt);r.setDate(r.getDate()+n);h[fmt(r)]=l;};
+  ad(E,-2,'Karfreitag');h[fmt(E)]='Ostersonntag';ad(E,1,'Ostermontag');
+  ad(E,39,'Himmelfahrt');ad(E,49,'Pfingstso.');ad(E,50,'Pfingstmo.');
+  // Bundesland-spezifische Feiertage
+  const blH = getBLFeiertage(Y, bl, E, fmt, ad, a);
+  Object.assign(h, blH);
+  return h;
+}
+
+function getBLFeiertage(Y, bl, E, fmt, ad, a){
+  const h={};
+  const add=(mo,d,n)=>h[`${Y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`]=n;
+  // Heilige Drei Könige: BW BY ST
+  if(['BW','BY','ST'].includes(bl)) add(1,6,'Hl. Drei Könige');
+  // Internationaler Frauentag: BE MV
+  if(['BE','MV'].includes(bl)) add(3,8,'Frauentag');
+  // Gründonnerstag: nur BY (optional)
+  // Fronleichnam: BW BY HE NW RP SL + Teile SN TH
+  if(['BW','BY','HE','NW','RP','SL'].includes(bl)) ad(E,60,'Fronleichnam');
+  // Mariä Himmelfahrt: BY SL
+  if(['BY','SL'].includes(bl)) add(8,15,'Mariä Himmelfahrt');
+  // Weltkindertag: TH
+  if(bl==='TH') add(9,20,'Weltkindertag');
+  // Reformationstag: BB HB HH MV NI SN ST SH TH
+  if(['BB','HB','HH','MV','NI','SN','ST','SH','TH'].includes(bl)) add(10,31,'Reformationstag');
+  // Allerheiligen: BW BY NW RP SL
+  if(['BW','BY','NW','RP','SL'].includes(bl)) add(11,1,'Allerheiligen');
+  // Buß- und Bettag: SN
+  if(bl==='SN'){
+    // Mittwoch vor dem 23. November
+    const nov23 = new Date(Y,10,23);
+    const dow = nov23.getDay();
+    const bbt = new Date(nov23);
+    bbt.setDate(nov23.getDate() - ((dow + 4) % 7 || 7));
+    h[fmt(bbt)]='Buß- & Bettag';
+  }
+  return h;
+}
+
+// Schulferien 2025 & 2026 je Bundesland (vereinfacht, Hauptferienzeiten)
+function getFerien(Y, bl){
+  bl = bl || ST.bundesland || 'NW';
+  // Returns array of {start:"YYYY-MM-DD", end:"YYYY-MM-DD", name:"..."}
+  const F = SCHULFERIEN[bl] || [];
+  return F.filter(f => f.start.startsWith(Y) || f.end.startsWith(Y));
+}
+
+function isFerientag(dateStr, ferienList){
+  for(const f of ferienList){
+    if(dateStr >= f.start && dateStr <= f.end) return f.name;
+  }
+  return null;
+}
+
+// Schulferien-Daten (2025 + 2026) – Hauptferienzeiten je Bundesland
+const SCHULFERIEN = {
+  NW:[
+    {start:'2025-01-20',end:'2025-02-01',name:'Winterferien'},
+    {start:'2025-04-07',end:'2025-04-19',name:'Osterferien'},
+    {start:'2025-06-07',end:'2025-06-07',name:'Pfingstsamstag'},
+    {start:'2025-06-23',end:'2025-07-05',name:'Pfingstferien'},
+    {start:'2025-09-22',end:'2025-10-04',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-05',name:'Weihnachtsferien'},
+    {start:'2026-02-16',end:'2026-02-28',name:'Winterferien'},
+    {start:'2026-03-30',end:'2026-04-11',name:'Osterferien'},
+    {start:'2026-06-22',end:'2026-08-01',name:'Sommerferien'},
+    {start:'2026-10-05',end:'2026-10-17',name:'Herbstferien'},
+    {start:'2026-12-23',end:'2027-01-06',name:'Weihnachtsferien'},
+  ],
+  BY:[
+    {start:'2025-02-24',end:'2025-03-08',name:'Winterferien'},
+    {start:'2025-04-14',end:'2025-04-26',name:'Osterferien'},
+    {start:'2025-06-03',end:'2025-06-06',name:'Pfingstferien'},
+    {start:'2025-07-28',end:'2025-09-08',name:'Sommerferien'},
+    {start:'2025-11-03',end:'2025-11-07',name:'Herbstferien'},
+    {start:'2025-12-24',end:'2026-01-05',name:'Weihnachtsferien'},
+    {start:'2026-02-23',end:'2026-03-07',name:'Winterferien'},
+    {start:'2026-04-06',end:'2026-04-18',name:'Osterferien'},
+    {start:'2026-07-27',end:'2026-09-07',name:'Sommerferien'},
+    {start:'2026-11-02',end:'2026-11-06',name:'Herbstferien'},
+    {start:'2026-12-23',end:'2027-01-04',name:'Weihnachtsferien'},
+  ],
+  BW:[
+    {start:'2025-01-07',end:'2025-01-07',name:'Dreikönig'},
+    {start:'2025-04-14',end:'2025-04-26',name:'Osterferien'},
+    {start:'2025-06-10',end:'2025-06-21',name:'Pfingstferien'},
+    {start:'2025-07-31',end:'2025-09-13',name:'Sommerferien'},
+    {start:'2025-10-27',end:'2025-10-31',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-05',name:'Weihnachtsferien'},
+    {start:'2026-04-06',end:'2026-04-18',name:'Osterferien'},
+    {start:'2026-06-02',end:'2026-06-13',name:'Pfingstferien'},
+    {start:'2026-07-30',end:'2026-09-12',name:'Sommerferien'},
+    {start:'2026-10-26',end:'2026-10-30',name:'Herbstferien'},
+    {start:'2026-12-23',end:'2027-01-06',name:'Weihnachtsferien'},
+  ],
+  BE:[
+    {start:'2025-01-27',end:'2025-02-01',name:'Winterferien'},
+    {start:'2025-04-14',end:'2025-04-26',name:'Osterferien'},
+    {start:'2025-05-23',end:'2025-05-23',name:'Himmelfahrt+'},
+    {start:'2025-07-24',end:'2025-09-06',name:'Sommerferien'},
+    {start:'2025-10-20',end:'2025-11-01',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-03',name:'Weihnachtsferien'},
+    {start:'2026-02-02',end:'2026-02-07',name:'Winterferien'},
+    {start:'2026-04-06',end:'2026-04-18',name:'Osterferien'},
+    {start:'2026-07-16',end:'2026-08-29',name:'Sommerferien'},
+    {start:'2026-10-19',end:'2026-10-31',name:'Herbstferien'},
+    {start:'2026-12-21',end:'2027-01-02',name:'Weihnachtsferien'},
+  ],
+  HE:[
+    {start:'2025-04-14',end:'2025-04-26',name:'Osterferien'},
+    {start:'2025-06-09',end:'2025-06-21',name:'Pfingstferien'},
+    {start:'2025-07-07',end:'2025-08-15',name:'Sommerferien'},
+    {start:'2025-10-06',end:'2025-10-18',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-10',name:'Weihnachtsferien'},
+    {start:'2026-04-07',end:'2026-04-18',name:'Osterferien'},
+    {start:'2026-07-06',end:'2026-08-14',name:'Sommerferien'},
+    {start:'2026-10-05',end:'2026-10-17',name:'Herbstferien'},
+    {start:'2026-12-23',end:'2027-01-09',name:'Weihnachtsferien'},
+  ],
+  NI:[
+    {start:'2025-01-30',end:'2025-02-04',name:'Winterferien'},
+    {start:'2025-04-07',end:'2025-04-19',name:'Osterferien'},
+    {start:'2025-07-03',end:'2025-08-13',name:'Sommerferien'},
+    {start:'2025-10-06',end:'2025-10-18',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-05',name:'Weihnachtsferien'},
+    {start:'2026-01-29',end:'2026-02-03',name:'Winterferien'},
+    {start:'2026-03-30',end:'2026-04-11',name:'Osterferien'},
+    {start:'2026-07-02',end:'2026-08-12',name:'Sommerferien'},
+    {start:'2026-10-05',end:'2026-10-17',name:'Herbstferien'},
+    {start:'2026-12-23',end:'2027-01-06',name:'Weihnachtsferien'},
+  ],
+  RP:[
+    {start:'2025-02-24',end:'2025-03-07',name:'Winterferien'},
+    {start:'2025-04-14',end:'2025-04-25',name:'Osterferien'},
+    {start:'2025-07-07',end:'2025-08-15',name:'Sommerferien'},
+    {start:'2025-10-13',end:'2025-10-24',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-07',name:'Weihnachtsferien'},
+    {start:'2026-02-16',end:'2026-02-27',name:'Winterferien'},
+    {start:'2026-03-30',end:'2026-04-10',name:'Osterferien'},
+    {start:'2026-07-06',end:'2026-08-14',name:'Sommerferien'},
+    {start:'2026-10-12',end:'2026-10-23',name:'Herbstferien'},
+    {start:'2026-12-23',end:'2027-01-08',name:'Weihnachtsferien'},
+  ],
+  SL:[
+    {start:'2025-02-24',end:'2025-03-07',name:'Winterferien'},
+    {start:'2025-04-14',end:'2025-04-25',name:'Osterferien'},
+    {start:'2025-07-07',end:'2025-08-15',name:'Sommerferien'},
+    {start:'2025-10-13',end:'2025-10-24',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-07',name:'Weihnachtsferien'},
+    {start:'2026-02-16',end:'2026-02-27',name:'Winterferien'},
+    {start:'2026-03-30',end:'2026-04-10',name:'Osterferien'},
+    {start:'2026-07-06',end:'2026-08-14',name:'Sommerferien'},
+    {start:'2026-10-12',end:'2026-10-23',name:'Herbstferien'},
+    {start:'2026-12-23',end:'2027-01-08',name:'Weihnachtsferien'},
+  ],
+  SH:[
+    {start:'2025-01-27',end:'2025-02-01',name:'Winterferien'},
+    {start:'2025-04-07',end:'2025-04-19',name:'Osterferien'},
+    {start:'2025-07-03',end:'2025-08-13',name:'Sommerferien'},
+    {start:'2025-10-13',end:'2025-10-24',name:'Herbstferien'},
+    {start:'2025-12-19',end:'2026-01-06',name:'Weihnachtsferien'},
+    {start:'2026-02-09',end:'2026-02-14',name:'Winterferien'},
+    {start:'2026-03-30',end:'2026-04-11',name:'Osterferien'},
+    {start:'2026-07-02',end:'2026-08-12',name:'Sommerferien'},
+    {start:'2026-10-12',end:'2026-10-23',name:'Herbstferien'},
+    {start:'2026-12-21',end:'2027-01-06',name:'Weihnachtsferien'},
+  ],
+  HH:[
+    {start:'2025-01-27',end:'2025-02-01',name:'Winterferien'},
+    {start:'2025-03-10',end:'2025-03-21',name:'Frühjahrsferien'},
+    {start:'2025-07-10',end:'2025-08-20',name:'Sommerferien'},
+    {start:'2025-10-03',end:'2025-10-17',name:'Herbstferien'},
+    {start:'2025-12-19',end:'2026-01-02',name:'Weihnachtsferien'},
+    {start:'2026-01-26',end:'2026-01-31',name:'Winterferien'},
+    {start:'2026-03-09',end:'2026-03-20',name:'Frühjahrsferien'},
+    {start:'2026-07-09',end:'2026-08-19',name:'Sommerferien'},
+    {start:'2026-10-05',end:'2026-10-17',name:'Herbstferien'},
+    {start:'2026-12-21',end:'2027-01-01',name:'Weihnachtsferien'},
+  ],
+  HB:[
+    {start:'2025-01-27',end:'2025-02-01',name:'Winterferien'},
+    {start:'2025-04-07',end:'2025-04-19',name:'Osterferien'},
+    {start:'2025-07-03',end:'2025-08-13',name:'Sommerferien'},
+    {start:'2025-10-06',end:'2025-10-18',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-05',name:'Weihnachtsferien'},
+    {start:'2026-02-02',end:'2026-02-07',name:'Winterferien'},
+    {start:'2026-03-30',end:'2026-04-11',name:'Osterferien'},
+    {start:'2026-07-02',end:'2026-08-12',name:'Sommerferien'},
+    {start:'2026-10-05',end:'2026-10-17',name:'Herbstferien'},
+    {start:'2026-12-21',end:'2027-01-03',name:'Weihnachtsferien'},
+  ],
+  BB:[
+    {start:'2025-01-27',end:'2025-02-08',name:'Winterferien'},
+    {start:'2025-04-14',end:'2025-04-26',name:'Osterferien'},
+    {start:'2025-07-24',end:'2025-09-06',name:'Sommerferien'},
+    {start:'2025-10-20',end:'2025-11-01',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-03',name:'Weihnachtsferien'},
+    {start:'2026-02-02',end:'2026-02-14',name:'Winterferien'},
+    {start:'2026-04-06',end:'2026-04-18',name:'Osterferien'},
+    {start:'2026-07-16',end:'2026-08-29',name:'Sommerferien'},
+    {start:'2026-10-19',end:'2026-10-31',name:'Herbstferien'},
+    {start:'2026-12-21',end:'2027-01-02',name:'Weihnachtsferien'},
+  ],
+  MV:[
+    {start:'2025-01-20',end:'2025-02-01',name:'Winterferien'},
+    {start:'2025-04-14',end:'2025-04-26',name:'Osterferien'},
+    {start:'2025-07-07',end:'2025-08-16',name:'Sommerferien'},
+    {start:'2025-10-06',end:'2025-10-18',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-03',name:'Weihnachtsferien'},
+    {start:'2026-02-02',end:'2026-02-14',name:'Winterferien'},
+    {start:'2026-04-06',end:'2026-04-18',name:'Osterferien'},
+    {start:'2026-07-06',end:'2026-08-15',name:'Sommerferien'},
+    {start:'2026-10-05',end:'2026-10-17',name:'Herbstferien'},
+    {start:'2026-12-21',end:'2027-01-02',name:'Weihnachtsferien'},
+  ],
+  SN:[
+    {start:'2025-02-17',end:'2025-03-01',name:'Winterferien'},
+    {start:'2025-04-14',end:'2025-04-26',name:'Osterferien'},
+    {start:'2025-07-21',end:'2025-09-01',name:'Sommerferien'},
+    {start:'2025-10-20',end:'2025-11-01',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-03',name:'Weihnachtsferien'},
+    {start:'2026-02-16',end:'2026-02-28',name:'Winterferien'},
+    {start:'2026-04-06',end:'2026-04-18',name:'Osterferien'},
+    {start:'2026-07-20',end:'2026-08-31',name:'Sommerferien'},
+    {start:'2026-10-19',end:'2026-10-31',name:'Herbstferien'},
+    {start:'2026-12-21',end:'2027-01-02',name:'Weihnachtsferien'},
+  ],
+  ST:[
+    {start:'2025-02-03',end:'2025-02-15',name:'Winterferien'},
+    {start:'2025-04-14',end:'2025-04-26',name:'Osterferien'},
+    {start:'2025-07-07',end:'2025-08-20',name:'Sommerferien'},
+    {start:'2025-10-20',end:'2025-11-01',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-03',name:'Weihnachtsferien'},
+    {start:'2026-02-02',end:'2026-02-14',name:'Winterferien'},
+    {start:'2026-04-06',end:'2026-04-18',name:'Osterferien'},
+    {start:'2026-07-06',end:'2026-08-19',name:'Sommerferien'},
+    {start:'2026-10-19',end:'2026-10-31',name:'Herbstferien'},
+    {start:'2026-12-21',end:'2027-01-02',name:'Weihnachtsferien'},
+  ],
+  TH:[
+    {start:'2025-02-17',end:'2025-03-01',name:'Winterferien'},
+    {start:'2025-04-14',end:'2025-04-26',name:'Osterferien'},
+    {start:'2025-07-07',end:'2025-08-20',name:'Sommerferien'},
+    {start:'2025-10-20',end:'2025-11-01',name:'Herbstferien'},
+    {start:'2025-12-22',end:'2026-01-03',name:'Weihnachtsferien'},
+    {start:'2026-02-16',end:'2026-02-28',name:'Winterferien'},
+    {start:'2026-04-06',end:'2026-04-18',name:'Osterferien'},
+    {start:'2026-07-06',end:'2026-08-19',name:'Sommerferien'},
+    {start:'2026-10-19',end:'2026-10-31',name:'Herbstferien'},
+    {start:'2026-12-21',end:'2027-01-02',name:'Weihnachtsferien'},
+  ],
+};
+function easter(Y){
+  const a=Y%19,b=Math.floor(Y/100),c=Y%100,d=Math.floor(b/4),e=b%4,
+    f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),
+    h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,
+    l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),
+    mo=Math.floor((h+l-7*m+114)/31),day=((h+l-7*m+114)%31)+1;
+  return new Date(Y,mo-1,day);
+}
+
+// ─── JAHRES STATS CALC ───────────────────────────────────────────
+function calcJahres(Y){
+  const stats = {
+    F:0,S:0,N:0,B:0,free:0,
+    urlaubDays:0, zDays:0, vDays:0, nfDays:0, suDays:0,
+    istStunden:0, urlaubSommer:0,
+  };
+  const start = new Date(Y,0,1); start.setHours(0,0,0,0);
+  const end   = new Date(Y,11,31); end.setHours(0,0,0,0);
+  for(let dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
+    const key = toDateStr(dt);
+    const ov  = ST.overrides[key];
+    const shift = shiftForDate(new Date(dt));
+    const m = dt.getMonth(); // 0-based
+
+    if(ov==='U'){
+      stats.urlaubDays++;
+      // Sommer: April(3) bis September(8)
+      if(m>=3 && m<=8) stats.urlaubSommer++;
+    }
+    else if(ov==='Z') stats.zDays++;
+    else if(ov==='V') stats.vDays++;
+    else if(ov==='NF') stats.nfDays++;
+    else if(ov==='SU') stats.suDays++;
+
+    if(shift && !ov){
+      if(shift in SDEFS) stats[shift]=(stats[shift]||0)+1;
+      if(shift==='-') stats.free++;
+      if(shift && shift!=='-') stats.istStunden += SDEFS[shift].h;
+    }
+  }
+
+  const sollStunden = ST.azv ? 1792 : 1856;
+  const stDiff = stats.istStunden - sollStunden;
+
+  // Vorjahresübertrag
+  const uebZStd = ST.uebertragZStd || 0;
+  const uebVStd = ST.uebertragVStd || 0;
+  const uebZTage = Math.round(uebZStd / 8);
+  const uebVTage = Math.round(uebVStd / 8);
+
+  // Z/V Bilanz inkl. Übertrag: Guthaben - verbrauchte Tage
+  const zBilanzStd = uebZStd + (stDiff > 0 ? stDiff : 0) - (stats.zDays * 8);
+  const vBilanzStd = uebVStd + (stDiff < 0 ? Math.abs(stDiff) : 0) - (stats.vDays * 8);
+  const azKStunden = Math.max(0, zBilanzStd); // am 31.12. noch offen → AZK
+
+  // N-Freischichten Anspruch
+  let nfAnspruch;
+  if(ST.senior){
+    nfAnspruch = 4;
+  } else {
+    nfAnspruch = Math.floor(stats.N / 17);
+  }
+
+  // Winterurlaubstag
+  const winterAnspruch = stats.urlaubSommer <= 10;
+
+  return {
+    ...stats, sollStunden, stDiff, nfAnspruch, winterAnspruch,
+    resturlaub: ST.urlaubTage - stats.urlaubDays,
+    nfRest: nfAnspruch - stats.nfDays,
+    uebZStd, uebVStd, uebZTage, uebVTage,
+    zBilanzStd, vBilanzStd, azKStunden,
+  };
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────
+function render(){
+  document.getElementById('uname').textContent = ST.name || '';
+  renderBanner();
+  renderCal();
+  renderJahresCard();
+}
+
+function renderBanner(){
+  const wrap = document.getElementById('patChips');
+  wrap.innerHTML = '';
+  const active = segForDate(new Date());
+  if(!active){
+    wrap.innerHTML='<span style="color:var(--muted);font-size:.78rem">Kein Muster – tippen zum Eingeben</span>';
+    return;
+  }
+  [...active.pattern].forEach(c=>{
+    const ss=SDEFS[c]||SDEFS['-'];
+    const chip=mk('div','pch');
+    chip.style.cssText=`background:${ss.b};color:${ss.c}`;
+    chip.textContent=c==='-'?'○':c;
+    wrap.appendChild(chip);
+  });
+  const badge=mk('div','pch');
+  badge.style.cssText='background:var(--surf3);color:var(--muted);';
+  badge.textContent=`×${active.pattern.length}`;
+  wrap.appendChild(badge);
+  if(ST.segments.length>1){
+    const b2=mk('div','pch');
+    b2.style.cssText='background:var(--S-b);color:var(--S-c);margin-left:4px;';
+    b2.textContent=`${ST.segments.length} Abschnitte`;
+    wrap.appendChild(b2);
+  }
+}
+
+function renderCal(){
+  const {vy:Y,vm:M}=ST;
+  document.getElementById('mName').textContent=MONTHS[M];
+  document.getElementById('mYear').textContent=Y;
+  const grid=document.getElementById('cGrid');
+  grid.innerHTML='';
+  const HL=holidays(Y, ST.bundesland);
+  const ferienList=getFerien(String(Y), ST.bundesland);
+  const today=new Date();today.setHours(0,0,0,0);
+  const fd=new Date(Y,M,1).getDay();
+  const pad=fd===0?6:fd-1;
+  const dim=new Date(Y,M+1,0).getDate();
+  const prev=new Date(Y,M,0).getDate();
+  const stats={F:0,S:0,N:0,B:0,free:0,U:0,Z:0,V:0,NF:0,SU:0};
+
+  for(let i=pad-1;i>=0;i--){
+    const c=mk('div','dc other');
+    c.innerHTML=`<div class="dn">${prev-i}</div>`;
+    grid.appendChild(c);
+  }
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(Y,M,d);dt.setHours(0,0,0,0);
+    const key=dkey(Y,M,d);
+    const dow=dt.getDay();
+    const isWE=dow===0||dow===6;
+    const isToday=dt.getTime()===today.getTime();
+    const ov=ST.overrides[key];
+    const shift=shiftForDate(dt);
+
+    // Check if this day is start of a new segment
+    const segStart = ST.segments.some(s=>s.startDate===key);
+
+    const isFT = !!HL[key];
+    const ferienName = isFerientag(key, ferienList);
+    const cellCls = 'dc'+(isToday?' today':'')+(isWE?' we-bg':'')+(isFT?' feiertag':'')+(ferienName?' ferien':'');
+    const cell=mk('div',cellCls);
+    cell.onclick=()=>openDay(key,d);
+    cell.addEventListener('contextmenu',e=>{e.preventDefault();openTermin(key,d);});
+    let pressTimer;
+    cell.addEventListener('touchstart',()=>{pressTimer=setTimeout(()=>openTermin(key,d),600);},{passive:true});
+    cell.addEventListener('touchend',()=>clearTimeout(pressTimer),{passive:true});
+    cell.addEventListener('touchmove',()=>clearTimeout(pressTimer),{passive:true});
+
+    const dn=mk('div','dn');dn.textContent=d;cell.appendChild(dn);
+    if(segStart && ST.segments.length>1){
+      const dot=mk('div','plan-dot');cell.appendChild(dot);
+    }
+
+    if(ov){
+      const o=OVDEFS[ov];
+      const chip=mk('div','ovc');
+      chip.style.cssText=`background:${o.b};color:${o.c}`;
+      chip.textContent=o.l;
+      cell.appendChild(chip);
+      stats[ov]=(stats[ov]||0)+1;
+    }
+    if(shift!==null){
+      const ss=SDEFS[shift]||SDEFS['-'];
+      const chip=mk('div','sc'+(ov?' faded':''));
+      chip.style.cssText=`background:${ss.b};color:${ss.c}`;
+      chip.textContent=shift==='-'?'—':shift;
+      cell.appendChild(chip);
+      if(!ov){
+        if(shift==='-') stats.free++;
+        else stats[shift]=(stats[shift]||0)+1;
+      }
+    }
+    if(HL[key]){
+      const hl=mk('div','fhlbl');hl.textContent=HL[key];cell.appendChild(hl);
+    } else if(ferienName){
+      const fl=mk('div','ferhlbl');fl.textContent=ferienName;cell.appendChild(fl);
+    }
+    // Persönliche Termine
+    const termin = getTerminForDate(key);
+    if(termin){
+      const tc=mk('div','termin-chip');
+      tc.textContent=termin.emoji+' '+termin.text;
+      cell.appendChild(tc);
+    }
+    grid.appendChild(cell);
+  }
+  const tot=Math.ceil((pad+dim)/7)*7;
+  for(let nd=1;nd<=tot-pad-dim;nd++){
+    const c=mk('div','dc other');c.innerHTML=`<div class="dn">${nd}</div>`;grid.appendChild(c);
+  }
+  renderMonthStats(stats);
+}
+
+function renderMonthStats(st){
+  const row=document.getElementById('stats');row.innerHTML='';
+  [
+    {k:'F',l:'Früh',c:'var(--F-c)'},{k:'S',l:'Spät',c:'var(--S-c)'},
+    {k:'N',l:'Nacht',c:'var(--N-c)'},{k:'free',l:'Frei',c:'var(--muted)'},
+    {k:'U',l:'Urlaub',c:'var(--U-c)'},{k:'Z',l:'Z-Tag',c:'var(--Z-c)'},
+    {k:'NF',l:'N-Frei',c:'var(--NF-c)'},
+  ].forEach(it=>{
+    const el=mk('div','si');
+    el.innerHTML=`<div class="sv" style="color:${it.c}">${st[it.k]||0}</div><div class="sl">${it.l}</div>`;
+    row.appendChild(el);
+  });
+}
+
+function renderJahresCard(){
+  const Y=ST.vy;
+  const jc=document.getElementById('jahresCard');
+  if(!ST.segments.length){jc.innerHTML='';return;}
+  const j=calcJahres(Y);
+  // Check if any segment for this year starts after 01.01
+  const firstSeg = ST.segments.find(s=>s.startDate.startsWith(Y));
+  const startsLate = firstSeg && firstSeg.startDate !== `${Y}-01-01`;
+
+  const stColor = j.stDiff>0?'var(--ok)':j.stDiff<0?'var(--err)':'var(--muted)';
+  const zTageNeu = j.stDiff>0 ? Math.round(j.stDiff/8) : 0;
+  const vTageNeu = j.stDiff<0 ? Math.round(Math.abs(j.stDiff)/8) : 0;
+  const stLabel = j.stDiff>0?`+${j.stDiff}h → ${zTageNeu} Z-Tage`:j.stDiff<0?`${j.stDiff}h → ${vTageNeu} V-Tage`:'ausgeglichen';
+  const urlColor = j.resturlaub>0?'var(--ok)':j.resturlaub===0?'var(--muted)':'var(--err)';
+  const nfColor = j.nfRest>0?'var(--ok)':j.nfRest<=0?'var(--muted)':'var(--muted)';
+  const winterColor = j.winterAnspruch?'var(--W-c)':'var(--muted)';
+
+  jc.innerHTML=`
+    <div class="jc-title">${Y} · Jahresübersicht</div>
+    ${startsLate ? `<div style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);margin-bottom:8px;line-height:1.5;">⚠ Plan beginnt am ${firstSeg.startDate.split('-').reverse().slice(0,2).join('.')} – Jahreswerte vor diesem Datum fehlen. Für vollständige Berechnung Plan ab 01.01.${Y} anlegen.</div>` : ''}
+    <div class="jc-grid">
+      <div class="jc-item">
+        <div class="jc-val" style="color:${urlColor}">${j.resturlaub}</div>
+        <div class="jc-lbl">Resturlaub</div>
+        <div class="jc-sub" style="color:var(--muted)">${j.urlaubDays} von ${ST.urlaubTage} verbraucht</div>
+      </div>
+      <div class="jc-item">
+        <div class="jc-val" style="color:${stColor}">${j.istStunden}h</div>
+        <div class="jc-lbl">Ist-Stunden</div>
+        <div class="jc-sub" style="color:${stColor}">${stLabel}</div>
+      </div>
+      <div class="jc-item">
+        <div class="jc-val" style="color:var(--N-c)">${j.N}</div>
+        <div class="jc-lbl">Nachtschichten</div>
+        <div class="jc-sub" style="color:var(--muted)">÷17 = ${Math.floor(j.N/17)} Anspruch</div>
+      </div>
+      <div class="jc-item">
+        <div class="jc-val" style="color:${nfColor}">${j.nfAnspruch}</div>
+        <div class="jc-lbl">N-Freischichten</div>
+        <div class="jc-sub" style="color:${nfColor}">${j.nfDays} verbraucht · ${j.nfRest} frei</div>
+      </div>
+      <div class="jc-item">
+        <div class="jc-val" style="color:var(--Z-c)">${j.uebZTage}</div>
+        <div class="jc-lbl">Z-Tage Übertrag</div>
+        <div class="jc-sub" style="color:var(--muted)">${j.zDays} verbraucht · ${Math.max(0,j.uebZTage-j.zDays)} offen</div>
+      </div>
+      <div class="jc-item">
+        <div class="jc-val" style="color:${j.uebZTage-j.zDays>0?'var(--warn)':'var(--ok)'}">${j.uebZTage-j.zDays>0?'⚠':'✓'}</div>
+        <div class="jc-lbl">AZK am 31.12.</div>
+        <div class="jc-sub" style="color:${j.uebZTage-j.zDays>0?'var(--warn)':'var(--muted)'}">${j.uebZTage-j.zDays>0?`${j.uebZTage-j.zDays} Z-Tage offen!`:'Keine Z-Tage offen'}</div>
+      </div>
+      <div class="jc-item">
+        <div class="jc-val" style="color:${winterColor}">${j.winterAnspruch?'✓':'–'}</div>
+        <div class="jc-lbl">Winterurlaubstag</div>
+        <div class="jc-sub" style="color:${winterColor}">${j.winterAnspruch?'Anspruch vorhanden':'kein Anspruch'}</div>
+      </div>
+    </div>
+    ${j.uebZTage-j.zDays>0?`<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! ${j.uebZTage-j.zDays} Z-Tage offen → wandern am 31.12. ins AZK</div>`:''}`;
+}
+
+// ─── DAY SHEET ───────────────────────────────────────────────────
+function openDay(key,d){
+  editKey=key;editOvSel=ST.overrides[key]||null;
+  const [y,m]=key.split('-').map(Number);
+  document.getElementById('dayDate').textContent=`${d}. ${MONTHS[m-1]} ${y}`;
+
+  const nfBox=document.getElementById('nfInfo');
+  nfBox.innerHTML='';
+  const dt=parseD(key);
+  const Y=dt.getFullYear();
+  const yearN = countNSchichtenBisDate(dt);
+  const j = calcJahres(Y);
+
+  // Z-Tage Info-Box
+  const zBox=mk('div','nf-info');
+  const zRest = j.uebZTage - j.zDays; // Übertrag minus bereits verbrauchte
+  const zColor = zRest>0?'var(--Z-c)':'var(--muted)';
+  zBox.innerHTML=`Z-Tage Übertrag: <span class="nf-count" style="color:var(--Z-c)">${j.uebZTage}</span>
+    &nbsp;·&nbsp; Verbraucht: <span class="nf-count" style="color:var(--muted)">${j.zDays}</span>
+    &nbsp;·&nbsp; Offen: <span class="nf-count" style="color:${zColor}">${j.uebZTage - j.zDays}</span><br>
+    <span style="font-size:.65rem">📅 Nachtschichten ${Y}: <b style="color:var(--N-c)">${yearN}</b> &nbsp;·&nbsp; NF-Anspruch: <b style="color:var(--NF-c)">${ST.senior?4:Math.floor(yearN/17)}</b></span>`;
+  nfBox.appendChild(zBox);
+
+  const grid=document.getElementById('ovGrid');grid.innerHTML='';
+  Object.entries(OVDEFS).forEach(([k,o])=>{
+    const btn=mk('div','oo'+(editOvSel===k?' sel':''));
+    btn.style.cssText=`background:${o.b};color:${o.c}`;
+    btn.textContent=o.l;
+    if(k==='U'){
+      btn.onclick=()=>{
+        // Warn if Z-Tage still available
+        if(j.uebZTage - j.zDays > 0){
+          if(!confirm(`⚠️ Z-Tage zuerst verbrauchen!\n\nDu hast noch ${j.uebZTage - j.zDays} Z-Tage offen.\nNicht verbrauchte Z-Tage werden am 31.12. ins AZK (Arbeitszeitkonto) übertragen!\n\nTrotzdem Urlaub eintragen?`)) return;
+        }
+        selOv(btn,k);
+      };
+    } else if(k==='Z'){
+      btn.onclick=()=>{
+        if(j.uebZTage - j.zDays > 0){
+          // Confirm Z-Tag with AZK reminder
+          const rest = j.uebZTage - j.zDays - 1;
+          if(rest > 0){
+            // Just a soft reminder, no confirm needed
+          }
+        }
+        selOv(btn,k);
+      };
+    } else if(k==='NF'){
+      btn.onclick=()=>{
+        const anspruch = ST.senior ? 4 : Math.floor(yearN/17);
+        const verbraucht = countNFVerbraucht(Y);
+        if(anspruch<=0 || verbraucht>=anspruch){
+          if(!confirm(`Du hast erst ${yearN} Nachtschichten in ${Y} (Anspruch: ${anspruch}).\nTrotzdem N-Freischicht eintragen?`)) return;
+        }
+        selOv(btn,k);
+      };
+    } else {
+      btn.onclick=()=>selOv(btn,k);
+    }
+    grid.appendChild(btn);
+  });
+  open2('dayOvl');
+}
+
+function selOv(btn,k){
+  document.querySelectorAll('.oo').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');editOvSel=k;
+}
+
+function countNSchichtenBisDate(dt){
+  const Y=dt.getFullYear();
+  const start=new Date(Y,0,1);start.setHours(0,0,0,0);
+  let count=0;
+  for(let d=new Date(start);d<=dt;d.setDate(d.getDate()+1)){
+    const s=shiftForDate(new Date(d));
+    const ov=ST.overrides[toDateStr(d)];
+    if(s==='N'&&!ov) count++;
+  }
+  return count;
+}
+function countNFVerbraucht(Y){
+  return Object.entries(ST.overrides)
+    .filter(([k,v])=>k.startsWith(`${Y}`)&&v==='NF').length;
+}
+
+function saveDay(){
+  if(editKey&&editOvSel){ST.overrides[editKey]=editOvSel;persist();render();}
+  close2('dayOvl');
+}
+function clearDay(){
+  if(editKey){delete ST.overrides[editKey];persist();render();}
+  close2('dayOvl');
+}
+
+// ─── PATTERN / SEGMENT SHEET ─────────────────────────────────────
+function openPatSheet(){
+  renderSegList();
+  open2('patOvl');
+}
+
+function renderSegList(){
+  const list=document.getElementById('segList');list.innerHTML='';
+  if(!ST.segments.length){
+    list.innerHTML='<div style="color:var(--muted);font-size:.8rem;padding:8px 0">Noch kein Plan eingetragen.</div>';
+    return;
+  }
+  ST.segments.forEach((seg,i)=>{
+    const item=mk('div','seg-item');
+    // date
+    const dd=mk('div','seg-date');
+    const [y,m,d]=seg.startDate.split('-').map(Number);
+    dd.textContent=`ab ${d}.${m}.${y}`;
+    item.appendChild(dd);
+    // mini chips
+    const chips=mk('div','seg-pat');
+    const show=[...seg.pattern].slice(0,12);
+    show.forEach(c=>{
+      const ss=SDEFS[c]||SDEFS['-'];
+      const ch=mk('div','pch');
+      ch.style.cssText=`background:${ss.b};color:${ss.c};font-size:.62rem;padding:2px 5px;`;
+      ch.textContent=c==='-'?'○':c;
+      chips.appendChild(ch);
+    });
+    if(seg.pattern.length>12){
+      const more=mk('div','pch');
+      more.style.cssText='background:var(--surf3);color:var(--muted);font-size:.62rem;';
+      more.textContent=`+${seg.pattern.length-12}`;
+      chips.appendChild(more);
+    }
+    item.appendChild(chips);
+    // edit
+    item.onclick=()=>editSeg(i);
+    // delete
+    const del=mk('div','seg-del');del.textContent='✕';
+    del.onclick=(e)=>{e.stopPropagation();deleteSeg(i);};
+    item.appendChild(del);
+    list.appendChild(item);
+  });
+}
+
+function addNewSeg(){
+  editSegIdx=-1;
+  document.getElementById('segTitle').textContent='Neuer Planabschnitt';
+  document.getElementById('segDateIn').value=todayStr();
+  document.getElementById('segPatIn').value='';
+  buildSegKboard();
+  updateSegPreview();
+  open2('segOvl');
+}
+function editSeg(i){
+  editSegIdx=i;
+  const seg=ST.segments[i];
+  document.getElementById('segTitle').textContent='Planabschnitt bearbeiten';
+  document.getElementById('segDateIn').value=seg.startDate;
+  document.getElementById('segPatIn').value=seg.pattern;
+  buildSegKboard();
+  updateSegPreview();
+  open2('segOvl');
+}
+function deleteSeg(i){
+  if(confirm('Diesen Planabschnitt löschen?')){
+    ST.segments.splice(i,1);
+    persist();render();renderSegList();
+  }
+}
+function checkStartDatum(){
+  const sd = document.getElementById('segDateIn').value;
+  const warn = document.getElementById('startDatumWarn');
+  if(!sd){ warn.style.display='none'; return; }
+  const [y,m,d] = sd.split('-').map(Number);
+  const is01Jan = (m===1 && d===1);
+  const is01 = (d===1);
+  if(is01Jan){
+    warn.style.display='none';
+  } else if(is01){
+    warn.style.display='block';
+    warn.innerHTML='⚠ Monatsbeginn gewählt. Für eine <strong>vollständige Jahresberechnung</strong> (Nachtschichten, Z-Tage, Urlaubsanspruch, N-Freischichten) empfehlen wir den <strong>01.01.' + y + '</strong> als Startdatum. Werte vor diesem Datum können unvollständig sein.';
+  } else {
+    warn.style.display='block';
+    warn.innerHTML='⚠ Für eine <strong>korrekte Jahresberechnung</strong> (Nachtschichten, Z-Tage, Urlaubsanspruch, N-Freischichten) empfehlen wir den <strong>01.01.' + y + '</strong> als Startdatum.<br>Bei einem späteren Datum fehlen die Schichten vom 01.01. bis ' + d + '.' + m + '. – Jahreswerte können unvollständig sein.';
+  }
+}
+
+function saveSeg(){
+  const sd=document.getElementById('segDateIn').value;
+  const pat=cleanPat(document.getElementById('segPatIn').value);
+  if(!sd){alert('Bitte Startdatum wählen!');return;}
+  if(!pat){alert('Bitte Schichtfolge eingeben!');return;}
+  if(editSegIdx===-1){
+    // Check for duplicate startDate
+    if(ST.segments.some(s=>s.startDate===sd)){
+      if(!confirm('Es gibt bereits einen Plan ab diesem Datum. Überschreiben?')) return;
+      ST.segments=ST.segments.filter(s=>s.startDate!==sd);
+    }
+    ST.segments.push({startDate:sd,pattern:pat});
+  } else {
+    ST.segments[editSegIdx]={startDate:sd,pattern:pat};
+  }
+  sortSegs();
+  persist();render();
+  close2('segOvl');
+  renderSegList();
+}
+
+function buildSegKboard(){
+  const kb=document.getElementById('segKboard');kb.innerHTML='';
+  [['F','Früh'],['S','Spät'],['N','Nacht'],['B','Bereit.'],['−','Frei','-']].forEach(([disp,name,val])=>{
+    const k=val||disp;
+    const ss=SDEFS[k]||SDEFS['-'];
+    const btn=mk('button','kkey');
+    btn.style.cssText=`background:${ss.b};color:${ss.c}`;
+    btn.textContent=`${disp}  ${name}`;
+    btn.onclick=()=>{
+      const inp=document.getElementById('segPatIn');
+      inp.value+=k;updateSegPreview();
+    };
+    kb.appendChild(btn);
+  });
+  const del=mk('button','kkey kdel');del.textContent='⌫ Löschen';
+  del.onclick=()=>{
+    const inp=document.getElementById('segPatIn');
+    inp.value=inp.value.slice(0,-1);updateSegPreview();
+  };
+  kb.appendChild(del);
+}
+function updateSegPreview(){
+  const raw=document.getElementById('segPatIn').value;
+  const clean=cleanPat(raw);
+  document.getElementById('segPatIn').value=clean;
+  const row=document.getElementById('segPrev');row.innerHTML='';
+  if(!clean){
+    row.innerHTML='<span style="color:var(--muted);font-size:.7rem">Vorschau erscheint hier…</span>';
+    return;
+  }
+  [...clean].forEach((c,i)=>{
+    const ss=SDEFS[c]||SDEFS['-'];
+    const chip=mk('div','pp');
+    chip.style.cssText=`background:${ss.b};color:${ss.c}`;
+    chip.title=`Tag ${i+1}`;
+    chip.textContent=c==='-'?'○':c;
+    row.appendChild(chip);
+  });
+  const len=mk('div','pp');
+  len.style.cssText='background:var(--surf3);color:var(--muted);';
+  len.textContent=`${clean.length} Tage`;
+  row.appendChild(len);
+}
+
+// ─── JAHRES SHEET ────────────────────────────────────────────────
+function openStats(){
+  const Y=ST.vy;
+  document.getElementById('statsYear').textContent=Y;
+  const j=calcJahres(Y);
+  const body=document.getElementById('statsBody');
+  body.innerHTML='';
+
+  const sollStd=ST.azv?1792:1856;
+  const stDiff=j.stDiff;
+  const stColor=stDiff>0?'var(--ok)':stDiff<0?'var(--err)':'var(--muted)';
+
+  // Winter
+  const winterHtml = j.winterAnspruch
+    ? `<div class="ok-box">✓ Winterurlaubstag: Du hattest ${j.urlaubSommer} Urlaubstage zwischen 01.04.–30.09. (≤10) → <strong>1 Winterurlaubstag Anspruch</strong></div>`
+    : `<div class="info-box">ℹ Winterurlaubstag: ${j.urlaubSommer} Urlaubstage zwischen 01.04.–30.09. – kein Anspruch (Grenze: ≤10 Tage)</div>`;
+
+  const nfHtml = ST.senior
+    ? `<div class="ok-box">Senior-Regelung aktiv: Pauschal <strong>4 N-Freischichten</strong> pro Jahr · verbraucht: ${j.nfDays}</div>`
+    : `<div class="info-box">Nachtschichten ${Y}: <strong>${j.N}</strong> · ÷17 = <strong>${j.nfAnspruch}</strong> Anspruch · verbraucht: ${j.nfDays} · offen: ${j.nfRest}</div>`;
+
+  body.innerHTML=`
+    <div class="sg">
+      <span class="slbl">Arbeitszeit</span>
+      <div class="jc-grid" style="margin-bottom:10px">
+        <div class="jc-item"><div class="jc-val">${j.istStunden}h</div><div class="jc-lbl">Ist-Stunden</div></div>
+        <div class="jc-item"><div class="jc-val">${sollStd}h</div><div class="jc-lbl">Soll (${ST.azv?'mit':'ohne'} AZV)</div></div>
+        <div class="jc-item"><div class="jc-val" style="color:${stColor}">${stDiff>0?'+':''}${stDiff}h</div>
+          <div class="jc-lbl">${stDiff>0?'→ Z-Tage':stDiff<0?'→ V-Tage':'ausgeglichen'}</div></div>
+        <div class="jc-item"><div class="jc-val">${j.F+j.S+j.N+j.B}</div><div class="jc-lbl">Schichttage</div></div>
+      </div>
+    </div>
+    <div class="sg">
+      <span class="slbl">Schichten</span>
+      <div class="jc-grid" style="margin-bottom:10px">
+        <div class="jc-item"><div class="jc-val" style="color:var(--F-c)">${j.F}</div><div class="jc-lbl">Früh</div></div>
+        <div class="jc-item"><div class="jc-val" style="color:var(--S-c)">${j.S}</div><div class="jc-lbl">Spät</div></div>
+        <div class="jc-item"><div class="jc-val" style="color:var(--N-c)">${j.N}</div><div class="jc-lbl">Nacht</div></div>
+        <div class="jc-item"><div class="jc-val" style="color:var(--muted)">${j.free}</div><div class="jc-lbl">Frei</div></div>
+      </div>
+    </div>
+    <div class="sg">
+      <span class="slbl">Urlaub & Sondertage</span>
+      <div class="jc-grid" style="margin-bottom:10px">
+        <div class="jc-item">
+          <div class="jc-val" style="color:${j.resturlaub>0?'var(--ok)':'var(--err)'}">${j.resturlaub}</div>
+          <div class="jc-lbl">Resturlaub</div>
+          <div class="jc-sub" style="color:var(--muted)">${j.urlaubDays} / ${ST.urlaubTage}</div>
+        </div>
+        <div class="jc-item"><div class="jc-val" style="color:var(--Z-c)">${j.zDays}</div><div class="jc-lbl">Z-Tage</div></div>
+        <div class="jc-item"><div class="jc-val" style="color:var(--V-c)">${j.vDays}</div><div class="jc-lbl">V-Tage</div></div>
+        <div class="jc-item"><div class="jc-val" style="color:var(--SU-c)">${j.suDays}</div><div class="jc-lbl">Sonderurlaub</div></div>
+      </div>
+      ${winterHtml}
+    </div>
+    <div class="sg">
+      <span class="slbl">Nachtfreischichten</span>
+      ${nfHtml}
+    </div>`;
+
+  open2('statsOvl');
+}
+
+// ─── SETTINGS ────────────────────────────────────────────────────
+function openSettings(){
+  document.getElementById('nameIn').value=ST.name||'';
+  document.getElementById('urlaubIn').value=ST.urlaubTage;
+  document.getElementById('uebZIn').value=ST.uebertragZStd||0;
+  document.getElementById('uebVIn').value=ST.uebertragVStd||0;
+  document.getElementById('blIn').value=ST.bundesland||'NW';
+  openThemePicker();
+  document.getElementById('azvTog').className='tog'+(ST.azv?' on':'');
+  document.getElementById('seniorTog').className='tog'+(ST.senior?' on':'');
+  open2('setOvl');
+}
+function toggleAZV(){
+  const t=document.getElementById('azvTog');
+  t.classList.toggle('on');
+}
+function toggleSenior(){
+  const t=document.getElementById('seniorTog');
+  t.classList.toggle('on');
+}
+function saveSettings(){
+  ST.name=document.getElementById('nameIn').value.trim();
+  ST.urlaubTage=parseInt(document.getElementById('urlaubIn').value)||30;
+  ST.uebertragZStd=parseInt(document.getElementById('uebZIn').value)||0;
+  ST.uebertragVStd=parseInt(document.getElementById('uebVIn').value)||0;
+  ST.bundesland=document.getElementById('blIn').value;
+  ST.azv=document.getElementById('azvTog').classList.contains('on');
+  ST.senior=document.getElementById('seniorTog').classList.contains('on');
+  persist();render();close2('setOvl');
+}
+function resetAll(){
+  if(confirm('Wirklich alle Daten löschen?')){
+    ST={segments:[],overrides:{},name:'',urlaubTage:30,azv:false,senior:false,
+        vm:new Date().getMonth(),vy:new Date().getFullYear()};
+    persist();render();close2('setOvl');
+  }
+}
+
+// ─── NAV ─────────────────────────────────────────────────────────
+function openTerminHint(){
+  alert('💡 Termin eintragen:\nAuf einen Tag lang drücken (Handy)\noder Rechtsklick (PC)');
+}
+
+function changeMonth(dir){
+  ST.vm+=dir;
+  if(ST.vm>11){ST.vm=0;ST.vy++;}
+  if(ST.vm<0){ST.vm=11;ST.vy--;}
+  renderCal();renderJahresCard();
+}
+function goToday(){
+  const n=new Date();ST.vm=n.getMonth();ST.vy=n.getFullYear();
+  renderCal();renderJahresCard();
+}
+
+// ─── SWIPE ───────────────────────────────────────────────────────
+let tx=0,ty=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(document.querySelector('.ovl.open'))return;
+  const dx=e.changedTouches[0].clientX-tx;
+  const dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) changeMonth(dx<0?1:-1);
+},{passive:true});
+
+// ─── HELPERS ─────────────────────────────────────────────────────
+function mk(tag,cls){const e=document.createElement(tag);e.className=cls;return e;}
+function open2(id){document.getElementById(id).classList.add('open');}
+function close2(id){document.getElementById(id).classList.remove('open');}
+function bgClose(e,id){if(e.target===document.getElementById(id))close2(id);}
+
+// ─── TERMINE ─────────────────────────────────────────────────────
+const EMOJIS = ['🎂','🎉','💍','🥳','🎁','❤️','🌹','🏆','⭐','🎊',
+                '🍺','🎶','✈️','🏖️','🏠','💼','🚗','⚽','🎯','📝',
+                '👶','🐣','🎓','💪','🌟','🔥','🍕','🎸','🏋️','🌈'];
+
+let editTerminKey = null;
+let editTerminRepeat = false;
+let editTerminEmoji = '🎂';
+
+function getTerminForDate(dateStr){
+  // Exact match first
+  if(ST.termine[dateStr]) return ST.termine[dateStr];
+  // Yearly repeat: check MM-DD
+  const mmdd = dateStr.slice(5); // "MM-DD"
+  for(const [k,v] of Object.entries(ST.termine)){
+    if(v.repeat && k.slice(5)===mmdd) return v;
+  }
+  return null;
+}
+
+function openTermin(key, d){
+  editTerminKey = key;
+  const [y,m] = key.split('-').map(Number);
+  document.getElementById('terminDate').textContent = `${d}. ${MONTHS[m-1]} ${y}`;
+
+  // Emoji picker
+  const picker = document.getElementById('emojiPicker');
+  picker.innerHTML = '';
+  editTerminEmoji = '🎂';
+  EMOJIS.forEach(em => {
+    const btn = mk('div','');
+    btn.style.cssText='font-size:1.4rem;cursor:pointer;padding:4px;border-radius:6px;transition:background .1s;';
+    btn.textContent = em;
+    btn.onclick = () => {
+      editTerminEmoji = em;
+      picker.querySelectorAll('div').forEach(b=>b.style.background='');
+      btn.style.background = 'var(--surf3)';
+    };
+    picker.appendChild(btn);
+  });
+
+  // Existing termin?
+  const existing = ST.termine[key];
+  const existTog = document.getElementById('terminRepeatTog');
+  if(existing){
+    document.getElementById('terminText').value = existing.text || '';
+    editTerminRepeat = existing.repeat || false;
+    editTerminEmoji = existing.emoji || '🎂';
+    // Highlight current emoji
+    [...picker.children].forEach(b=>{
+      if(b.textContent===editTerminEmoji) b.style.background='var(--surf3)';
+    });
+  } else {
+    document.getElementById('terminText').value = '';
+    editTerminRepeat = false;
+  }
+  existTog.className = 'tog' + (editTerminRepeat ? ' on' : '');
+
+  // Show existing termins for this MM-DD (recurring)
+  const mmdd = key.slice(5);
+  const existing2 = document.getElementById('terminExisting');
+  existing2.innerHTML = '';
+  const recurring = Object.entries(ST.termine).filter(([k,v])=>v.repeat && k.slice(5)===mmdd && k!==key);
+  if(recurring.length){
+    const info = mk('div','info-box');
+    info.style.cssText='font-size:.72rem;margin-top:4px;';
+    info.innerHTML = '📅 Wiederkehrender Termin: ' + recurring.map(([,v])=>v.emoji+' '+v.text).join(', ');
+    existing2.appendChild(info);
+  }
+
+  open2('terminOvl');
+}
+
+function toggleTerminRepeat(){
+  const tog = document.getElementById('terminRepeatTog');
+  editTerminRepeat = !editTerminRepeat;
+  tog.className = 'tog' + (editTerminRepeat ? ' on' : '');
+}
+
+function saveTermin(){
+  const text = document.getElementById('terminText').value.trim();
+  if(!text){ alert('Bitte eine Bezeichnung eingeben!'); return; }
+  ST.termine[editTerminKey] = {
+    emoji: editTerminEmoji,
+    text: text,
+    repeat: editTerminRepeat,
+  };
+  persist(); render();
+  close2('terminOvl');
+}
+
+function deleteTermin(){
+  if(ST.termine[editTerminKey]){
+    delete ST.termine[editTerminKey];
+    persist(); render();
+  }
+  close2('terminOvl');
+}
+
+// ─── EXPORT / IMPORT ─────────────────────────────────────────────
+function exportData(){
+  const data = {
+    version: 'spv5',
+    exportDate: new Date().toISOString(),
+    name: ST.name,
+    segments: ST.segments,
+    overrides: ST.overrides,
+    termine: ST.termine,
+    urlaubTage: ST.urlaubTage,
+    azv: ST.azv,
+    senior: ST.senior,
+    bundesland: ST.bundesland,
+    uebertragZStd: ST.uebertragZStd,
+    uebertragVStd: ST.uebertragVStd,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const d = new Date();
+  const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  a.href = url;
+  a.download = `SchichtPlan_${ST.name||'Backup'}_${ds}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  close2('setOvl');
+}
+
+function importData(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if(!data.version || !data.segments){
+        alert('Ungültige Backup-Datei!'); return;
+      }
+      if(!confirm(`Backup vom ${data.exportDate?.slice(0,10)||'?'} laden?
+
+Alle aktuellen Daten werden überschrieben!`)) return;
+      if(data.segments)   ST.segments   = data.segments;
+      if(data.overrides)  ST.overrides  = data.overrides;
+      if(data.termine)    ST.termine    = data.termine;
+      if(data.name)       ST.name       = data.name;
+      if(data.urlaubTage) ST.urlaubTage = data.urlaubTage;
+      if(data.azv!==undefined)    ST.azv    = data.azv;
+      if(data.senior!==undefined) ST.senior = data.senior;
+      if(data.bundesland) ST.bundesland = data.bundesland;
+      if(data.uebertragZStd!==undefined) ST.uebertragZStd = data.uebertragZStd;
+      if(data.uebertragVStd!==undefined) ST.uebertragVStd = data.uebertragVStd;
+      persist(); render();
+      alert('✓ Daten erfolgreich importiert!');
+      close2('setOvl');
+    } catch(err) {
+      alert('Fehler beim Lesen der Datei: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = ''; // reset so same file can be imported again
+}
+
+// ─── DATENSCHUTZ ──────────────────────────────────────────────────
+function acceptDatenschutz(){
+  localStorage.setItem('sp_ds_accepted','1');
+  document.getElementById('dsOverlay').classList.remove('open');
+}
+function checkDatenschutz(){
+  if(!localStorage.getItem('sp_ds_accepted')){
+    document.getElementById('dsOverlay').classList.add('open');
+  }
+}
+
+// ─── THEME ───────────────────────────────────────────────────────
+function setTheme(t){
+  ST.theme = t;
+  applyTheme(t);
+  // Update selection highlight
+  ['midnight','dusk','slate','day'].forEach(n=>{
+    const el = document.getElementById('tc-'+n);
+    if(el) el.classList.toggle('sel', n===t);
+  });
+  persist();
+}
+
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t==='midnight' ? '' : t);
+  // Update PWA theme-color meta
+  const mc = document.querySelector('meta[name="theme-color"]');
+  if(mc){
+    const colors = {midnight:'#0b0b10', dusk:'#181824', slate:'#1e2235', day:'#f0f2f8'};
+    mc.setAttribute('content', colors[t]||'#0b0b10');
+  }
+}
+
+function openThemePicker(){
+  const t = ST.theme || 'midnight';
+  ['midnight','dusk','slate','day'].forEach(n=>{
+    const el = document.getElementById('tc-'+n);
+    if(el) el.classList.toggle('sel', n===t);
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────
+restore();applyTheme(ST.theme||'midnight');render();checkDatenschutz();
+
+// ─── SERVICE WORKER ───────────────────────────────────────────────
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => {
+        console.log('SW registriert:', reg.scope);
+        // Auto-Update wenn neue Version
+        reg.addEventListener('updatefound', () => {
+          const newSW = reg.installing;
+          newSW.addEventListener('statechange', () => {
+            if(newSW.state === 'installed' && navigator.serviceWorker.controller){
+              // Neue Version verfügbar – still updaten
+              newSW.postMessage('SKIP_WAITING');
+            }
+          });
+        });
+      })
+      .catch(err => console.log('SW Fehler:', err));
+  });
+}
+</script>
+</body>
+</html>
