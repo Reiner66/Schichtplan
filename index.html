@@ -277,6 +277,22 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 /* DIVIDER */
 .divider{height:1px;background:var(--bdr);margin:14px 0;}
 
+/* INFO SLIDES */
+.info-slide{padding:4px 0 8px;}
+.info-icon{font-size:2.2rem;text-align:center;margin-bottom:10px;}
+.info-title{font-size:1rem;font-weight:700;text-align:center;margin-bottom:12px;}
+.info-body{font-size:.82rem;color:var(--muted);line-height:1.75;}
+.info-body strong{color:var(--txt);}
+.info-body .tip{background:var(--surf2);border-radius:9px;padding:10px 12px;
+  margin-top:10px;border-left:3px solid var(--F-c);}
+.info-body .warn{background:rgba(251,146,60,.1);border-radius:9px;padding:10px 12px;
+  margin-top:10px;border-left:3px solid var(--warn);color:var(--warn);}
+.info-body .ok{background:rgba(52,211,153,.08);border-radius:9px;padding:10px 12px;
+  margin-top:10px;border-left:3px solid var(--ok);color:var(--ok);}
+.info-dot{width:8px;height:8px;border-radius:50%;background:var(--bdr);
+  cursor:pointer;transition:background .15s;}
+.info-dot.on{background:var(--F-c);}
+
 /* ATZ RECHNER */
 .atz-result{background:var(--surf2);border-radius:12px;padding:16px;margin-top:4px;}
 .atz-total{font-family:'DM Mono',monospace;font-size:2rem;font-weight:700;
@@ -623,6 +639,23 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
     <div class="sacts">
       <button class="ab a-cancel" onclick="close2('setOvl')">Abbrechen</button>
       <button class="ab a-save" onclick="saveSettings()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- INFO / ANLEITUNG SHEET -->
+<div class="ovl" id="infoOvl" onclick="bgClose(event,'infoOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">ℹ️ Anleitung <span id="infoPageNum" style="font-size:.75rem;color:var(--muted);font-weight:400"></span></div>
+    <div class="sbody" style="padding-bottom:0;">
+      <div id="infoSlides"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;margin-bottom:4px;">
+        <button class="ab a-cancel" id="infoPrev" onclick="infoNav(-1)" style="flex:1">← Zurück</button>
+        <button class="ab a-save"  id="infoNext" onclick="infoNav(1)"  style="flex:1">Weiter →</button>
+      </div>
+      <!-- Punkte-Navigation -->
+      <div id="infoDots" style="display:flex;justify-content:center;gap:6px;padding:10px 0;"></div>
     </div>
   </div>
 </div>
@@ -1940,6 +1973,147 @@ function drawQR(url){
     ctx.fillText('(Internet für QR benötigt)', size/2, size-10);
   };
   img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encoded}&bgcolor=ffffff&color=1a1e3a&margin=2`;
+}
+
+// ─── INFO / ANLEITUNG ────────────────────────────────────────────
+const INFO_SLIDES = [
+  {
+    icon: '📅',
+    title: 'Schichtverlauf richtig eingeben',
+    html: `
+      <strong>Wichtig: Immer ab 01.01. beginnen!</strong><br><br>
+      Der Schichtverlauf wird ab deinem Startdatum <em>endlos wiederholt</em>.
+      Damit Nachtschichten, Z-Tage und Urlaubsanspruch korrekt berechnet werden,
+      muss der Plan am <strong>1. Januar</strong> des Jahres beginnen.<br><br>
+      <div class="tip">
+        💡 <strong>So geht's:</strong><br>
+        Unterer Menüpunkt <strong>„Muster"</strong> → <strong>„+ Neuer Plan"</strong>
+        → Startdatum auf <strong>01.01.JJJJ</strong> setzen<br><br>
+        Muster z.B.: <strong>FFSSNNN----</strong><br>
+        F = Früh &nbsp;·&nbsp; S = Spät &nbsp;·&nbsp; N = Nacht &nbsp;·&nbsp; - = Frei
+      </div>
+      <div class="warn">
+        ⚠️ Bei einem späteren Startdatum fehlen Schichten vom 01.01. – Jahreswerte werden unvollständig berechnet!
+      </div>`
+  },
+  {
+    icon: '⚙️',
+    title: 'Einstellungen – Tarifregeln',
+    html: `
+      In den <strong>Einstellungen</strong> (⚙️) trägst du deine persönlichen Tarifangaben ein:<br><br>
+      <div class="tip">
+        <strong>AZV (Arbeitszeitverkürzung 4%)</strong><br>
+        Mit AZV: Sollstunden <strong>1.792 h/Jahr</strong><br>
+        Ohne AZV: Sollstunden <strong>1.856 h/Jahr</strong><br>
+        → Bitte im Tarifvertrag prüfen ob AZV für dich gilt!
+      </div>
+      <div class="tip" style="border-left-color:var(--N-c);margin-top:8px;">
+        <strong>Senior-Regelung (N-Freischicht)</strong><br>
+        <strong>Über 45 Jahre</strong> oder <strong>10+ Jahre Schichtarbeit</strong>:<br>
+        → Pauschal <strong>4 N-Freischichten</strong> pro Jahr<br><br>
+        Jünger / kürzer in Schicht:<br>
+        → <strong>1 N-Freischicht</strong> pro 17 Nachtschichten
+      </div>`
+  },
+  {
+    icon: '⏱',
+    title: 'Z-Tage & AZK',
+    html: `
+      <strong>Z-Tage (Zeitausgleich)</strong> entstehen wenn du mehr Stunden arbeitest als dein Soll.<br><br>
+      <div class="warn">
+        ⚠️ <strong>Wichtige Regel:</strong><br>
+        Z-Tage <strong>zuerst verbrauchen</strong> – bevor du Urlaub einträgst!<br><br>
+        Nicht verbrauchte Z-Tage wandern am <strong>31.12. ins AZK</strong>
+        (Arbeitszeitkonto) und sind dann schwerer zugänglich.
+      </div>
+      <div class="tip">
+        💡 <strong>Vorjahresübertrag:</strong><br>
+        In den Einstellungen kannst du Z-Stunden aus dem Vorjahr eintragen
+        (z.B. 160 Std. = 20 Z-Tage).<br>
+        Die App warnt dich automatisch wenn noch Z-Tage offen sind!
+      </div>`
+  },
+  {
+    icon: '🧮',
+    title: 'ATZ-Rechner',
+    html: `
+      Der <strong>AltersTeilZeit-Rechner</strong> (🧮 ATZ) berechnet deine
+      Gesamtpunkte tagesgenau – Stichtag ist immer der <strong>31.12. des letzten Jahres</strong>.<br><br>
+      <div class="tip">
+        <strong>Punkte-System:</strong><br>
+        🎂 Alter: <strong>1 Pkt/Jahr</strong><br>
+        🏭 Betriebszugehörigkeit: <strong>1 Pkt/Jahr</strong><br>
+        ⚙️ IG Metall Mitgliedschaft: <strong>0,5 Pkt/Jahr</strong><br>
+        🌙 Vollkonti Schicht: <strong>2 Pkt/Jahr</strong> (ab 01.01.2001)<br>
+        🌙 Teilkonti F+S: <strong>1,5 Pkt/Jahr</strong> (ab 01.01.2001)
+      </div>
+      <div class="warn">
+        ⚠️ Schichtpunkte entfallen komplett wenn mehr als <strong>50% der Zeit seit 01.01.2001</strong> in Tagschicht!
+      </div>`
+  },
+  {
+    icon: '💾',
+    title: 'Datensicherung',
+    html: `
+      <div class="ok">
+        🔒 <strong>Alle Daten bleiben auf deinem Gerät!</strong><br>
+        Nichts wird an einen Server übertragen.
+      </div>
+      <br>
+      Damit du deine Daten nicht verlierst (z.B. bei Handywechsel oder
+      Browser-Reset), solltest du regelmäßig eine Sicherung erstellen:<br><br>
+      <div class="tip">
+        💡 <strong>Export & Import:</strong><br>
+        Einstellungen (⚙️) → <strong>„Export (JSON)"</strong><br>
+        → Datei wird auf deinem Gerät gespeichert<br><br>
+        Wiederherstellen: <strong>„Import (JSON)"</strong><br>
+        → Gesicherte Datei auswählen
+      </div>`
+  },
+];
+
+let infoPage = 0;
+
+function openInfo(){
+  infoPage = 0;
+  renderInfoSlide();
+  open2('infoOvl');
+}
+
+function renderInfoSlide(){
+  const slide = INFO_SLIDES[infoPage];
+  const total = INFO_SLIDES.length;
+
+  document.getElementById('infoPageNum').textContent = `${infoPage+1} / ${total}`;
+
+  document.getElementById('infoSlides').innerHTML = `
+    <div class="info-slide">
+      <div class="info-icon">${slide.icon}</div>
+      <div class="info-title">${slide.title}</div>
+      <div class="info-body">${slide.html}</div>
+    </div>`;
+
+  // Dots
+  const dots = document.getElementById('infoDots');
+  dots.innerHTML = '';
+  INFO_SLIDES.forEach((_,i) => {
+    const d = mk('div','info-dot'+(i===infoPage?' on':''));
+    d.onclick = () => { infoPage=i; renderInfoSlide(); };
+    dots.appendChild(d);
+  });
+
+  // Buttons
+  document.getElementById('infoPrev').style.opacity = infoPage===0 ? '0.3' : '1';
+  document.getElementById('infoNext').textContent = infoPage===total-1 ? '✓ Schließen' : 'Weiter →';
+}
+
+function infoNav(dir){
+  const total = INFO_SLIDES.length;
+  if(dir === 1 && infoPage === total-1){
+    close2('infoOvl'); return;
+  }
+  infoPage = Math.max(0, Math.min(total-1, infoPage + dir));
+  renderInfoSlide();
 }
 
 // ─── ATZ RECHNER ─────────────────────────────────────────────────
