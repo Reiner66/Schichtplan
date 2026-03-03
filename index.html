@@ -402,7 +402,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
   <button class="nb" onclick="openStats()"><span class="ni">📊</span>Jahres</button>
   <button class="nb" onclick="openATZ()"><span class="ni">🧮</span>ATZ</button>
   <button class="nb" onclick="openTerminHint()"><span class="ni">📅</span>Termin</button>
-  <button class="nb" onclick="openQR()"><span class="ni">📲</span>QR-Code</button>
   <button class="nb" onclick="openSettings()"><span class="ni">⚙️</span>Einstellungen</button>
 </div>
 
@@ -521,6 +520,11 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
     <div class="handle"></div>
     <div class="stitle">Einstellungen</div>
     <div class="sbody">
+      <div class="exp-row" style="margin-bottom:4px;">
+        <button class="exp-btn" style="background:var(--surf2);color:var(--txt);border:1px solid var(--bdr);" onclick="close2('setOvl');openInfo()">ℹ️ Anleitung</button>
+        <button class="exp-btn" style="background:var(--surf2);color:var(--txt);border:1px solid var(--bdr);" onclick="close2('setOvl');openQR()">📲 QR-Code</button>
+      </div>
+      <div class="divider"></div>
       <div class="sg">
         <span class="slbl">Name</span>
         <input class="sinput" id="nameIn" placeholder="z.B. Max Mustermann"/>
@@ -532,12 +536,12 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
           <option value="BY">Bayern</option>
           <option value="BE">Berlin</option>
           <option value="BB">Brandenburg</option>
-          <option value="HB">Bremen</option>
+          <option value="HB" selected>Bremen</option>
           <option value="HH">Hamburg</option>
           <option value="HE">Hessen</option>
           <option value="MV">Mecklenburg-Vorpommern</option>
           <option value="NI">Niedersachsen</option>
-          <option value="NW" selected>Nordrhein-Westfalen</option>
+          <option value="NW">Nordrhein-Westfalen</option>
           <option value="RP">Rheinland-Pfalz</option>
           <option value="SL">Saarland</option>
           <option value="SN">Sachsen</option>
@@ -777,7 +781,7 @@ let ST = {
   urlaubTage: 30,
   azv: false,
   senior: false,      // über 45 oder 10J Schicht
-  bundesland: 'NW',   // Bundesland für Feiertage & Schulferien
+  bundesland: 'HB',   // Bundesland für Feiertage & Schulferien
   theme: 'midnight',  // Design-Theme
   termine: {},        // "YYYY-MM-DD" oder "MM-DD" -> {emoji, text, repeat}
   uebertragZStd: 0,   // Vorjahresübertrag Z-Stunden (z.B. 160)
@@ -1703,7 +1707,7 @@ function openSettings(){
   document.getElementById('urlaubIn').value=ST.urlaubTage;
   document.getElementById('uebZIn').value=ST.uebertragZStd||0;
   document.getElementById('uebVIn').value=ST.uebertragVStd||0;
-  document.getElementById('blIn').value=ST.bundesland||'NW';
+  document.getElementById('blIn').value=ST.bundesland||'HB';
   openThemePicker();
   document.getElementById('azvTog').className='tog'+(ST.azv?' on':'');
   document.getElementById('seniorTog').className='tog'+(ST.senior?' on':'');
