@@ -277,6 +277,29 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 /* DIVIDER */
 .divider{height:1px;background:var(--bdr);margin:14px 0;}
 
+/* ATZ RECHNER */
+.atz-result{background:var(--surf2);border-radius:12px;padding:16px;margin-top:4px;}
+.atz-total{font-family:'DM Mono',monospace;font-size:2rem;font-weight:700;
+  color:var(--F-c);text-align:center;line-height:1;margin-bottom:4px;}
+.atz-total-lbl{font-size:.72rem;color:var(--muted);text-align:center;margin-bottom:14px;}
+.atz-rows{display:flex;flex-direction:column;gap:6px;}
+.atz-row{display:flex;justify-content:space-between;align-items:center;
+  background:var(--surf3);border-radius:8px;padding:8px 12px;}
+.atz-row-lbl{font-size:.78rem;color:var(--muted);}
+.atz-row-val{font-family:'DM Mono',monospace;font-size:.9rem;font-weight:700;}
+.atz-warn{background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);
+  border-radius:8px;padding:9px 11px;font-size:.72rem;color:var(--warn);
+  line-height:1.6;margin-top:8px;}
+.periode-item{background:var(--surf2);border-radius:10px;padding:10px 12px;
+  margin-bottom:8px;border:1px solid var(--bdr);}
+.periode-row{display:flex;gap:8px;align-items:center;margin-bottom:6px;}
+.periode-sel{flex:1;background:var(--surf3);border:1px solid var(--bdr);
+  color:var(--txt);padding:8px 10px;border-radius:8px;font-family:'Sora',sans-serif;
+  font-size:.82rem;outline:none;}
+.periode-del{color:var(--err);font-size:1.1rem;padding:4px 8px;
+  cursor:pointer;flex-shrink:0;}
+.periode-dates{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
 /* THEME PICKER */
 .theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px;}
 .theme-card{border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;
@@ -361,6 +384,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
   <button class="nb on" onclick="goToday()"><span class="ni">⊙</span>Heute</button>
   <button class="nb" onclick="openPatSheet()"><span class="ni">📋</span>Muster</button>
   <button class="nb" onclick="openStats()"><span class="ni">📊</span>Jahres</button>
+  <button class="nb" onclick="openATZ()"><span class="ni">🧮</span>ATZ</button>
   <button class="nb" onclick="openTerminHint()"><span class="ni">📅</span>Termin</button>
   <button class="nb" onclick="openQR()"><span class="ni">📲</span>QR-Code</button>
   <button class="nb" onclick="openSettings()"><span class="ni">⚙️</span>Einstellungen</button>
@@ -599,6 +623,51 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
     <div class="sacts">
       <button class="ab a-cancel" onclick="close2('setOvl')">Abbrechen</button>
       <button class="ab a-save" onclick="saveSettings()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- ATZ RECHNER SHEET -->
+<div class="ovl" id="atzOvl" onclick="bgClose(event,'atzOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">🧮 AltersTeilZeit-Rechner</div>
+    <div class="sbody">
+
+      <div class="sg">
+        <span class="slbl">Geburtsdatum</span>
+        <input type="date" class="sinput" id="atzGeburt" oninput="calcATZ()"/>
+      </div>
+      <div class="sg">
+        <span class="slbl">Eintrittsdatum (Betrieb)</span>
+        <input type="date" class="sinput" id="atzEintritt" oninput="calcATZ()"/>
+      </div>
+      <div class="sg">
+        <div class="toggle-row" onclick="toggleATZigm()">
+          <div>
+            <div class="toggle-lbl">IG Metall Mitglied</div>
+            <div class="toggle-sub">0,5 Punkte pro Jahr</div>
+          </div>
+          <div class="tog" id="atzIgmTog"></div>
+        </div>
+        <div id="atzIgmDateWrap" style="margin-top:8px;display:none;">
+          <span class="slbl">Mitglied seit</span>
+          <input type="date" class="sinput" id="atzIgmSeit" oninput="calcATZ()"/>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <span class="slbl">Schichtperioden (ab 01.01.2001)</span>
+      <div id="atzPerioden"></div>
+      <button class="ab a-blue" style="width:100%;margin-top:8px;" onclick="addATZPeriode()">+ Periode hinzufügen</button>
+
+      <div class="divider"></div>
+      <!-- ERGEBNIS -->
+      <div id="atzErgebnis"></div>
+
+    </div>
+    <div class="sacts">
+      <button class="ab a-cancel" onclick="close2('atzOvl')">Schließen</button>
     </div>
   </div>
 </div>
@@ -1871,6 +1940,185 @@ function drawQR(url){
     ctx.fillText('(Internet für QR benötigt)', size/2, size-10);
   };
   img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encoded}&bgcolor=ffffff&color=1a1e3a&margin=2`;
+}
+
+// ─── ATZ RECHNER ─────────────────────────────────────────────────
+let atzIgm = false;
+let atzPerioden = []; // [{typ:'vollkonti'|'teilkonti'|'tagschicht', von:'YYYY-MM-DD', bis:'YYYY-MM-DD'}]
+
+function openATZ(){
+  renderATZPerioden();
+  calcATZ();
+  open2('atzOvl');
+}
+
+function toggleATZigm(){
+  atzIgm = !atzIgm;
+  document.getElementById('atzIgmTog').className = 'tog' + (atzIgm?' on':'');
+  document.getElementById('atzIgmDateWrap').style.display = atzIgm ? 'block' : 'none';
+  calcATZ();
+}
+
+function addATZPeriode(){
+  atzPerioden.push({typ:'vollkonti', von:'2001-01-01', bis:stichtag()});
+  renderATZPerioden();
+  calcATZ();
+}
+
+function removeATZPeriode(i){
+  atzPerioden.splice(i,1);
+  renderATZPerioden();
+  calcATZ();
+}
+
+function renderATZPerioden(){
+  const wrap = document.getElementById('atzPerioden');
+  wrap.innerHTML = '';
+  if(!atzPerioden.length){
+    wrap.innerHTML = '<div style="color:var(--muted);font-size:.78rem;padding:6px 0">Keine Schichtperioden – Tagschicht die ganze Zeit.</div>';
+    return;
+  }
+  atzPerioden.forEach((p,i) => {
+    const div = mk('div','periode-item');
+    div.innerHTML = `
+      <div class="periode-row">
+        <select class="periode-sel" onchange="atzPerioden[${i}].typ=this.value;calcATZ()">
+          <option value="vollkonti" ${p.typ==='vollkonti'?'selected':''}>Vollkonti (2 Pkt/Jahr)</option>
+          <option value="teilkonti" ${p.typ==='teilkonti'?'selected':''}>Teilkonti F+S (1,5 Pkt/Jahr)</option>
+          <option value="tagschicht" ${p.typ==='tagschicht'?'selected':''}>Tagschicht (0 Pkt)</option>
+        </select>
+        <span class="periode-del" onclick="removeATZPeriode(${i})">✕</span>
+      </div>
+      <div class="periode-dates">
+        <div>
+          <div class="slbl" style="margin-bottom:4px">Von</div>
+          <input type="date" class="sinput" style="padding:8px;" value="${p.von}"
+            onchange="atzPerioden[${i}].von=this.value;calcATZ()"/>
+        </div>
+        <div>
+          <div class="slbl" style="margin-bottom:4px">Bis</div>
+          <input type="date" class="sinput" style="padding:8px;" value="${p.bis}"
+            onchange="atzPerioden[${i}].bis=this.value;calcATZ()"/>
+        </div>
+      </div>`;
+    wrap.appendChild(div);
+  });
+}
+
+function stichtag(){
+  const y = new Date().getFullYear() - 1;
+  return `${y}-12-31`;
+}
+
+function daysBetween(from, to){
+  const a = new Date(from); a.setHours(0,0,0,0);
+  const b = new Date(to);   b.setHours(0,0,0,0);
+  return Math.max(0, Math.round((b - a) / 86400000));
+}
+
+function yearsFraction(from, to){
+  return daysBetween(from, to) / 365.25;
+}
+
+function calcATZ(){
+  const stich = stichtag(); // 31.12. letztes Jahr
+  const geburt  = document.getElementById('atzGeburt').value;
+  const eintritt= document.getElementById('atzEintritt').value;
+  const igmSeit = document.getElementById('atzIgmSeit').value;
+  const ergebnis= document.getElementById('atzErgebnis');
+
+  if(!geburt || !eintritt){ ergebnis.innerHTML=''; return; }
+
+  // ── Alterspunkte ──
+  const alterJahre = yearsFraction(geburt, stich);
+  const alterPkte  = alterJahre;
+
+  // ── Betriebspunkte ──
+  const betriebStart = eintritt > '2001-01-01' ? eintritt : eintritt;
+  const betriebJahre = yearsFraction(eintritt, stich);
+  const betriebPkte  = betriebJahre;
+
+  // ── IG Metall ──
+  let igmPkte = 0;
+  let igmJahre = 0;
+  if(atzIgm && igmSeit){
+    igmJahre = yearsFraction(igmSeit, stich);
+    igmPkte  = igmJahre * 0.5;
+  }
+
+  // ── Schichtpunkte ──
+  const schichtStart = '2001-01-01';
+  const gesamtTage   = daysBetween(schichtStart, stich);
+
+  // Perioden auf 01.01.2001 – Stichtag begrenzen
+  let schichtPkte = 0;
+  let tagschichtTage = 0;
+  let schichtTage = 0;
+  let warnSchicht = '';
+
+  if(atzPerioden.length > 0){
+    atzPerioden.forEach(p => {
+      const von = p.von < schichtStart ? schichtStart : p.von;
+      const bis = p.bis > stich ? stich : p.bis;
+      if(von >= bis) return;
+      const tage = daysBetween(von, bis);
+      const jahre = tage / 365.25;
+      if(p.typ === 'vollkonti')  schichtTage += tage;
+      else if(p.typ === 'teilkonti') schichtTage += tage;
+      else if(p.typ === 'tagschicht') tagschichtTage += tage;
+    });
+
+    // Prüfe ob >50% Tagschicht
+    const gesamtErfasst = schichtTage + tagschichtTage;
+    const tagschichtAnteil = gesamtErfasst > 0 ? tagschichtTage / gesamtErfasst : 0;
+
+    if(tagschichtAnteil > 0.5){
+      schichtPkte = 0;
+      warnSchicht = `⚠️ Mehr als 50% des Zeitraums in Tagschicht (${(tagschichtAnteil*100).toFixed(0)}%) – Schichtpunkte entfallen!`;
+    } else {
+      atzPerioden.forEach(p => {
+        const von = p.von < schichtStart ? schichtStart : p.von;
+        const bis = p.bis > stich ? stich : p.bis;
+        if(von >= bis) return;
+        const jahre = daysBetween(von, bis) / 365.25;
+        if(p.typ === 'vollkonti')  schichtPkte += jahre * 2.0;
+        else if(p.typ === 'teilkonti') schichtPkte += jahre * 1.5;
+      });
+    }
+  }
+
+  // ── Gesamt ──
+  const gesamt = alterPkte + betriebPkte + igmPkte + schichtPkte;
+
+  // ── Anzeige ──
+  const fmt = v => v.toFixed(2).replace('.',',');
+  const fmtJ = v => v.toFixed(2).replace('.',',');
+
+  ergebnis.innerHTML = `
+    <div class="atz-result">
+      <div class="atz-total">${fmt(gesamt)}</div>
+      <div class="atz-total-lbl">Gesamtpunkte (Stichtag 31.12.${new Date().getFullYear()-1})</div>
+      <div class="atz-rows">
+        <div class="atz-row">
+          <div class="atz-row-lbl">🎂 Alter (${fmtJ(alterJahre)} Jahre)</div>
+          <div class="atz-row-val" style="color:var(--F-c)">${fmt(alterPkte)} Pkt</div>
+        </div>
+        <div class="atz-row">
+          <div class="atz-row-lbl">🏭 Betrieb (${fmtJ(betriebJahre)} Jahre)</div>
+          <div class="atz-row-val" style="color:var(--S-c)">${fmt(betriebPkte)} Pkt</div>
+        </div>
+        ${atzIgm && igmSeit ? `
+        <div class="atz-row">
+          <div class="atz-row-lbl">⚙️ IG Metall (${fmtJ(igmJahre)} Jahre)</div>
+          <div class="atz-row-val" style="color:var(--B-c)">${fmt(igmPkte)} Pkt</div>
+        </div>` : ''}
+        <div class="atz-row">
+          <div class="atz-row-lbl">🌙 Schicht</div>
+          <div class="atz-row-val" style="color:var(--N-c)">${fmt(schichtPkte)} Pkt</div>
+        </div>
+      </div>
+      ${warnSchicht ? `<div class="atz-warn">${warnSchicht}</div>` : ''}
+    </div>`;
 }
 
 // ─── THEME ───────────────────────────────────────────────────────
