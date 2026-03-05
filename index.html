@@ -279,6 +279,23 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 /* DIVIDER */
 .divider{height:1px;background:var(--bdr);margin:14px 0;}
 
+/* FARB EDITOR */
+.ce-section{margin-bottom:14px;}
+.ce-lbl{font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;}
+.ce-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.ce-item{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.ce-item label{font-size:.65rem;color:var(--muted);text-align:center;}
+.ce-swatch{width:36px;height:36px;border-radius:8px;border:2px solid var(--bdr);cursor:pointer;padding:0;}
+.ce-slider-row{display:flex;flex-direction:column;gap:10px;margin-bottom:4px;}
+.ce-slider-item{display:grid;grid-template-columns:80px 1fr 40px;align-items:center;gap:8px;}
+.ce-slider-item label{font-size:.75rem;color:var(--muted);}
+.ce-slider-item input[type=range]{-webkit-appearance:none;height:4px;border-radius:2px;background:var(--surf3);outline:none;}
+.ce-slider-item input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--ok);cursor:pointer;}
+.ce-slider-val{font-size:.72rem;font-family:'DM Mono',monospace;color:var(--muted);text-align:right;}
+.ce-preview{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;padding:10px;background:var(--surf2);border-radius:10px;}
+.ce-prev-chip{padding:3px 8px;border-radius:6px;font-size:.72rem;font-weight:700;}
+.ce-reset{background:var(--surf2);border:1px solid var(--bdr);color:var(--muted);border-radius:8px;padding:8px 14px;font-size:.78rem;cursor:pointer;font-family:'Sora',sans-serif;}
+
 /* INFO SLIDES */
 .info-slide{padding:4px 0 8px;}
 .info-icon{font-size:2.2rem;text-align:center;margin-bottom:10px;}
@@ -526,6 +543,9 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         <button class="exp-btn" style="background:var(--surf2);color:var(--txt);border:1px solid var(--bdr);" onclick="close2('setOvl');openInfo()">ℹ️ Anleitung</button>
         <button class="exp-btn" style="background:var(--surf2);color:var(--txt);border:1px solid var(--bdr);" onclick="close2('setOvl');openQR()">📲 QR-Code</button>
       </div>
+      <div class="exp-row" style="margin-bottom:4px;">
+        <button class="exp-btn" style="width:100%;background:rgba(52,211,153,.12);color:var(--ok);border:1px solid var(--ok);" onclick="close2('setOvl');openSetup()">🚀 Ersteinrichtung – Schritt für Schritt</button>
+      </div>
       <div class="divider"></div>
       <div class="sg">
         <span class="slbl">Name</span>
@@ -594,6 +614,10 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
           </div>
         </div>
       </div>
+      <div class="sg">
+        <span class="slbl">🖌 Eigene Farben anpassen</span>
+        <button class="exp-btn exp-export" style="width:100%;" onclick="close2('setOvl');openColorEditor()">🎨 Farb-Editor öffnen</button>
+      </div>
       <div class="divider"></div>
       <div class="sg">
         <span class="slbl">Jahresurlaub (Tage)</span>
@@ -645,6 +669,72 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
     <div class="sacts">
       <button class="ab a-cancel" onclick="close2('setOvl')">Abbrechen</button>
       <button class="ab a-save" onclick="saveSettings()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- FARB EDITOR SHEET -->
+<div class="ovl" id="colorOvl" onclick="bgClose(event,'colorOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">🎨 Farb-Editor</div>
+    <div class="sbody">
+
+      <!-- Hintergrund Schieberegler -->
+      <div class="ce-section">
+        <div class="ce-lbl">🌑 Hintergrund</div>
+        <div class="ce-slider-row">
+          <div class="ce-slider-item">
+            <label>Helligkeit</label>
+            <input type="range" id="ce-brightness" min="0" max="100" value="50" oninput="updateColorPreview()"/>
+            <div class="ce-slider-val" id="ce-brightness-val">50</div>
+          </div>
+          <div class="ce-slider-item">
+            <label>Farbton</label>
+            <input type="range" id="ce-hue" min="0" max="360" value="240" oninput="updateColorPreview()"/>
+            <div class="ce-slider-val" id="ce-hue-val">240°</div>
+          </div>
+          <div class="ce-slider-item">
+            <label>Sättigung</label>
+            <input type="range" id="ce-sat" min="0" max="100" value="30" oninput="updateColorPreview()"/>
+            <div class="ce-slider-val" id="ce-sat-val">30%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Akzentfarben -->
+      <div class="ce-section">
+        <div class="ce-lbl">🎨 Akzentfarben</div>
+        <div class="ce-grid" id="ce-colors-grid"></div>
+      </div>
+
+      <!-- Live Vorschau -->
+      <div class="ce-section">
+        <div class="ce-lbl">👁 Vorschau</div>
+        <div class="ce-preview" id="ce-preview"></div>
+      </div>
+
+    </div>
+    <div class="sacts">
+      <button class="ce-reset" onclick="resetColorEditor()">↺ Zurücksetzen</button>
+      <button class="ab a-cancel" onclick="close2('colorOvl')">Abbrechen</button>
+      <button class="ab a-save" onclick="saveColorEditor()">✓ Anwenden</button>
+    </div>
+  </div>
+</div>
+
+<!-- ERSTEINRICHTUNG SHEET -->
+<div class="ovl" id="setupOvl" onclick="bgClose(event,'setupOvl')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="stitle">🚀 Ersteinrichtung <span id="setupPageNum" style="font-size:.75rem;color:var(--muted);font-weight:400"></span></div>
+    <div class="sbody" style="padding-bottom:0;">
+      <div id="setupSlides"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;margin-bottom:4px;">
+        <button class="ab a-cancel" id="setupPrev" onclick="setupNav(-1)" style="flex:1">← Zurück</button>
+        <button class="ab a-save"   id="setupNext" onclick="setupNav(1)"  style="flex:1">Weiter →</button>
+      </div>
+      <div id="setupDots" style="display:flex;justify-content:center;gap:6px;padding:10px 0;"></div>
     </div>
   </div>
 </div>
@@ -799,6 +889,7 @@ function persist(){
     segments:ST.segments, overrides:ST.overrides,
     name:ST.name, urlaubTage:ST.urlaubTage,
     azv:ST.azv, senior:ST.senior, bundesland:ST.bundesland, theme:ST.theme,
+    customColors:ST.customColors, ceHue:ST.ceHue, ceSat:ST.ceSat, ceBrightness:ST.ceBrightness,
     termine:ST.termine,
     uebertragZStd:ST.uebertragZStd, uebertragVStd:ST.uebertragVStd
   }));}catch(e){}
@@ -814,6 +905,10 @@ function restore(){
     if(d.senior!==undefined) ST.senior=d.senior;
     if(d.bundesland) ST.bundesland=d.bundesland;
     if(d.theme) ST.theme=d.theme;
+    if(d.customColors) ST.customColors=d.customColors;
+    if(d.ceHue!==undefined) ST.ceHue=d.ceHue;
+    if(d.ceSat!==undefined) ST.ceSat=d.ceSat;
+    if(d.ceBrightness!==undefined) ST.ceBrightness=d.ceBrightness;
     if(d.termine) ST.termine=d.termine;
     if(d.uebertragZStd!==undefined) ST.uebertragZStd=d.uebertragZStd;
     if(d.uebertragVStd!==undefined) ST.uebertragVStd=d.uebertragVStd;
@@ -1881,6 +1976,332 @@ function drawQR(url){
   img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encoded}&bgcolor=ffffff&color=1a1e3a&margin=2`;
 }
 
+// ─── FARB EDITOR ─────────────────────────────────────────────────
+const CE_COLORS = [
+  {id:'F',  label:'Früh',         default:'#f59e0b'},
+  {id:'S',  label:'Spät',         default:'#38bdf8'},
+  {id:'N',  label:'Nacht',        default:'#a78bfa'},
+  {id:'B',  label:'Bereitschaft', default:'#34d399'},
+  {id:'U',  label:'Urlaub',       default:'#f43f5e'},
+  {id:'Z',  label:'Z-Tag',        default:'#22d3ee'},
+  {id:'V',  label:'V-Tag',        default:'#fb923c'},
+  {id:'NF', label:'N-Freischicht',default:'#a78bfa'},
+  {id:'SU', label:'Sonderurlaub', default:'#e879f9'},
+];
+
+// Custom color overrides stored in ST
+// ST.customColors = { F:'#hex', S:'#hex', ... }
+
+function openColorEditor(){
+  // Init sliders from current theme bg
+  const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+  // Build color swatches
+  const grid = document.getElementById('ce-colors-grid');
+  grid.innerHTML = '';
+  CE_COLORS.forEach(c => {
+    const current = (ST.customColors && ST.customColors[c.id]) || c.default;
+    const item = document.createElement('div');
+    item.className = 'ce-item';
+    item.innerHTML = `
+      <input type="color" class="ce-swatch" id="ce-color-${c.id}"
+        value="${current}" oninput="updateColorPreview()"
+        style="background:${current}"/>
+      <label>${c.label}</label>`;
+    grid.appendChild(item);
+  });
+  // Init sliders
+  const h = ST.ceHue !== undefined ? ST.ceHue : 240;
+  const s = ST.ceSat !== undefined ? ST.ceSat : 30;
+  const b = ST.ceBrightness !== undefined ? ST.ceBrightness : 50;
+  document.getElementById('ce-brightness').value = b;
+  document.getElementById('ce-hue').value = h;
+  document.getElementById('ce-sat').value = s;
+  updateColorPreview();
+  open2('colorOvl');
+}
+
+function updateColorPreview(){
+  const brightness = parseInt(document.getElementById('ce-brightness').value);
+  const hue = parseInt(document.getElementById('ce-hue').value);
+  const sat = parseInt(document.getElementById('ce-sat').value);
+  document.getElementById('ce-brightness-val').textContent = brightness;
+  document.getElementById('ce-hue-val').textContent = hue + '°';
+  document.getElementById('ce-sat-val').textContent = sat + '%';
+
+  // Calculate background colors from sliders
+  // brightness 0-100 → lightness 2-95
+  const bLight = Math.round(brightness * 0.20 + 2);   // bg:  2-22
+  const sLight = Math.round(brightness * 0.20 + 6);   // surf: 6-26
+  const s2Light = Math.round(brightness * 0.22 + 9);
+  const s3Light = Math.round(brightness * 0.24 + 12);
+  const bdrLight = Math.round(brightness * 0.26 + 14);
+  const txtLight = Math.max(20, 95 - brightness * 0.5);
+  const mutedLight = Math.round(30 + brightness * 0.3);
+
+  // Preview chips
+  const preview = document.getElementById('ce-preview');
+  preview.style.background = `hsl(${hue},${sat}%,${bLight}%)`;
+  preview.innerHTML = '';
+  CE_COLORS.forEach(c => {
+    const col = document.getElementById('ce-color-'+c.id)?.value || c.default;
+    const chip = document.createElement('div');
+    chip.className = 'ce-prev-chip';
+    chip.style.cssText = `background:${col}22;color:${col};border:1px solid ${col}55`;
+    chip.textContent = c.label;
+    preview.appendChild(chip);
+  });
+}
+
+function applyColorEditor(){
+  const brightness = parseInt(document.getElementById('ce-brightness').value);
+  const hue = parseInt(document.getElementById('ce-hue').value);
+  const sat = parseInt(document.getElementById('ce-sat').value);
+
+  const bLight  = Math.round(brightness * 0.20 + 2);
+  const sLight  = Math.round(brightness * 0.20 + 6);
+  const s2Light = Math.round(brightness * 0.22 + 9);
+  const s3Light = Math.round(brightness * 0.24 + 12);
+  const bdrLight = Math.round(brightness * 0.26 + 14);
+  const txtLight = Math.max(20, 95 - brightness * 0.5);
+  const mutedLight = Math.round(30 + brightness * 0.3);
+
+  const root = document.documentElement;
+  root.style.setProperty('--bg',   `hsl(${hue},${sat}%,${bLight}%)`);
+  root.style.setProperty('--surf', `hsl(${hue},${sat}%,${sLight}%)`);
+  root.style.setProperty('--surf2',`hsl(${hue},${sat}%,${s2Light}%)`);
+  root.style.setProperty('--surf3',`hsl(${hue},${sat}%,${s3Light}%)`);
+  root.style.setProperty('--bdr',  `hsl(${hue},${sat}%,${bdrLight}%)`);
+  root.style.setProperty('--txt',  `hsl(${hue},10%,${txtLight}%)`);
+  root.style.setProperty('--muted',`hsl(${hue},20%,${mutedLight}%)`);
+
+  // Apply accent colors
+  CE_COLORS.forEach(c => {
+    const col = document.getElementById('ce-color-'+c.id)?.value || c.default;
+    const r = parseInt(col.slice(1,3),16);
+    const g = parseInt(col.slice(3,5),16);
+    const b = parseInt(col.slice(5,7),16);
+    root.style.setProperty(`--${c.id}-c`, col);
+    root.style.setProperty(`--${c.id}-b`, `rgba(${r},${g},${b},.15)`);
+  });
+}
+
+function saveColorEditor(){
+  const brightness = parseInt(document.getElementById('ce-brightness').value);
+  const hue = parseInt(document.getElementById('ce-hue').value);
+  const sat = parseInt(document.getElementById('ce-sat').value);
+  ST.ceHue = hue; ST.ceSat = sat; ST.ceBrightness = brightness;
+  ST.customColors = {};
+  CE_COLORS.forEach(c => {
+    ST.customColors[c.id] = document.getElementById('ce-color-'+c.id)?.value || c.default;
+  });
+  applyColorEditor();
+  persist();
+  close2('colorOvl');
+}
+
+function resetColorEditor(){
+  ST.customColors = null;
+  ST.ceHue = undefined; ST.ceSat = undefined; ST.ceBrightness = undefined;
+  // Remove inline styles
+  const root = document.documentElement;
+  ['--bg','--surf','--surf2','--surf3','--bdr','--txt','--muted'].forEach(v=>root.style.removeProperty(v));
+  CE_COLORS.forEach(c => {
+    root.style.removeProperty(`--${c.id}-c`);
+    root.style.removeProperty(`--${c.id}-b`);
+  });
+  applyTheme(ST.theme||'midnight');
+  persist();
+  close2('colorOvl');
+}
+
+function restoreCustomColors(){
+  if(!ST.customColors && ST.ceHue === undefined) return;
+  // Re-open and apply without showing sheet
+  const brightness = ST.ceBrightness !== undefined ? ST.ceBrightness : 50;
+  const hue = ST.ceHue !== undefined ? ST.ceHue : 240;
+  const sat = ST.ceSat !== undefined ? ST.ceSat : 30;
+  const bLight  = Math.round(brightness * 0.20 + 2);
+  const sLight  = Math.round(brightness * 0.20 + 6);
+  const s2Light = Math.round(brightness * 0.22 + 9);
+  const s3Light = Math.round(brightness * 0.24 + 12);
+  const bdrLight = Math.round(brightness * 0.26 + 14);
+  const txtLight = Math.max(20, 95 - brightness * 0.5);
+  const mutedLight = Math.round(30 + brightness * 0.3);
+  const root = document.documentElement;
+  root.style.setProperty('--bg',   `hsl(${hue},${sat}%,${bLight}%)`);
+  root.style.setProperty('--surf', `hsl(${hue},${sat}%,${sLight}%)`);
+  root.style.setProperty('--surf2',`hsl(${hue},${sat}%,${s2Light}%)`);
+  root.style.setProperty('--surf3',`hsl(${hue},${sat}%,${s3Light}%)`);
+  root.style.setProperty('--bdr',  `hsl(${hue},${sat}%,${bdrLight}%)`);
+  root.style.setProperty('--txt',  `hsl(${hue},10%,${txtLight}%)`);
+  root.style.setProperty('--muted',`hsl(${hue},20%,${mutedLight}%)`);
+  if(ST.customColors){
+    CE_COLORS.forEach(c => {
+      const col = ST.customColors[c.id] || c.default;
+      const r = parseInt(col.slice(1,3),16);
+      const g = parseInt(col.slice(3,5),16);
+      const b = parseInt(col.slice(5,7),16);
+      root.style.setProperty(`--${c.id}-c`, col);
+      root.style.setProperty(`--${c.id}-b`, `rgba(${r},${g},${b},.15)`);
+    });
+  }
+}
+
+// ─── ERSTEINRICHTUNG ─────────────────────────────────────────────
+const SETUP_SLIDES = [
+  {
+    icon: '👤',
+    title: 'Schritt 1 – Name & Bundesland',
+    html: `
+      Öffne die <strong>Einstellungen ⚙️</strong> und trage zuerst ein:<br><br>
+      <div class="tip">
+        <strong>Name:</strong><br>
+        Dein Name erscheint im Export-Dateinamen der Datensicherung.<br><br>
+        <strong>Bundesland:</strong><br>
+        Wähle dein Bundesland – die App zeigt dann automatisch die richtigen
+        <strong>Feiertage</strong> und <strong>Schulferien</strong> im Kalender an.<br>
+        Standard: <em>Bremen</em>
+      </div>
+      <div class="ok" style="margin-top:10px;">
+        ✓ Diese Angaben kannst du jederzeit in den Einstellungen ändern.
+      </div>`
+  },
+  {
+    icon: '⚙️',
+    title: 'Schritt 2 – AZV & Senior-Regelung',
+    html: `
+      <div class="tip">
+        <strong>AZV (Arbeitszeitverkürzung 4%)</strong><br>
+        Prüfe in deinem Tarifvertrag ob AZV für dich gilt:<br>
+        → Mit AZV: Sollstunden <strong>1.792 h/Jahr</strong><br>
+        → Ohne AZV: Sollstunden <strong>1.856 h/Jahr</strong>
+      </div>
+      <div class="tip" style="margin-top:8px;border-left-color:var(--N-c);">
+        <strong>Senior-Regelung</strong><br>
+        Aktivieren wenn <strong>beide</strong> Bedingungen erfüllt sind:<br>
+        → Über <strong>45 Jahre alt</strong><br>
+        → Mindestens <strong>10 Jahre Schichtarbeit</strong><br><br>
+        Dann: pauschal <strong>4 N-Freischichten/Jahr</strong><br>
+        Sonst: <strong>1 NF</strong> pro 17 Nachtschichten
+      </div>`
+  },
+  {
+    icon: '🏖',
+    title: 'Schritt 3 – Jahresurlaub',
+    html: `
+      <div class="tip">
+        <strong>Urlaubstage pro Jahr</strong><br>
+        Trage deinen tariflichen Jahresurlaub ein.<br>
+        Standard: <strong>30 Tage</strong><br><br>
+        Die App zeigt automatisch wie viele Urlaubstage du noch hast
+        und warnt wenn das Kontingent erschöpft ist.
+      </div>
+      <div class="warn" style="margin-top:8px;">
+        ⚠️ <strong>Wichtig – Z-Tage zuerst!</strong><br>
+        Bevor du Urlaub einträgst: erst alle <strong>Z-Tage verbrauchen!</strong><br>
+        Nicht verbrauchte Z-Tage wandern am 31.12. ins AZK.
+      </div>`
+  },
+  {
+    icon: '⏱',
+    title: 'Schritt 4 – Vorjahresübertrag Z/V-Stunden',
+    html: `
+      Wenn du Stunden aus dem Vorjahr übernimmst:<br><br>
+      <div class="tip">
+        <strong>Z-Stunden Übertrag (Guthaben)</strong><br>
+        z.B. <strong>160 Stunden = 20 Z-Tage</strong><br>
+        Diese werden zuerst verbraucht bevor neue Z-Tage entstehen.<br><br>
+        <strong>V-Stunden Übertrag (Schulden)</strong><br>
+        Stunden die du aus dem Vorjahr noch nacharbeiten musst.
+      </div>
+      <div class="ok" style="margin-top:8px;">
+        💡 Wenn du keine Überträge hast: einfach auf <strong>0</strong> lassen.
+      </div>`
+  },
+  {
+    icon: '📋',
+    title: 'Schritt 5 – Schichtmuster anlegen',
+    html: `
+      Tippe unten auf <strong>„📋 Muster"</strong> → <strong>„+ Neuer Plan"</strong><br><br>
+      <div class="tip">
+        <strong>Startdatum: immer 01.01.JJJJ!</strong><br>
+        Nur so werden alle Jahreswerte korrekt berechnet.<br><br>
+        <strong>Buchstaben:</strong><br>
+        <strong>F</strong> = Früh &nbsp;·&nbsp; <strong>S</strong> = Spät &nbsp;·&nbsp;
+        <strong>N</strong> = Nacht &nbsp;·&nbsp; <strong>B</strong> = Bereitschaft &nbsp;·&nbsp;
+        <strong>-</strong> = Frei
+      </div>
+      <div class="tip" style="margin-top:8px;border-left-color:var(--S-c);">
+        <strong>⚠️ Das Muster ist eine Endlosschleife!</strong><br><br>
+        Das Muster wiederholt sich immer wieder ab dem Startdatum.
+        Daher musst du schauen <strong>wo du am 01.01. im Zyklus stehst</strong>
+        und genau dort beginnen.<br><br>
+        <strong>Beispiel 5-Schicht-Betrieb:</strong><br>
+        Der 01.01. ist ein <em>Donnerstag</em> → du bist in der <em>Spätschicht</em>.<br>
+        Also beginnt das Muster mit <strong>S</strong>:<br><br>
+        <span style="font-family:'DM Mono',monospace;font-size:.78rem;color:var(--S-c);">
+        SNNN----FFSS<br>NNN----FFFSS<br>SNN----FFFSS<br>...</span><br><br>
+        Der gesamte 5-Wochen-Zyklus muss <strong>einmal vollständig</strong>
+        eingetragen werden – danach läuft er automatisch endlos weiter!
+      </div>`
+  },
+  {
+    icon: '🧮',
+    title: 'Schritt 6 – IG Metall & ATZ-Rechner',
+    html: `
+      <div class="tip">
+        <strong>🧮 ATZ-Rechner</strong><br>
+        Unter dem Button <strong>„🧮 ATZ"</strong> kannst du deine
+        AltersTeilZeit-Punkte berechnen:<br><br>
+        → Geburtsdatum eingeben<br>
+        → Eintrittsdatum eingeben<br>
+        → IG Metall Mitgliedschaft aktivieren + Datum<br>
+        → Schichtperioden anlegen (Vollkonti/Teilkonti/Tagschicht)<br><br>
+        Die Punkte werden <strong>tagesgenau</strong> zum Stichtag
+        <strong>31.12. des letzten Jahres</strong> berechnet.
+      </div>
+      <div class="ok" style="margin-top:8px;">
+        🎉 Fertig! Die App ist jetzt vollständig eingerichtet.
+      </div>`
+  },
+];
+
+let setupPage = 0;
+
+function openSetup(){
+  setupPage = 0;
+  renderSetupSlide();
+  open2('setupOvl');
+}
+
+function renderSetupSlide(){
+  const slide = SETUP_SLIDES[setupPage];
+  const total = SETUP_SLIDES.length;
+  document.getElementById('setupPageNum').textContent = `${setupPage+1} / ${total}`;
+  document.getElementById('setupSlides').innerHTML = `
+    <div class="info-slide">
+      <div class="info-icon">${slide.icon}</div>
+      <div class="info-title">${slide.title}</div>
+      <div class="info-body">${slide.html}</div>
+    </div>`;
+  const dots = document.getElementById('setupDots');
+  dots.innerHTML = '';
+  SETUP_SLIDES.forEach((_,i) => {
+    const d = mk('div','info-dot'+(i===setupPage?' on':''));
+    d.onclick = () => { setupPage=i; renderSetupSlide(); };
+    dots.appendChild(d);
+  });
+  document.getElementById('setupPrev').style.opacity = setupPage===0 ? '0.3' : '1';
+  document.getElementById('setupNext').textContent = setupPage===total-1 ? '✓ Fertig!' : 'Weiter →';
+}
+
+function setupNav(dir){
+  const total = SETUP_SLIDES.length;
+  if(dir===1 && setupPage===total-1){ close2('setupOvl'); return; }
+  setupPage = Math.max(0, Math.min(total-1, setupPage+dir));
+  renderSetupSlide();
+}
+
 // ─── INFO / ANLEITUNG ────────────────────────────────────────────
 const INFO_SLIDES = [
   {
@@ -2233,7 +2654,7 @@ function openThemePicker(){
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────
-restore();applyTheme(ST.theme||'midnight');render();checkDatenschutz();
+restore();applyTheme(ST.theme||'midnight');restoreCustomColors();render();checkDatenschutz();
 
 // ─── SERVICE WORKER ───────────────────────────────────────────────
 if('serviceWorker' in navigator){
