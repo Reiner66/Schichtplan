@@ -150,6 +150,8 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 .ovc{border-radius:5px;font-family:'DM Mono',monospace;font-size:.6rem;
   font-weight:700;text-align:center;padding:2px 3px;line-height:1.3;}
 .sc.faded{opacity:.25;}
+.nf-lbl{font-size:.52rem;font-weight:700;text-align:center;
+  color:var(--NF-c);line-height:1.2;overflow:hidden;}
 .hlbl{font-size:.49rem;color:var(--muted);text-align:center;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .plan-dot{position:absolute;top:4px;right:4px;width:5px;height:5px;
@@ -767,6 +769,7 @@ const OVDEFS = {
   'V' :{l:'V-Tag',       c:'var(--V-c)', b:'var(--V-b)'},
   'NF':{l:'N-Freischicht',c:'var(--NF-c)',b:'var(--NF-b)'},
   'SU':{l:'Sonderurlaub',c:'var(--SU-c)',b:'var(--SU-b)'},
+  'WU':{l:'Winterurl.',  c:'var(--W-c)', b:'var(--W-b)'},
 };
 const VALID = new Set(['F','S','N','B','-']);
 const MONTHS = ['Januar','Februar','März','April','Mai','Juni',
@@ -992,7 +995,7 @@ function calcJahres(Y){
   const stats = {
     F:0,S:0,N:0,B:0,free:0,
     urlaubDays:0, zDays:0, vDays:0, nfDays:0, suDays:0,
-    istStunden:0, urlaubSommer:0,
+    istStunden:0, urlaubSommer:0, wuDays:0,
   };
   const start = new Date(Y,0,1); start.setHours(0,0,0,0);
   const end   = new Date(Y,11,31); end.setHours(0,0,0,0);
@@ -1011,11 +1014,20 @@ function calcJahres(Y){
     else if(ov==='V') stats.vDays++;
     else if(ov==='NF') stats.nfDays++;
     else if(ov==='SU') stats.suDays++;
+    else if(ov==='WU') stats.wuDays++;
 
     if(shift && !ov){
       if(shift in SDEFS) stats[shift]=(stats[shift]||0)+1;
       if(shift==='-') stats.free++;
       if(shift && shift!=='-') stats.istStunden += SDEFS[shift].h;
+    }
+    // Bezahlte Abwesenheiten zählen als Arbeitsstunden (8h/Tag)
+    if(ov && ov!=='V'){
+      // Schicht des Tages für Stundenzahl ermitteln
+      const sh = shift && shift!=='-' ? SDEFS[shift].h : 8;
+      stats.istStunden += sh;
+      // Schichttyp trotzdem mitzählen für NF-Berechnung
+      if(ov==='NF' && shift && shift in SDEFS) stats[shift]=(stats[shift]||0)+1;
     }
   }
 
@@ -1034,6 +1046,7 @@ function calcJahres(Y){
   const azKStunden = Math.max(0, zBilanzStd); // am 31.12. noch offen → AZK
 
   // N-Freischichten Anspruch
+  // stats.N enthält jetzt auch Nachtschichten an NF-Tagen
   let nfAnspruch;
   if(ST.senior){
     nfAnspruch = 4;
@@ -1041,8 +1054,8 @@ function calcJahres(Y){
     nfAnspruch = Math.floor(stats.N / 17);
   }
 
-  // Winterurlaubstag
-  const winterAnspruch = stats.urlaubSommer <= 10;
+  // Winterurlaubstag: Anspruch wenn ≤10 Sommertage UND noch nicht als WU eingetragen
+  const winterAnspruch = stats.urlaubSommer <= 10 && stats.wuDays === 0;
 
   return {
     ...stats, sollStunden, stDiff, nfAnspruch, winterAnspruch,
@@ -1137,11 +1150,19 @@ function renderCal(){
     }
 
     if(ov){
-      const o=OVDEFS[ov];
-      const chip=mk('div','ovc');
-      chip.style.cssText=`background:${o.b};color:${o.c}`;
-      chip.textContent=o.l;
-      cell.appendChild(chip);
+      if(ov==='NF'){
+        // NF klein anzeigen
+        const nfl=mk('div','nf-lbl');
+        nfl.textContent='NF';
+        cell.appendChild(nfl);
+        cell.style.outline=`1px solid var(--NF-c)`;
+      } else {
+        const o=OVDEFS[ov];
+        const chip=mk('div','ovc');
+        chip.style.cssText=`background:${o.b};color:${o.c}`;
+        chip.textContent=o.l;
+        cell.appendChild(chip);
+      }
       stats[ov]=(stats[ov]||0)+1;
     }
     if(shift!==null){
