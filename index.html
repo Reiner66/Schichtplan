@@ -1023,11 +1023,13 @@ function calcJahres(Y){
     }
     // Bezahlte Abwesenheiten zählen als Arbeitsstunden (8h/Tag)
     if(ov && ov!=='V'){
-      // Schicht des Tages für Stundenzahl ermitteln
       const sh = shift && shift!=='-' ? SDEFS[shift].h : 8;
       stats.istStunden += sh;
-      // Schichttyp trotzdem mitzählen für NF-Berechnung
-      if(ov==='NF' && shift && shift in SDEFS) stats[shift]=(stats[shift]||0)+1;
+      // Schichttyp IMMER mitzählen – auch wenn Urlaub/Z/NF/SU/WU drauf liegt
+      // Damit Nachtschichten unter Überschreibungen korrekt für NF gezählt werden!
+      if(shift && shift in SDEFS && shift!=='-'){
+        stats[shift]=(stats[shift]||0)+1;
+      }
     }
   }
 
@@ -1286,8 +1288,7 @@ function openDay(key,d){
 
   // Z-Tage Info-Box
   const zBox=mk('div','nf-info');
-  const zRest = j.uebZTage - j.zDays; // Übertrag minus bereits verbrauchte
-  const zColor = zRest>0?'var(--Z-c)':'var(--muted)';
+  const zColor = (j.uebZTage - j.zDays)>0?'var(--Z-c)':'var(--muted)';
   zBox.innerHTML=`Z-Tage Übertrag: <span class="nf-count" style="color:var(--Z-c)">${j.uebZTage}</span>
     &nbsp;·&nbsp; Verbraucht: <span class="nf-count" style="color:var(--muted)">${j.zDays}</span>
     &nbsp;·&nbsp; Offen: <span class="nf-count" style="color:${zColor}">${j.uebZTage - j.zDays}</span><br>
@@ -1295,35 +1296,55 @@ function openDay(key,d){
   nfBox.appendChild(zBox);
 
   const grid=document.getElementById('ovGrid');grid.innerHTML='';
+  // Kontingente berechnen
+  const urlaubRest = ST.urlaubTage - j.urlaubDays;
+  const zRest      = j.uebZTage - j.zDays;
+  const vRest      = j.vDays; // bereits verbrauchte V-Tage
+  const nfAnspruch = ST.senior ? 4 : Math.floor(yearN/17);
+  const nfVerbraucht = countNFVerbraucht(Y);
+  const nfRest     = nfAnspruch - nfVerbraucht;
+
   Object.entries(OVDEFS).forEach(([k,o])=>{
     const btn=mk('div','oo'+(editOvSel===k?' sel':''));
     btn.style.cssText=`background:${o.b};color:${o.c}`;
-    btn.textContent=o.l;
+
+    // Warnung als Badge wenn Kontingent erschöpft
+    let warn = '';
+    if(k==='U'  && urlaubRest<=0) warn = ' ⚠';
+    if(k==='Z'  && zRest<=0)      warn = ' ⚠';
+    if(k==='NF' && nfRest<=0)     warn = ' ⚠';
+    btn.textContent = o.l + warn;
+
     if(k==='U'){
       btn.onclick=()=>{
-        // Warn if Z-Tage still available
-        if(j.uebZTage - j.zDays > 0){
-          if(!confirm(`⚠️ Z-Tage zuerst verbrauchen!\n\nDu hast noch ${j.uebZTage - j.zDays} Z-Tage offen.\nNicht verbrauchte Z-Tage werden am 31.12. ins AZK (Arbeitszeitkonto) übertragen!\n\nTrotzdem Urlaub eintragen?`)) return;
+        // Erst Z-Tage Warnung
+        if(zRest > 0){
+          if(!confirm('⚠️ Z-Tage zuerst verbrauchen!\n\nDu hast noch ' + zRest + ' Z-Tage offen.\nNicht verbrauchte Z-Tage wandern am 31.12. ins AZK!\n\nTrotzdem Urlaub eintragen?')) return;
+        }
+        // Dann Kontingent-Warnung
+        if(urlaubRest <= 0){
+          if(!confirm('⚠️ Urlaubskontingent erschöpft!\n\nDu hast bereits alle ' + ST.urlaubTage + ' Urlaubstage eingetragen.\n\nTrotzdem eintragen?')) return;
         }
         selOv(btn,k);
       };
     } else if(k==='Z'){
       btn.onclick=()=>{
-        if(j.uebZTage - j.zDays > 0){
-          // Confirm Z-Tag with AZK reminder
-          const rest = j.uebZTage - j.zDays - 1;
-          if(rest > 0){
-            // Just a soft reminder, no confirm needed
-          }
+        if(zRest <= 0){
+          if(!confirm('⚠️ Keine Z-Tage mehr verfügbar!\n\nÜbertrag: ' + j.uebZTage + ' · Verbraucht: ' + j.zDays + '\n\nTrotzdem eintragen?')) return;
+        }
+        selOv(btn,k);
+      };
+    } else if(k==='V'){
+      btn.onclick=()=>{
+        if(j.uebVTage <= 0){
+          if(!confirm('⚠️ Kein V-Tage Übertrag vorhanden!\n\nIn den Einstellungen Vorjahres-V-Stunden eintragen.\n\nTrotzdem eintragen?')) return;
         }
         selOv(btn,k);
       };
     } else if(k==='NF'){
       btn.onclick=()=>{
-        const anspruch = ST.senior ? 4 : Math.floor(yearN/17);
-        const verbraucht = countNFVerbraucht(Y);
-        if(anspruch<=0 || verbraucht>=anspruch){
-          if(!confirm(`Du hast erst ${yearN} Nachtschichten in ${Y} (Anspruch: ${anspruch}).\nTrotzdem N-Freischicht eintragen?`)) return;
+        if(nfRest <= 0){
+          if(!confirm('⚠️ NF-Kontingent erschöpft!\n\nAnspruch: ' + nfAnspruch + ' · Verbraucht: ' + nfVerbraucht + '\n\nTrotzdem eintragen?')) return;
         }
         selOv(btn,k);
       };
