@@ -1176,8 +1176,10 @@ function calcJahres(Y){
     nfAnspruch = Math.floor(stats.N / 17);
   }
 
-  // Winterurlaubstag: Anspruch wenn ≤10 Sommertage UND noch nicht als WU eingetragen
-  const winterAnspruch = stats.urlaubSommer <= 10 && stats.wuDays === 0;
+  // Winterurlaubstag: Anspruch wenn max. 1/3 des Jahresurlaubs im Sommer (01.04–30.09)
+  // Laut MTV Stahl: 2/3 des Urlaubs müssen im Winter (01.10–31.03) genommen werden
+  const winterGrenze = Math.floor(ST.urlaubTage / 3);
+  const winterAnspruch = stats.urlaubDays > 0 && stats.urlaubSommer <= winterGrenze && stats.wuDays === 0;
 
   return {
     ...stats, sollStunden, stDiff, nfAnspruch, winterAnspruch,
@@ -1392,7 +1394,7 @@ function renderJahresCard(){
       <div class="jc-item">
         <div class="jc-val" style="color:${winterColor}">${j.winterAnspruch?'✓':'–'}</div>
         <div class="jc-lbl">Winterurlaubstag</div>
-        <div class="jc-sub" style="color:${winterColor}">${j.winterAnspruch?'Anspruch vorhanden':'kein Anspruch'}</div>
+        <div class="jc-sub" style="color:${winterColor}">${j.winterAnspruch?'Anspruch vorhanden':'max '+Math.floor(ST.urlaubTage/3)+' Sommertage'}</div>
       </div>
     </div>
     ${j.uebZTage-j.zDays>0?`<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! ${j.uebZTage-j.zDays} Z-Tage offen → wandern am 31.12. ins AZK</div>`:''}
@@ -1679,9 +1681,10 @@ function openStats(){
   const stColor=stDiff>0?'var(--ok)':stDiff<0?'var(--err)':'var(--muted)';
 
   // Winter
+  const winterGrenze = Math.floor(ST.urlaubTage / 3);
   const winterHtml = j.winterAnspruch
-    ? `<div class="ok-box">✓ Winterurlaubstag: Du hattest ${j.urlaubSommer} Urlaubstage zwischen 01.04.–30.09. (≤10) → <strong>1 Winterurlaubstag Anspruch</strong></div>`
-    : `<div class="info-box">ℹ Winterurlaubstag: ${j.urlaubSommer} Urlaubstage zwischen 01.04.–30.09. – kein Anspruch (Grenze: ≤10 Tage)</div>`;
+    ? `<div class="ok-box">✓ Winterurlaubstag: ${j.urlaubSommer} von ${ST.urlaubTage} Urlaubstagen im Sommer (max. ${winterGrenze} = 1/3) → <strong>Anspruch auf 1 Zusatztag</strong></div>`
+    : `<div class="info-box">ℹ Winterurlaubstag: ${j.urlaubSommer} Sommertage – Grenze: max. ${winterGrenze} Tage (1/3 von ${ST.urlaubTage}) – kein Anspruch</div>`;
 
   const nfHtml = ST.senior
     ? `<div class="ok-box">Senior-Regelung aktiv: Pauschal <strong>4 N-Freischichten</strong> pro Jahr · verbraucht: ${j.nfDays}</div>`
