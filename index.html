@@ -1374,7 +1374,8 @@ function renderJahresCard(){
         <div class="jc-sub" style="color:${winterColor}">${j.winterAnspruch?'Anspruch vorhanden':'kein Anspruch'}</div>
       </div>
     </div>
-    ${j.uebZTage-j.zDays>0?`<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! ${j.uebZTage-j.zDays} Z-Tage offen → wandern am 31.12. ins AZK</div>`:''}`;
+    ${j.uebZTage-j.zDays>0?`<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! ${j.uebZTage-j.zDays} Z-Tage offen → wandern am 31.12. ins AZK</div>`:''}
+    <div style="height:90px;"></div>`;
 }
 
 // ─── DAY SHEET ───────────────────────────────────────────────────
@@ -1702,7 +1703,8 @@ function openStats(){
     <div class="sg">
       <span class="slbl">Nachtfreischichten</span>
       ${nfHtml}
-    </div>`;
+    </div>
+    <div style="height:30px;"></div>`;
 
   open2('statsOvl');
 }
