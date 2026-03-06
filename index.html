@@ -1029,41 +1029,40 @@ async function loadFerienAPI(Y, bl){
     f.start.startsWith(Y) || f.end.startsWith(Y)) : [];
 
   try {
-    // Primär: schulferien-api.de (neue, zuverlässigere API)
-    // Format: https://schulferien-api.de/api/v1/2026/HB/
-    const url = `https://schulferien-api.de/api/v1/${Y}/${bl}/`;
-    const res = await fetch(url);
+    // Primär: openholidaysapi.org – offizielle Open-Data API, sehr stabil
+    // Format: /SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&year=2026
+    const url = `https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-${bl}&languageIsoCode=DE&validFrom=${Y}-01-01&validTo=${Y}-12-31`;
+    const res = await fetch(url, {headers:{accept:'application/json'}});
     if(!res.ok) throw new Error('API Fehler');
     const data = await res.json();
-    const nameMap = {
-      'winterferien':'Winterferien','osterferien':'Osterferien',
-      'pfingstferien':'Pfingstferien','sommerferien':'Sommerferien',
-      'herbstferien':'Herbstferien','weihnachtsferien':'Weihnachtsferien',
-      'fruehjahrsferien':'Frühjahrsferien'
-    };
     const ferien = data.map(f => ({
-      start: f.start.slice(0,10),
-      end:   f.end.slice(0,10),
-      name:  nameMap[f.name.toLowerCase()] || f.name.charAt(0).toUpperCase()+f.name.slice(1),
+      start: f.startDate,
+      end:   f.endDate,
+      name:  f.name && f.name[0] ? f.name[0].text : 'Ferien',
     }));
     ferienCache[key] = ferien;
     return ferien;
   } catch(e) {
-    // Fallback: ferien-api.de (alte API)
+    // Fallback 1: schulferien-api.de
     try {
-      const url2 = `https://ferien-api.de/api/v1/holidays/${bl}/${Y}`;
+      const url2 = `https://schulferien-api.de/api/v1/${Y}/${bl}/`;
       const res2 = await fetch(url2);
       if(!res2.ok) throw new Error('API2 Fehler');
       const data2 = await res2.json();
+      const nameMap = {
+        'winterferien':'Winterferien','osterferien':'Osterferien',
+        'pfingstferien':'Pfingstferien','sommerferien':'Sommerferien',
+        'herbstferien':'Herbstferien','weihnachtsferien':'Weihnachtsferien',
+      };
       const ferien2 = data2.map(f => ({
         start: f.start.slice(0,10),
         end:   f.end.slice(0,10),
-        name:  f.name.charAt(0).toUpperCase()+f.name.slice(1),
+        name:  nameMap[f.name?.toLowerCase()] || f.name?.charAt(0).toUpperCase()+f.name?.slice(1) || 'Ferien',
       }));
       ferienCache[key] = ferien2;
       return ferien2;
     } catch(e2) {
-      // Komplett offline → statische Fallback-Daten
+      // Fallback 2: Komplett offline → statische Daten
       ferienCache[key] = fallback;
       return fallback;
     }
