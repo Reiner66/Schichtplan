@@ -1029,23 +1029,44 @@ async function loadFerienAPI(Y, bl){
     f.start.startsWith(Y) || f.end.startsWith(Y)) : [];
 
   try {
-    const url = `https://ferien-api.de/api/v1/holidays/${bl}/${Y}`;
+    // Primär: schulferien-api.de (neue, zuverlässigere API)
+    // Format: https://schulferien-api.de/api/v1/2026/HB/
+    const url = `https://schulferien-api.de/api/v1/${Y}/${bl}/`;
     const res = await fetch(url);
     if(!res.ok) throw new Error('API Fehler');
     const data = await res.json();
-    // Konvertiere API-Format zu internem Format
+    const nameMap = {
+      'winterferien':'Winterferien','osterferien':'Osterferien',
+      'pfingstferien':'Pfingstferien','sommerferien':'Sommerferien',
+      'herbstferien':'Herbstferien','weihnachtsferien':'Weihnachtsferien',
+      'fruehjahrsferien':'Frühjahrsferien'
+    };
     const ferien = data.map(f => ({
       start: f.start.slice(0,10),
       end:   f.end.slice(0,10),
-      name:  f.name.charAt(0).toUpperCase() + f.name.slice(1)
-             .replace('ferien','ferien').replace('ferien','ferien'),
+      name:  nameMap[f.name.toLowerCase()] || f.name.charAt(0).toUpperCase()+f.name.slice(1),
     }));
     ferienCache[key] = ferien;
     return ferien;
   } catch(e) {
-    // Offline oder API nicht erreichbar → Fallback
-    ferienCache[key] = fallback;
-    return fallback;
+    // Fallback: ferien-api.de (alte API)
+    try {
+      const url2 = `https://ferien-api.de/api/v1/holidays/${bl}/${Y}`;
+      const res2 = await fetch(url2);
+      if(!res2.ok) throw new Error('API2 Fehler');
+      const data2 = await res2.json();
+      const ferien2 = data2.map(f => ({
+        start: f.start.slice(0,10),
+        end:   f.end.slice(0,10),
+        name:  f.name.charAt(0).toUpperCase()+f.name.slice(1),
+      }));
+      ferienCache[key] = ferien2;
+      return ferien2;
+    } catch(e2) {
+      // Komplett offline → statische Fallback-Daten
+      ferienCache[key] = fallback;
+      return fallback;
+    }
   }
 }
 
