@@ -92,7 +92,7 @@
 html,body{height:100%;}
 body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
   max-width:560px;margin:0 auto;display:flex;flex-direction:column;
-  min-height:100vh;padding-bottom:68px;}
+  min-height:100vh;padding-bottom:80px;}
 
 /* TOPBAR */
 .topbar{position:sticky;top:0;z-index:60;background:var(--bg);
@@ -129,10 +129,10 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 
 /* CALENDAR */
 .cal{padding:3px 6px 6px;}
-.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
-.dc{border-radius:9px;min-height:70px;padding:5px 4px 4px;cursor:pointer;
-  background:var(--surf);display:flex;flex-direction:column;gap:2px;
-  transition:background .12s;user-select:none;position:relative;}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.dc{border-radius:9px;min-height:clamp(58px, 11vh, 90px);padding:4px 3px 3px;cursor:pointer;
+  background:var(--surf);display:flex;flex-direction:column;gap:1px;
+  transition:background .12s;user-select:none;position:relative;overflow:hidden;}
 .dc:active{background:var(--surf2);}
 .dc.other{opacity:.2;pointer-events:none;}
 .dc.today{box-shadow:0 0 0 1.5px var(--F-c);}
@@ -145,10 +145,10 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 .dn{font-family:'DM Mono',monospace;font-size:.7rem;font-weight:600;
   color:var(--muted);line-height:1;}
 .dc.today .dn{color:var(--F-c);}
-.sc{border-radius:5px;font-family:'DM Mono',monospace;font-size:.76rem;
-  font-weight:700;text-align:center;padding:3px 2px;line-height:1.25;}
-.ovc{border-radius:5px;font-family:'DM Mono',monospace;font-size:.6rem;
-  font-weight:700;text-align:center;padding:2px 3px;line-height:1.3;}
+.sc{border-radius:5px;font-family:'DM Mono',monospace;font-size:.72rem;
+  font-weight:700;text-align:center;padding:2px 2px;line-height:1.2;}
+.ovc{border-radius:5px;font-family:'DM Mono',monospace;font-size:.56rem;
+  font-weight:700;text-align:center;padding:1px 2px;line-height:1.2;}
 .sc.faded{opacity:.25;}
 .nf-lbl{font-size:.52rem;font-weight:700;text-align:center;
   color:var(--NF-c);line-height:1.2;overflow:hidden;}
@@ -170,7 +170,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 .sl{font-size:.54rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
 
 /* JAHRES CARD */
-.jahres-card{margin:6px 6px 0;background:var(--surf);border-radius:10px;
+.jahres-card{margin:6px 6px 80px;background:var(--surf);border-radius:10px;
   border:1px solid var(--bdr);padding:12px 14px;}
 .jc-title{font-size:.72rem;font-weight:700;color:var(--muted);
   text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
@@ -686,7 +686,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         <div class="ce-slider-row">
           <div class="ce-slider-item">
             <label>Helligkeit</label>
-            <input type="range" id="ce-brightness" min="0" max="100" value="50" oninput="updateColorPreview()"/>
+            <input type="range" id="ce-brightness" min="0" max="100" value="5" oninput="updateColorPreview()"/>
             <div class="ce-slider-val" id="ce-brightness-val">50</div>
           </div>
           <div class="ce-slider-item">
@@ -876,6 +876,10 @@ let ST = {
   senior: false,      // über 45 oder 10J Schicht
   bundesland: 'HB',   // Bundesland für Feiertage & Schulferien
   theme: 'midnight',  // Design-Theme
+  customColors: null, // Farb-Editor Akzentfarben
+  ceHue: undefined,   // Farb-Editor Farbton
+  ceSat: undefined,   // Farb-Editor Sättigung
+  ceBrightness: undefined, // Farb-Editor Helligkeit
   termine: {},        // "YYYY-MM-DD" oder "MM-DD" -> {emoji, text, repeat}
   uebertragZStd: 0,   // Vorjahresübertrag Z-Stunden (z.B. 160)
   uebertragVStd: 0,   // Vorjahresübertrag V-Stunden (Schulden)
@@ -1276,7 +1280,12 @@ function renderCal(){
     if(HL[key]){
       const hl=mk('div','fhlbl');hl.textContent=HL[key];cell.appendChild(hl);
     } else if(ferienName){
-      const fl=mk('div','ferhlbl');fl.textContent=ferienName;cell.appendChild(fl);
+      const fl=mk('div','ferhlbl');
+      const ferienKurz = {'Sommerferien':'Sommer','Winterferien':'Winter',
+        'Osterferien':'Ostern','Herbstferien':'Herbst',
+        'Weihnachtsferien':'Weihnacht','Pfingstferien':'Pfingsten'};
+      fl.textContent = ferienKurz[ferienName] || ferienName.replace('ferien','').substring(0,7);
+      cell.appendChild(fl);
     }
     // Persönliche Termine
     const termin = getTerminForDate(key);
@@ -2012,7 +2021,7 @@ function openColorEditor(){
   // Init sliders
   const h = ST.ceHue !== undefined ? ST.ceHue : 240;
   const s = ST.ceSat !== undefined ? ST.ceSat : 30;
-  const b = ST.ceBrightness !== undefined ? ST.ceBrightness : 50;
+  const b = ST.ceBrightness !== undefined ? ST.ceBrightness : 5;
   document.getElementById('ce-brightness').value = b;
   document.getElementById('ce-hue').value = h;
   document.getElementById('ce-sat').value = s;
@@ -2029,14 +2038,18 @@ function updateColorPreview(){
   document.getElementById('ce-sat-val').textContent = sat + '%';
 
   // Calculate background colors from sliders
-  // brightness 0-100 → lightness 2-95
-  const bLight = Math.round(brightness * 0.20 + 2);   // bg:  2-22
-  const sLight = Math.round(brightness * 0.20 + 6);   // surf: 6-26
-  const s2Light = Math.round(brightness * 0.22 + 9);
-  const s3Light = Math.round(brightness * 0.24 + 12);
-  const bdrLight = Math.round(brightness * 0.26 + 14);
-  const txtLight = Math.max(20, 95 - brightness * 0.5);
-  const mutedLight = Math.round(30 + brightness * 0.3);
+  // brightness 0-100 → lightness 3-92 (schwarz bis weiß)
+  const bLight  = Math.round(brightness * 0.89 + 3);    // bg:   3-92
+  const sLight  = Math.round(brightness * 0.87 + 6);    // surf: 6-93
+  const s2Light = Math.round(brightness * 0.85 + 9);    // surf2
+  const s3Light = Math.round(brightness * 0.83 + 12);   // surf3
+  const bdrLight= Math.round(brightness * 0.80 + 14);   // bdr
+  const txtLight= brightness > 50                        // txt: hell=dunkel, dunkel=hell
+    ? Math.round(95 - brightness * 0.85)
+    : Math.round(95 - brightness * 0.10);
+  const mutedLight = brightness > 50
+    ? Math.round(40 - brightness * 0.25)
+    : Math.round(40 + brightness * 0.25);
 
   // Preview chips
   const preview = document.getElementById('ce-preview');
@@ -2057,13 +2070,17 @@ function applyColorEditor(){
   const hue = parseInt(document.getElementById('ce-hue').value);
   const sat = parseInt(document.getElementById('ce-sat').value);
 
-  const bLight  = Math.round(brightness * 0.20 + 2);
-  const sLight  = Math.round(brightness * 0.20 + 6);
-  const s2Light = Math.round(brightness * 0.22 + 9);
-  const s3Light = Math.round(brightness * 0.24 + 12);
-  const bdrLight = Math.round(brightness * 0.26 + 14);
-  const txtLight = Math.max(20, 95 - brightness * 0.5);
-  const mutedLight = Math.round(30 + brightness * 0.3);
+  const bLight  = Math.round(brightness * 0.89 + 3);
+  const sLight  = Math.round(brightness * 0.87 + 6);
+  const s2Light = Math.round(brightness * 0.85 + 9);
+  const s3Light = Math.round(brightness * 0.83 + 12);
+  const bdrLight= Math.round(brightness * 0.80 + 14);
+  const txtLight= brightness > 50
+    ? Math.round(95 - brightness * 0.85)
+    : Math.round(95 - brightness * 0.10);
+  const mutedLight = brightness > 50
+    ? Math.round(40 - brightness * 0.25)
+    : Math.round(40 + brightness * 0.25);
 
   const root = document.documentElement;
   root.style.setProperty('--bg',   `hsl(${hue},${sat}%,${bLight}%)`);
@@ -2120,13 +2137,17 @@ function restoreCustomColors(){
   const brightness = ST.ceBrightness !== undefined ? ST.ceBrightness : 50;
   const hue = ST.ceHue !== undefined ? ST.ceHue : 240;
   const sat = ST.ceSat !== undefined ? ST.ceSat : 30;
-  const bLight  = Math.round(brightness * 0.20 + 2);
-  const sLight  = Math.round(brightness * 0.20 + 6);
-  const s2Light = Math.round(brightness * 0.22 + 9);
-  const s3Light = Math.round(brightness * 0.24 + 12);
-  const bdrLight = Math.round(brightness * 0.26 + 14);
-  const txtLight = Math.max(20, 95 - brightness * 0.5);
-  const mutedLight = Math.round(30 + brightness * 0.3);
+  const bLight  = Math.round(brightness * 0.89 + 3);
+  const sLight  = Math.round(brightness * 0.87 + 6);
+  const s2Light = Math.round(brightness * 0.85 + 9);
+  const s3Light = Math.round(brightness * 0.83 + 12);
+  const bdrLight= Math.round(brightness * 0.80 + 14);
+  const txtLight= brightness > 50
+    ? Math.round(95 - brightness * 0.85)
+    : Math.round(95 - brightness * 0.10);
+  const mutedLight = brightness > 50
+    ? Math.round(40 - brightness * 0.25)
+    : Math.round(40 + brightness * 0.25);
   const root = document.documentElement;
   root.style.setProperty('--bg',   `hsl(${hue},${sat}%,${bLight}%)`);
   root.style.setProperty('--surf', `hsl(${hue},${sat}%,${sLight}%)`);
@@ -2626,6 +2647,16 @@ function calcATZ(){
 // ─── THEME ───────────────────────────────────────────────────────
 function setTheme(t){
   ST.theme = t;
+  // Theme-Wechsel löscht Custom Colors – sonst überschreiben sie das neue Theme
+  ST.customColors = null;
+  ST.ceHue = undefined; ST.ceSat = undefined; ST.ceBrightness = undefined;
+  // Inline-Styles entfernen die vom Farb-Editor gesetzt wurden
+  const root = document.documentElement;
+  ['--bg','--surf','--surf2','--surf3','--bdr','--txt','--muted'].forEach(v=>root.style.removeProperty(v));
+  ['F','S','N','B','U','Z','V','NF','SU'].forEach(id=>{
+    root.style.removeProperty('--'+id+'-c');
+    root.style.removeProperty('--'+id+'-b');
+  });
   applyTheme(t);
   // Update selection highlight
   ['midnight','dusk','slate','day'].forEach(n=>{
