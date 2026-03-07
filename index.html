@@ -172,13 +172,13 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 /* JAHRES CARD */
 .jahres-card{margin:6px 6px 80px;background:var(--surf);border-radius:10px;
   border:1px solid var(--bdr);padding:12px 14px;}
-.jc-title{font-size:.72rem;font-weight:700;color:var(--muted);
+.jc-title{font-size:clamp(.78rem,2.2vw,.95rem);font-weight:700;color:var(--muted);
   text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
-.jc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.jc-item{background:var(--surf2);border-radius:8px;padding:9px 10px;}
-.jc-val{font-family:'DM Mono',monospace;font-size:1.15rem;font-weight:700;line-height:1;margin-bottom:3px;}
-.jc-lbl{font-size:.62rem;color:var(--muted);}
-.jc-sub{font-size:.6rem;margin-top:2px;}
+.jc-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(6px,2vw,12px);}
+.jc-item{background:var(--surf2);border-radius:10px;padding:clamp(9px,2.5vw,16px) clamp(10px,2.8vw,18px);}
+.jc-val{font-family:'DM Mono',monospace;font-size:clamp(1.2rem,4.5vw,2rem);font-weight:700;line-height:1;margin-bottom:4px;}
+.jc-lbl{font-size:clamp(.7rem,2vw,.85rem);color:var(--muted);font-weight:600;}
+.jc-sub{font-size:clamp(.65rem,1.8vw,.78rem);margin-top:3px;}
 .badge-ok{color:var(--ok);}
 .badge-warn{color:var(--warn);}
 .badge-err{color:var(--err);}
@@ -775,7 +775,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         <div class="toggle-row" onclick="toggleATZigm()">
           <div>
             <div class="toggle-lbl">IG Metall Mitglied</div>
-            <div class="toggle-sub">0,5 Punkte pro Jahr</div>
+            <div class="toggle-sub" id="atzIgmPktLbl">0,5 Punkte pro Jahr</div>
           </div>
           <div class="tog" id="atzIgmTog"></div>
         </div>
@@ -785,6 +785,40 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         </div>
       </div>
 
+      <div class="divider"></div>
+      <span class="slbl">🎯 Punktefaktoren (variabel)</span>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:8px 0;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <label style="font-size:.58rem;color:var(--muted);text-align:center;">🎂 Alter</label>
+          <input type="number" class="sinput" id="atzPktAlter" step="0.01" min="0" max="9.99"
+            style="text-align:center;padding:5px 2px;font-size:.72rem;"
+            value="1" oninput="ST.atzPktAlter=parseFloat(this.value)||1.0;persist();calcATZ()"/>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <label style="font-size:.58rem;color:var(--muted);text-align:center;">🏭 Betrieb</label>
+          <input type="number" class="sinput" id="atzPktBetrieb" step="0.01" min="0" max="9.99"
+            style="text-align:center;padding:5px 2px;font-size:.72rem;"
+            value="1" oninput="ST.atzPktBetrieb=parseFloat(this.value)||1.0;persist();calcATZ()"/>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <label style="font-size:.58rem;color:var(--muted);text-align:center;">🌙 Vollkonti</label>
+          <input type="number" class="sinput" id="atzPktVoll" step="0.01" min="0" max="9.99"
+            style="text-align:center;padding:5px 2px;font-size:.72rem;"
+            value="2" oninput="ST.atzPktVoll=parseFloat(this.value)||2.0;persist();calcATZ()"/>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <label style="font-size:.58rem;color:var(--muted);text-align:center;">🌙 Teilkonti</label>
+          <input type="number" class="sinput" id="atzPktTeil" step="0.01" min="0" max="9.99"
+            style="text-align:center;padding:5px 2px;font-size:.72rem;"
+            value="1.5" oninput="ST.atzPktTeil=parseFloat(this.value)||1.5;persist();calcATZ()"/>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <label style="font-size:.58rem;color:var(--muted);text-align:center;">⚙️ IGM</label>
+          <input type="number" class="sinput" id="atzPktIgm" step="0.01" min="0" max="9.99"
+            style="text-align:center;padding:5px 2px;font-size:.72rem;"
+            value="0.5" oninput="ST.atzPktIgm=parseFloat(this.value)||0.5;persist();calcATZ()"/>
+        </div>
+      </div>
       <div class="divider"></div>
       <span class="slbl">Schichtperioden (ab 01.01.2001)</span>
       <div id="atzPerioden"></div>
@@ -885,6 +919,14 @@ let ST = {
   uebertragVStd: 0,   // Vorjahresübertrag V-Stunden (Schulden)
   vm: new Date().getMonth(),
   vy: new Date().getFullYear(),
+  // ATZ Rechner
+  atzGesamtPkte: null,
+  atzGesamtJahr: null,
+  atzPktAlter:   1.0,
+  atzPktBetrieb: 1.0,
+  atzPktVoll:    2.0,
+  atzPktTeil:    1.5,
+  atzPktIgm:     0.5,
 };
 let editKey=null, editOvSel=null, editSegIdx=-1;
 
@@ -894,8 +936,11 @@ function persist(){
     name:ST.name, urlaubTage:ST.urlaubTage,
     azv:ST.azv, senior:ST.senior, bundesland:ST.bundesland, theme:ST.theme,
     customColors:ST.customColors, ceHue:ST.ceHue, ceSat:ST.ceSat, ceBrightness:ST.ceBrightness,
-    termine:ST.termine,
-    uebertragZStd:ST.uebertragZStd, uebertragVStd:ST.uebertragVStd
+        termine:ST.termine,
+    uebertragZStd:ST.uebertragZStd, uebertragVStd:ST.uebertragVStd,
+    atzGesamtPkte:ST.atzGesamtPkte, atzGesamtJahr:ST.atzGesamtJahr,
+    atzPktAlter:ST.atzPktAlter, atzPktBetrieb:ST.atzPktBetrieb,
+    atzPktVoll:ST.atzPktVoll, atzPktTeil:ST.atzPktTeil, atzPktIgm:ST.atzPktIgm
   }));}catch(e){}
 }
 function restore(){
@@ -910,6 +955,8 @@ function restore(){
     if(d.bundesland) ST.bundesland=d.bundesland;
     if(d.theme) ST.theme=d.theme;
     if(d.customColors) ST.customColors=d.customColors;
+    const atzKeys=['atzGesamtPkte','atzGesamtJahr','atzPktAlter','atzPktBetrieb','atzPktVoll','atzPktTeil','atzPktIgm'];
+    atzKeys.forEach(k=>{ if(d[k]!==undefined) ST[k]=d[k]; });
     if(d.ceHue!==undefined) ST.ceHue=d.ceHue;
     if(d.ceSat!==undefined) ST.ceSat=d.ceSat;
     if(d.ceBrightness!==undefined) ST.ceBrightness=d.ceBrightness;
@@ -1394,6 +1441,11 @@ function renderJahresCard(){
         <div class="jc-val" style="color:${winterColor}">${j.winterAnspruch?'✓':'–'}</div>
         <div class="jc-lbl">Winterurlaubstag</div>
         <div class="jc-sub" style="color:${winterColor}">${j.winterAnspruch?'Anspruch vorhanden':'max '+Math.floor(ST.urlaubTage/3)+' Sommertage'}</div>
+      </div>
+      <div class="jc-item">
+        <div class="jc-val" style="color:var(--ok)">${ST.atzGesamtPkte!==null ? ST.atzGesamtPkte.toFixed(2).replace('.',',') : '–'}</div>
+        <div class="jc-lbl">ATZ-Punkte</div>
+        <div class="jc-sub" style="color:var(--muted)">${ST.atzGesamtPkte!==null ? 'Stichtag 31.12.'+(ST.atzGesamtJahr||'') : 'Im ATZ-Rechner berechnen'}</div>
       </div>
     </div>
     ${j.uebZTage-j.zDays>0?`<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! ${j.uebZTage-j.zDays} Z-Tage offen → wandern am 31.12. ins AZK</div>`:''}
@@ -2495,6 +2547,12 @@ let atzIgm = false;
 let atzPerioden = []; // [{typ:'vollkonti'|'teilkonti'|'tagschicht', von:'YYYY-MM-DD', bis:'YYYY-MM-DD'}]
 
 function openATZ(){
+  // Load saved pkt values into fields
+  document.getElementById('atzPktAlter').value   = ST.atzPktAlter   || 1.0;
+  document.getElementById('atzPktBetrieb').value = ST.atzPktBetrieb || 1.0;
+  document.getElementById('atzPktVoll').value    = ST.atzPktVoll    || 2.0;
+  document.getElementById('atzPktTeil').value    = ST.atzPktTeil    || 1.5;
+  document.getElementById('atzPktIgm').value     = ST.atzPktIgm     || 0.5;
   renderATZPerioden();
   calcATZ();
   open2('atzOvl');
@@ -2531,8 +2589,8 @@ function renderATZPerioden(){
     div.innerHTML = `
       <div class="periode-row">
         <select class="periode-sel" onchange="atzPerioden[${i}].typ=this.value;calcATZ()">
-          <option value="vollkonti" ${p.typ==='vollkonti'?'selected':''}>Vollkonti (2 Pkt/Jahr)</option>
-          <option value="teilkonti" ${p.typ==='teilkonti'?'selected':''}>Teilkonti F+S (1,5 Pkt/Jahr)</option>
+          <option value="vollkonti" ${p.typ==='vollkonti'?'selected':''}>Vollkonti (${ST.atzPktVoll||2} Pkt/Jahr)</option>
+          <option value="teilkonti" ${p.typ==='teilkonti'?'selected':''}>Teilkonti F+S (${ST.atzPktTeil||1.5} Pkt/Jahr)</option>
           <option value="tagschicht" ${p.typ==='tagschicht'?'selected':''}>Tagschicht (0 Pkt)</option>
         </select>
         <span class="periode-del" onclick="removeATZPeriode(${i})">✕</span>
@@ -2579,19 +2637,19 @@ function calcATZ(){
 
   // ── Alterspunkte ──
   const alterJahre = yearsFraction(geburt, stich);
-  const alterPkte  = alterJahre;
+  const alterPkte  = alterJahre * (ST.atzPktAlter || 1.0);
 
   // ── Betriebspunkte ──
   const betriebStart = eintritt > '2001-01-01' ? eintritt : eintritt;
   const betriebJahre = yearsFraction(eintritt, stich);
-  const betriebPkte  = betriebJahre;
+  const betriebPkte  = betriebJahre * (ST.atzPktBetrieb || 1.0);
 
   // ── IG Metall ──
   let igmPkte = 0;
   let igmJahre = 0;
   if(atzIgm && igmSeit){
     igmJahre = yearsFraction(igmSeit, stich);
-    igmPkte  = igmJahre * 0.5;
+    igmPkte  = igmJahre * (ST.atzPktIgm || 0.5);
   }
 
   // ── Schichtpunkte ──
@@ -2629,14 +2687,20 @@ function calcATZ(){
         const bis = p.bis > stich ? stich : p.bis;
         if(von >= bis) return;
         const jahre = daysBetween(von, bis) / 365.25;
-        if(p.typ === 'vollkonti')  schichtPkte += jahre * 2.0;
-        else if(p.typ === 'teilkonti') schichtPkte += jahre * 1.5;
+        if(p.typ === 'vollkonti')  schichtPkte += jahre * (ST.atzPktVoll || 2.0);
+        else if(p.typ === 'teilkonti') schichtPkte += jahre * (ST.atzPktTeil || 1.5);
       });
     }
   }
 
   // ── Gesamt ──
   const gesamt = alterPkte + betriebPkte + igmPkte + schichtPkte;
+
+  // Ergebnis in ST speichern → Hauptseite zeigt es neben Winterurlaubstag
+  ST.atzGesamtPkte = gesamt;
+  ST.atzGesamtJahr = new Date().getFullYear() - 1;
+  // Jahres-Card neu zeichnen falls sichtbar
+  renderJahresCard();
 
   // ── Anzeige ──
   const fmt = v => v.toFixed(2).replace('.',',');
