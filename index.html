@@ -34,8 +34,6 @@
   --W-c:#fbbf24; --W-b:rgba(251,191,36,.15);
   --ok:#34d399; --warn:#fb923c; --err:#f43f5e;
 }
-
-/* ── THEME: DUSK (mittel-dunkel) ── */
 [data-theme="dusk"] {
   --bg:#181824; --surf:#22223a; --surf2:#2a2a46; --surf3:#32324e; --bdr:#3a3a5c;
   --txt:#e8e8f8; --muted:#7070aa; --muted2:#4a4a78;
@@ -52,8 +50,6 @@
   --W-c:#ffd050; --W-b:rgba(255,208,80,.16);
   --ok:#4eeaaa; --warn:#ff9f50; --err:#ff6088;
 }
-
-/* ── THEME: SLATE (hell-dunkel / mittel) ── */
 [data-theme="slate"] {
   --bg:#1e2235; --surf:#262d45; --surf2:#2e3655; --surf3:#363f62; --bdr:#404878;
   --txt:#dde4f8; --muted:#7888cc; --muted2:#4a5280;
@@ -70,8 +66,6 @@
   --W-c:#ffd040; --W-b:rgba(255,208,64,.16);
   --ok:#40f0b0; --warn:#ff8840; --err:#ff5580;
 }
-
-/* ── THEME: DAY (hell) ── */
 [data-theme="day"] {
   --bg:#f0f2f8; --surf:#ffffff; --surf2:#e8ecf8; --surf3:#dde2f5; --bdr:#c8d0ec;
   --txt:#1a1e3a; --muted:#7080b0; --muted2:#a8b4d8;
@@ -159,7 +153,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 .termin-chip{font-size:.58rem;text-align:center;line-height:1.3;
   background:rgba(251,191,36,.12);border-radius:4px;padding:1px 3px;
   color:var(--W-c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.termin-dot{position:absolute;bottom:4px;right:4px;font-size:.65rem;}
 
 /* STATS BAR */
 .stats{display:flex;margin:5px 6px 0;background:var(--surf);
@@ -385,16 +378,18 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="tb1">
-    <a href="https://cgm.de/" target="_blank" style="display:flex;align-items:center;gap:8px;text-decoration:none;"><img src="data:image/png;base64,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" style="height:36px;width:36px;object-fit:cover;border-radius:6px;flex-shrink:0;" alt="CGM Hüttenfuchs"/><div class="logo">Schicht<em>Plan</em></div></a>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="logo">Schicht<em>Plan</em></div>
+    </div>
     <div class="username" id="uname"></div>
   </div>
   <div class="mnav">
-    <div class="nbtn" onclick="changeMonth(-1)">‹</div>
+    <div class="nbtn" onclick="changeMonth(-1)">&#8249;</div>
     <div class="mlbl">
       <span class="mname" id="mName"></span>
       <span class="myear" id="mYear"></span>
     </div>
-    <div class="nbtn" onclick="changeMonth(1)">›</div>
+    <div class="nbtn" onclick="changeMonth(1)">&#8250;</div>
   </div>
 </div>
 
@@ -537,7 +532,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
 <div class="ovl" id="setOvl" onclick="bgClose(event,'setOvl')">
   <div class="sheet">
     <div class="handle"></div>
-    <div class="stitle">Einstellungen</div>
+    <div class="stitle">⚙️ Einstellungen</div>
     <div class="sbody">
       <div class="exp-row" style="margin-bottom:4px;">
         <button class="exp-btn" style="background:var(--surf2);color:var(--txt);border:1px solid var(--bdr);" onclick="close2('setOvl');openInfo()">ℹ️ Anleitung</button>
@@ -552,7 +547,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         <input class="sinput" id="nameIn" placeholder="z.B. Max Mustermann"/>
       </div>
       <div class="sg">
-        <span class="slbl">Bundesland (Feiertage & Schulferien)</span>
+        <span class="slbl">Bundesland (Feiertage &amp; Schulferien)</span>
         <select class="sinput" id="blIn" style="cursor:pointer;">
           <option value="BW">Baden-Württemberg</option>
           <option value="BY">Bayern</option>
@@ -637,9 +632,19 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         <div class="toggle-row" onclick="toggleSenior()">
           <div>
             <div class="toggle-lbl">Über 45 Jahre UND 10+ Jahre Schicht</div>
-            <div class="toggle-sub">Beides muss erfüllt sein → 4 N-Freischichten/Jahr</div>
+            <div class="toggle-sub">Beides erfüllt → 4 N-Freischichten/Jahr</div>
           </div>
           <div class="tog" id="seniorTog"></div>
+        </div>
+      </div>
+      <!-- ✅ NEU: GdB Toggle -->
+      <div class="sg">
+        <div class="toggle-row" onclick="toggleGdB()">
+          <div>
+            <div class="toggle-lbl">♿ Schwerbehinderung (GdB ≥ 50)</div>
+            <div class="toggle-sub">§ 208 SGB IX · +5 Tage Zusatzurlaub/Jahr</div>
+          </div>
+          <div class="tog" id="gdbTog"></div>
         </div>
       </div>
       <div class="divider"></div>
@@ -679,8 +684,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
     <div class="handle"></div>
     <div class="stitle">🎨 Farb-Editor</div>
     <div class="sbody">
-
-      <!-- Hintergrund Schieberegler -->
       <div class="ce-section">
         <div class="ce-lbl">🌑 Hintergrund</div>
         <div class="ce-slider-row">
@@ -701,19 +704,14 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
           </div>
         </div>
       </div>
-
-      <!-- Akzentfarben -->
       <div class="ce-section">
         <div class="ce-lbl">🎨 Akzentfarben</div>
         <div class="ce-grid" id="ce-colors-grid"></div>
       </div>
-
-      <!-- Live Vorschau -->
       <div class="ce-section">
         <div class="ce-lbl">👁 Vorschau</div>
         <div class="ce-preview" id="ce-preview"></div>
       </div>
-
     </div>
     <div class="sacts">
       <button class="ce-reset" onclick="resetColorEditor()">↺ Zurücksetzen</button>
@@ -750,7 +748,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         <button class="ab a-cancel" id="infoPrev" onclick="infoNav(-1)" style="flex:1">← Zurück</button>
         <button class="ab a-save"  id="infoNext" onclick="infoNav(1)"  style="flex:1">Weiter →</button>
       </div>
-      <!-- Punkte-Navigation -->
       <div id="infoDots" style="display:flex;justify-content:center;gap:6px;padding:10px 0;"></div>
     </div>
   </div>
@@ -762,7 +759,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
     <div class="handle"></div>
     <div class="stitle">🧮 AltersTeilZeit-Rechner</div>
     <div class="sbody">
-
       <div class="sg">
         <span class="slbl">Geburtsdatum</span>
         <input type="date" class="sinput" id="atzGeburt" oninput="calcATZ()"/>
@@ -784,7 +780,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
           <input type="date" class="sinput" id="atzIgmSeit" oninput="calcATZ()"/>
         </div>
       </div>
-
       <div class="divider"></div>
       <span class="slbl">🎯 Punktefaktoren (variabel)</span>
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:8px 0;">
@@ -823,11 +818,8 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
       <span class="slbl">Schichtperioden (ab 01.01.2001)</span>
       <div id="atzPerioden"></div>
       <button class="ab a-blue" style="width:100%;margin-top:8px;" onclick="addATZPeriode()">+ Periode hinzufügen</button>
-
       <div class="divider"></div>
-      <!-- ERGEBNIS -->
       <div id="atzErgebnis"></div>
-
     </div>
     <div class="sacts">
       <button class="ab a-cancel" onclick="close2('atzOvl')">Schließen</button>
@@ -859,7 +851,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
   </div>
 </div>
 
-<!-- DATENSCHUTZ HINWEIS (erster Start) -->
+<!-- DATENSCHUTZ HINWEIS -->
 <div class="ds-overlay" id="dsOverlay">
   <div class="ds-box">
     <div class="ds-icon">🔒</div>
@@ -871,7 +863,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
       • Urlaub, Z-Tage, V-Tage<br>
       • Persönliche Termine<br>
       • Alle Einstellungen<br><br>
-      <strong>Es werden keine Daten an einen Server übertragen.</strong> Niemand außer dir kann deine Daten einsehen.<br><br>
+      <strong>Es werden keine Daten an einen Server übertragen.</strong><br><br>
       <span style="color:var(--warn)">⚠ Tipp: Nutze den Export in den Einstellungen um regelmäßig eine Sicherungskopie zu erstellen!</span>
     </div>
     <button class="ds-btn" onclick="acceptDatenschutz()">Verstanden – Los geht's! 🦊</button>
@@ -888,38 +880,37 @@ const SDEFS = {
   '-':{l:'Frei',   c:'var(--fr-t)',b:'var(--fr-c)',h:0},
 };
 const OVDEFS = {
-  'U' :{l:'Urlaub',      c:'var(--U-c)', b:'var(--U-b)'},
-  'Z' :{l:'Z-Tag',       c:'var(--Z-c)', b:'var(--Z-b)'},
-  'V' :{l:'V-Tag',       c:'var(--V-c)', b:'var(--V-b)'},
+  'U' :{l:'Urlaub',       c:'var(--U-c)', b:'var(--U-b)'},
+  'Z' :{l:'Z-Tag',        c:'var(--Z-c)', b:'var(--Z-b)'},
+  'V' :{l:'V-Tag',        c:'var(--V-c)', b:'var(--V-b)'},
   'NF':{l:'N-Freischicht',c:'var(--NF-c)',b:'var(--NF-b)'},
-  'SU':{l:'Sonderurlaub',c:'var(--SU-c)',b:'var(--SU-b)'},
-  'WU':{l:'Winterurl.',  c:'var(--W-c)', b:'var(--W-b)'},
+  'SU':{l:'Sonderurlaub', c:'var(--SU-c)',b:'var(--SU-b)'},
+  'WU':{l:'Winterurl.',   c:'var(--W-c)', b:'var(--W-b)'},
 };
 const VALID = new Set(['F','S','N','B','-']);
 const MONTHS = ['Januar','Februar','März','April','Mai','Juni',
                 'Juli','August','September','Oktober','November','Dezember'];
 
 // ─── STATE ───────────────────────────────────────────────────────
-// segments: [{startDate:"YYYY-MM-DD", pattern:"FFSSNNN----"}] sorted by startDate
 let ST = {
-  segments: [],       // plan segments, sorted ascending by startDate
-  overrides: {},      // "YYYY-MM-DD" -> ovKey
+  segments: [],
+  overrides: {},
   name: '',
   urlaubTage: 30,
   azv: false,
-  senior: false,      // über 45 oder 10J Schicht
-  bundesland: 'HB',   // Bundesland für Feiertage & Schulferien
-  theme: 'midnight',  // Design-Theme
-  customColors: null, // Farb-Editor Akzentfarben
-  ceHue: undefined,   // Farb-Editor Farbton
-  ceSat: undefined,   // Farb-Editor Sättigung
-  ceBrightness: undefined, // Farb-Editor Helligkeit
-  termine: {},        // "YYYY-MM-DD" oder "MM-DD" -> {emoji, text, repeat}
-  uebertragZStd: 0,   // Vorjahresübertrag Z-Stunden (z.B. 160)
-  uebertragVStd: 0,   // Vorjahresübertrag V-Stunden (Schulden)
+  senior: false,
+  gdb: false,           // ✅ NEU: Schwerbehinderung GdB ≥50 → +5 Urlaubstage
+  bundesland: 'HB',
+  theme: 'midnight',
+  customColors: null,
+  ceHue: undefined,
+  ceSat: undefined,
+  ceBrightness: undefined,
+  termine: {},
+  uebertragZStd: 0,
+  uebertragVStd: 0,
   vm: new Date().getMonth(),
   vy: new Date().getFullYear(),
-  // ATZ Rechner
   atzGesamtPkte: null,
   atzGesamtJahr: null,
   atzPktAlter:   1.0,
@@ -934,15 +925,17 @@ function persist(){
   try{localStorage.setItem('spv5',JSON.stringify({
     segments:ST.segments, overrides:ST.overrides,
     name:ST.name, urlaubTage:ST.urlaubTage,
-    azv:ST.azv, senior:ST.senior, bundesland:ST.bundesland, theme:ST.theme,
+    azv:ST.azv, senior:ST.senior, gdb:ST.gdb,  // ✅ gdb gespeichert
+    bundesland:ST.bundesland, theme:ST.theme,
     customColors:ST.customColors, ceHue:ST.ceHue, ceSat:ST.ceSat, ceBrightness:ST.ceBrightness,
-        termine:ST.termine,
+    termine:ST.termine,
     uebertragZStd:ST.uebertragZStd, uebertragVStd:ST.uebertragVStd,
     atzGesamtPkte:ST.atzGesamtPkte, atzGesamtJahr:ST.atzGesamtJahr,
     atzPktAlter:ST.atzPktAlter, atzPktBetrieb:ST.atzPktBetrieb,
     atzPktVoll:ST.atzPktVoll, atzPktTeil:ST.atzPktTeil, atzPktIgm:ST.atzPktIgm
   }));}catch(e){}
 }
+
 function restore(){
   try{
     const d=JSON.parse(localStorage.getItem('spv5')||'{}');
@@ -952,6 +945,7 @@ function restore(){
     if(d.urlaubTage) ST.urlaubTage=d.urlaubTage;
     if(d.azv!==undefined) ST.azv=d.azv;
     if(d.senior!==undefined) ST.senior=d.senior;
+    if(d.gdb!==undefined) ST.gdb=d.gdb;  // ✅ gdb wiederhergestellt
     if(d.bundesland) ST.bundesland=d.bundesland;
     if(d.theme) ST.theme=d.theme;
     if(d.customColors) ST.customColors=d.customColors;
@@ -967,50 +961,38 @@ function restore(){
 }
 
 // ─── SEGMENT LOGIC ───────────────────────────────────────────────
-function sortSegs(){
-  ST.segments.sort((a,b)=>a.startDate.localeCompare(b.startDate));
-}
+function sortSegs(){ ST.segments.sort((a,b)=>a.startDate.localeCompare(b.startDate)); }
 
 function segForDate(dt){
-  // Find the segment whose startDate is <= dt (latest one)
-  const ds = toDateStr(dt);
-  let found = null;
+  const ds=toDateStr(dt);
+  let found=null;
   for(const seg of ST.segments){
-    if(seg.startDate <= ds) found = seg;
+    if(seg.startDate<=ds) found=seg;
     else break;
   }
   return found;
 }
 
 function shiftForDate(dt){
-  const seg = segForDate(dt);
-  if(!seg || !seg.pattern) return null;
-  const start = parseD(seg.startDate);
-  const diff = Math.round((dt - start) / 86400000);
-  if(diff < 0) return null;
-  return seg.pattern[diff % seg.pattern.length];
+  const seg=segForDate(dt);
+  if(!seg||!seg.pattern) return null;
+  const start=parseD(seg.startDate);
+  const diff=Math.round((dt-start)/86400000);
+  if(diff<0) return null;
+  return seg.pattern[diff%seg.pattern.length];
 }
 
-function cleanPat(s){
-  return [...s.toUpperCase()].filter(c=>VALID.has(c)).join('');
-}
-
-function parseD(s){
-  const [y,m,d]=s.split('-').map(Number);
-  const dt=new Date(y,m-1,d);dt.setHours(0,0,0,0);return dt;
-}
-function toDateStr(dt){
-  return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
-}
+function cleanPat(s){ return [...s.toUpperCase()].filter(c=>VALID.has(c)).join(''); }
+function parseD(s){ const[y,m,d]=s.split('-').map(Number);const dt=new Date(y,m-1,d);dt.setHours(0,0,0,0);return dt; }
+function toDateStr(dt){ return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`; }
 function dkey(y,m,d){ return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
 function todayStr(){ return toDateStr(new Date()); }
 
 // ─── HOLIDAYS & FERIEN ───────────────────────────────────────────
-function holidays(Y, bl){
-  bl = bl || ST.bundesland || 'NW';
+function holidays(Y,bl){
+  bl=bl||ST.bundesland||'NW';
   const h={};
   const a=(mo,d,n)=>h[`${Y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`]=n;
-  // Bundesweite Feiertage
   a(1,1,'Neujahr');a(5,1,'Tag d.Arbeit');a(10,3,'Tag d.Einheit');
   a(12,25,'1.Weihnacht');a(12,26,'2.Weihnacht');
   const E=easter(Y);
@@ -1018,122 +1000,79 @@ function holidays(Y, bl){
   const ad=(dt,n,l)=>{const r=new Date(dt);r.setDate(r.getDate()+n);h[fmt(r)]=l;};
   ad(E,-2,'Karfreitag');h[fmt(E)]='Ostersonntag';ad(E,1,'Ostermontag');
   ad(E,39,'Himmelfahrt');ad(E,49,'Pfingstso.');ad(E,50,'Pfingstmo.');
-  // Bundesland-spezifische Feiertage
-  const blH = getBLFeiertage(Y, bl, E, fmt, ad, a);
-  Object.assign(h, blH);
+  Object.assign(h,getBLFeiertage(Y,bl,E,fmt,ad,a));
   return h;
 }
 
-function getBLFeiertage(Y, bl, E, fmt, ad, a){
+function getBLFeiertage(Y,bl,E,fmt,ad,a){
   const h={};
   const add=(mo,d,n)=>h[`${Y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`]=n;
-  // Heilige Drei Könige: BW BY ST
   if(['BW','BY','ST'].includes(bl)) add(1,6,'Hl. Drei Könige');
-  // Internationaler Frauentag: BE MV
   if(['BE','MV'].includes(bl)) add(3,8,'Frauentag');
-  // Gründonnerstag: nur BY (optional)
-  // Fronleichnam: BW BY HE NW RP SL + Teile SN TH
   if(['BW','BY','HE','NW','RP','SL'].includes(bl)) ad(E,60,'Fronleichnam');
-  // Mariä Himmelfahrt: BY SL
   if(['BY','SL'].includes(bl)) add(8,15,'Mariä Himmelfahrt');
-  // Weltkindertag: TH
   if(bl==='TH') add(9,20,'Weltkindertag');
-  // Reformationstag: BB HB HH MV NI SN ST SH TH
   if(['BB','HB','HH','MV','NI','SN','ST','SH','TH'].includes(bl)) add(10,31,'Reformationstag');
-  // Allerheiligen: BW BY NW RP SL
   if(['BW','BY','NW','RP','SL'].includes(bl)) add(11,1,'Allerheiligen');
-  // Buß- und Bettag: SN
   if(bl==='SN'){
-    // Mittwoch vor dem 23. November
-    const nov23 = new Date(Y,10,23);
-    const dow = nov23.getDay();
-    const bbt = new Date(nov23);
-    bbt.setDate(nov23.getDate() - ((dow + 4) % 7 || 7));
+    const nov23=new Date(Y,10,23);
+    const dow=nov23.getDay();
+    const bbt=new Date(nov23);
+    bbt.setDate(nov23.getDate()-((dow+4)%7||7));
     h[fmt(bbt)]='Buß- & Bettag';
   }
   return h;
 }
 
-// Schulferien 2025 & 2026 je Bundesland (vereinfacht, Hauptferienzeiten)
-// Ferien-Cache: { "HB-2026": [{start, end, name}, ...] }
-const ferienCache = {};
+const ferienCache={};
 
-function isFerientag(dateStr, ferienList){
+function isFerientag(dateStr,ferienList){
   if(!ferienList) return null;
   for(const f of ferienList){
-    if(dateStr >= f.start && dateStr <= f.end) return f.name;
+    if(dateStr>=f.start&&dateStr<=f.end) return f.name;
   }
   return null;
 }
 
-// Lädt Feriendaten von ferien-api.de und cached sie
-async function loadFerienAPI(Y, bl){
-  const key = `${bl}-${Y}`;
+async function loadFerienAPI(Y,bl){
+  const key=`${bl}-${Y}`;
   if(ferienCache[key]) return ferienCache[key];
-
-  // Statische Fallback-Daten falls API nicht erreichbar
-  const fallback = SCHULFERIEN[bl] ? SCHULFERIEN[bl].filter(f =>
-    f.start.startsWith(Y) || f.end.startsWith(Y)) : [];
-
-  try {
-    // Primär: openholidaysapi.org – offizielle Open-Data API, sehr stabil
-    // Format: /SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-HB&year=2026
-    const url = `https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-${bl}&languageIsoCode=DE&validFrom=${Y}-01-01&validTo=${Y}-12-31`;
-    const res = await fetch(url, {headers:{accept:'application/json'}});
+  const fallback=SCHULFERIEN[bl]?SCHULFERIEN[bl].filter(f=>f.start.startsWith(Y)||f.end.startsWith(Y)):[];
+  try{
+    const url=`https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-${bl}&languageIsoCode=DE&validFrom=${Y}-01-01&validTo=${Y}-12-31`;
+    const res=await fetch(url,{headers:{accept:'application/json'}});
     if(!res.ok) throw new Error('API Fehler');
-    const data = await res.json();
-    const ferien = data.map(f => ({
-      start: f.startDate,
-      end:   f.endDate,
-      name:  f.name && f.name[0] ? f.name[0].text : 'Ferien',
-    }));
-    ferienCache[key] = ferien;
+    const data=await res.json();
+    const ferien=data.map(f=>({start:f.startDate,end:f.endDate,name:f.name&&f.name[0]?f.name[0].text:'Ferien'}));
+    ferienCache[key]=ferien;
     return ferien;
-  } catch(e) {
-    // Fallback 1: schulferien-api.de
-    try {
-      const url2 = `https://schulferien-api.de/api/v1/${Y}/${bl}/`;
-      const res2 = await fetch(url2);
+  }catch(e){
+    try{
+      const url2=`https://schulferien-api.de/api/v1/${Y}/${bl}/`;
+      const res2=await fetch(url2);
       if(!res2.ok) throw new Error('API2 Fehler');
-      const data2 = await res2.json();
-      const nameMap = {
-        'winterferien':'Winterferien','osterferien':'Osterferien',
-        'pfingstferien':'Pfingstferien','sommerferien':'Sommerferien',
-        'herbstferien':'Herbstferien','weihnachtsferien':'Weihnachtsferien',
-      };
-      const ferien2 = data2.map(f => ({
-        start: f.start.slice(0,10),
-        end:   f.end.slice(0,10),
-        name:  nameMap[f.name?.toLowerCase()] || f.name?.charAt(0).toUpperCase()+f.name?.slice(1) || 'Ferien',
-      }));
-      ferienCache[key] = ferien2;
+      const data2=await res2.json();
+      const nameMap={'winterferien':'Winterferien','osterferien':'Osterferien','pfingstferien':'Pfingstferien','sommerferien':'Sommerferien','herbstferien':'Herbstferien','weihnachtsferien':'Weihnachtsferien'};
+      const ferien2=data2.map(f=>({start:f.start.slice(0,10),end:f.end.slice(0,10),name:nameMap[f.name?.toLowerCase()]||f.name?.charAt(0).toUpperCase()+f.name?.slice(1)||'Ferien'}));
+      ferienCache[key]=ferien2;
       return ferien2;
-    } catch(e2) {
-      // Fallback 2: Komplett offline → statische Daten
-      ferienCache[key] = fallback;
+    }catch(e2){
+      ferienCache[key]=fallback;
       return fallback;
     }
   }
 }
 
-// Synchrone Version für Kalender-Rendering (nutzt Cache)
-function getFerien(Y, bl){
-  bl = bl || ST.bundesland || 'HB';
-  const key = `${bl}-${Y}`;
-  // Wenn im Cache: direkt zurückgeben
+function getFerien(Y,bl){
+  bl=bl||ST.bundesland||'HB';
+  const key=`${bl}-${Y}`;
   if(ferienCache[key]) return ferienCache[key];
-  // Noch nicht geladen: async laden + Re-render auslösen
-  loadFerienAPI(Y, bl).then(data => {
-    ferienCache[key] = data;
-    render(); // Kalender neu zeichnen nach Laden
-  });
-  // Währenddessen: statische Daten als Fallback
-  const F = SCHULFERIEN[bl] || [];
-  return F.filter(f => f.start.startsWith(Y) || f.end.startsWith(Y));
+  loadFerienAPI(Y,bl).then(data=>{ferienCache[key]=data;render();});
+  const F=SCHULFERIEN[bl]||[];
+  return F.filter(f=>f.start.startsWith(Y)||f.end.startsWith(Y));
 }
 
-// Schulferien-Fallback (offline) – wird durch ferien-api.de automatisch aktualisiert
-const SCHULFERIEN = {
+const SCHULFERIEN={
   HB:[
     {start:'2025-01-27',end:'2025-01-31',name:'Winterferien'},
     {start:'2025-04-07',end:'2025-04-19',name:'Osterferien'},
@@ -1147,6 +1086,7 @@ const SCHULFERIEN = {
     {start:'2026-12-21',end:'2027-01-05',name:'Weihnachtsferien'},
   ],
 };
+
 function easter(Y){
   const a=Y%19,b=Math.floor(Y/100),c=Y%100,d=Math.floor(b/4),e=b%4,
     f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),
@@ -1158,96 +1098,69 @@ function easter(Y){
 
 // ─── JAHRES STATS CALC ───────────────────────────────────────────
 function calcJahres(Y){
-  const stats = {
-    F:0,S:0,N:0,B:0,free:0,
-    urlaubDays:0, zDays:0, vDays:0, nfDays:0, suDays:0,
-    istStunden:0, urlaubSommer:0, wuDays:0,
-  };
-  const start = new Date(Y,0,1); start.setHours(0,0,0,0);
-  const end   = new Date(Y,11,31); end.setHours(0,0,0,0);
-  for(let dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
-    const key = toDateStr(dt);
-    const ov  = ST.overrides[key];
-    const shift = shiftForDate(new Date(dt));
-    const m = dt.getMonth(); // 0-based
-
-    if(ov==='U'){
-      stats.urlaubDays++;
-      // Sommer: April(3) bis September(8)
-      if(m>=3 && m<=8) stats.urlaubSommer++;
-    }
+  const stats={F:0,S:0,N:0,B:0,free:0,urlaubDays:0,zDays:0,vDays:0,nfDays:0,suDays:0,istStunden:0,urlaubSommer:0,wuDays:0};
+  const start=new Date(Y,0,1);start.setHours(0,0,0,0);
+  const end=new Date(Y,11,31);end.setHours(0,0,0,0);
+  for(let dt=new Date(start);dt<=end;dt.setDate(dt.getDate()+1)){
+    const key=toDateStr(dt);
+    const ov=ST.overrides[key];
+    const shift=shiftForDate(new Date(dt));
+    const m=dt.getMonth();
+    if(ov==='U'){stats.urlaubDays++;if(m>=3&&m<=8)stats.urlaubSommer++;}
     else if(ov==='Z') stats.zDays++;
     else if(ov==='V') stats.vDays++;
     else if(ov==='NF') stats.nfDays++;
     else if(ov==='SU') stats.suDays++;
     else if(ov==='WU') stats.wuDays++;
-
-    if(shift && !ov){
+    if(shift&&!ov){
       if(shift in SDEFS) stats[shift]=(stats[shift]||0)+1;
       if(shift==='-') stats.free++;
-      if(shift && shift!=='-') stats.istStunden += SDEFS[shift].h;
+      if(shift&&shift!=='-') stats.istStunden+=SDEFS[shift].h;
     }
-    // Bezahlte Abwesenheiten zählen als Arbeitsstunden (8h/Tag)
-    if(ov && ov!=='V'){
-      const sh = shift && shift!=='-' ? SDEFS[shift].h : 8;
-      stats.istStunden += sh;
-      // Schichttyp IMMER mitzählen – auch wenn Urlaub/Z/NF/SU/WU drauf liegt
-      // Damit Nachtschichten unter Überschreibungen korrekt für NF gezählt werden!
-      if(shift && shift in SDEFS && shift!=='-'){
-        stats[shift]=(stats[shift]||0)+1;
-      }
+    if(ov&&ov!=='V'){
+      const sh=shift&&shift!=='-'?SDEFS[shift].h:8;
+      stats.istStunden+=sh;
+      if(shift&&shift in SDEFS&&shift!=='-'){stats[shift]=(stats[shift]||0)+1;}
     }
   }
-
-  const sollStunden = ST.azv ? 1792 : 1856;
-  const stDiff = stats.istStunden - sollStunden;
-
-  // Vorjahresübertrag
-  const uebZStd = ST.uebertragZStd || 0;
-  const uebVStd = ST.uebertragVStd || 0;
-  const uebZTage = Math.round(uebZStd / 8);
-  const uebVTage = Math.round(uebVStd / 8);
-
-  // Z/V Bilanz inkl. Übertrag: Guthaben - verbrauchte Tage
-  const zBilanzStd = uebZStd + (stDiff > 0 ? stDiff : 0) - (stats.zDays * 8);
-  const vBilanzStd = uebVStd + (stDiff < 0 ? Math.abs(stDiff) : 0) - (stats.vDays * 8);
-  const azKStunden = Math.max(0, zBilanzStd); // am 31.12. noch offen → AZK
-
-  // N-Freischichten Anspruch
-  // stats.N enthält jetzt auch Nachtschichten an NF-Tagen
+  const sollStunden=ST.azv?1792:1856;
+  const stDiff=stats.istStunden-sollStunden;
+  const uebZStd=ST.uebertragZStd||0;
+  const uebVStd=ST.uebertragVStd||0;
+  const uebZTage=Math.round(uebZStd/8);
+  const uebVTage=Math.round(uebVStd/8);
+  const zBilanzStd=uebZStd+(stDiff>0?stDiff:0)-(stats.zDays*8);
+  const vBilanzStd=uebVStd+(stDiff<0?Math.abs(stDiff):0)-(stats.vDays*8);
+  const azKStunden=Math.max(0,zBilanzStd);
   let nfAnspruch;
-  if(ST.senior){
-    nfAnspruch = 4;
-  } else {
-    nfAnspruch = Math.floor(stats.N / 17);
-  }
+  if(ST.senior){ nfAnspruch=4; } else { nfAnspruch=Math.floor(stats.N/17); }
+  const winterGrenze=Math.floor(ST.urlaubTage/3);
+  const winterAnspruch=stats.urlaubDays>0&&stats.urlaubSommer<=winterGrenze&&stats.wuDays===0;
 
-  // Winterurlaubstag: Anspruch wenn max. 1/3 des Jahresurlaubs im Sommer (01.04–30.09)
-  // Laut MTV Stahl: 2/3 des Urlaubs müssen im Winter (01.10–31.03) genommen werden
-  const winterGrenze = Math.floor(ST.urlaubTage / 3);
-  const winterAnspruch = stats.urlaubDays > 0 && stats.urlaubSommer <= winterGrenze && stats.wuDays === 0;
+  // ✅ GdB: effektiver Urlaubsanspruch
+  const urlaubEff = ST.urlaubTage + (ST.gdb ? 5 : 0);
 
   return {
     ...stats, sollStunden, stDiff, nfAnspruch, winterAnspruch,
-    resturlaub: ST.urlaubTage - stats.urlaubDays,
-    nfRest: nfAnspruch - stats.nfDays,
-    uebZStd, uebVStd, uebZTage, uebVTage,
-    zBilanzStd, vBilanzStd, azKStunden,
+    urlaubEff,
+    resturlaub: urlaubEff - stats.urlaubDays,
+    nfRest: nfAnspruch-stats.nfDays,
+    uebZStd,uebVStd,uebZTage,uebVTage,zBilanzStd,vBilanzStd,azKStunden,
   };
 }
 
 // ─── RENDER ──────────────────────────────────────────────────────
 function render(){
-  document.getElementById('uname').textContent = ST.name || '';
+  document.getElementById('uname').textContent=ST.name||'';
   renderBanner();
   renderCal();
   renderJahresCard();
 }
 
 function renderBanner(){
-  const wrap = document.getElementById('patChips');
-  wrap.innerHTML = '';
-  const active = segForDate(new Date());
+  const wrap=document.getElementById('patChips');
+  wrap.innerHTML='';
+  const active=segForDate(new Date());
   if(!active){
     wrap.innerHTML='<span style="color:var(--muted);font-size:.78rem">Kein Muster – tippen zum Eingeben</span>';
     return;
@@ -1272,13 +1185,13 @@ function renderBanner(){
 }
 
 function renderCal(){
-  const {vy:Y,vm:M}=ST;
+  const{vy:Y,vm:M}=ST;
   document.getElementById('mName').textContent=MONTHS[M];
   document.getElementById('mYear').textContent=Y;
   const grid=document.getElementById('cGrid');
   grid.innerHTML='';
-  const HL=holidays(Y, ST.bundesland);
-  const ferienList=getFerien(String(Y), ST.bundesland);
+  const HL=holidays(Y,ST.bundesland);
+  const ferienList=getFerien(String(Y),ST.bundesland);
   const today=new Date();today.setHours(0,0,0,0);
   const fd=new Date(Y,M,1).getDay();
   const pad=fd===0?6:fd-1;
@@ -1299,13 +1212,10 @@ function renderCal(){
     const isToday=dt.getTime()===today.getTime();
     const ov=ST.overrides[key];
     const shift=shiftForDate(dt);
-
-    // Check if this day is start of a new segment
-    const segStart = ST.segments.some(s=>s.startDate===key);
-
-    const isFT = !!HL[key];
-    const ferienName = isFerientag(key, ferienList);
-    const cellCls = 'dc'+(isToday?' today':'')+(isWE?' we-bg':'')+(isFT?' feiertag':'')+(ferienName?' ferien':'');
+    const segStart=ST.segments.some(s=>s.startDate===key);
+    const isFT=!!HL[key];
+    const ferienName=isFerientag(key,ferienList);
+    const cellCls='dc'+(isToday?' today':'')+(isWE?' we-bg':'')+(isFT?' feiertag':'')+(ferienName?' ferien':'');
     const cell=mk('div',cellCls);
     cell.onclick=()=>openDay(key,d);
     cell.addEventListener('contextmenu',e=>{e.preventDefault();openTermin(key,d);});
@@ -1313,18 +1223,11 @@ function renderCal(){
     cell.addEventListener('touchstart',()=>{pressTimer=setTimeout(()=>openTermin(key,d),600);},{passive:true});
     cell.addEventListener('touchend',()=>clearTimeout(pressTimer),{passive:true});
     cell.addEventListener('touchmove',()=>clearTimeout(pressTimer),{passive:true});
-
     const dn=mk('div','dn');dn.textContent=d;cell.appendChild(dn);
-    if(segStart && ST.segments.length>1){
-      const dot=mk('div','plan-dot');cell.appendChild(dot);
-    }
-
+    if(segStart&&ST.segments.length>1){const dot=mk('div','plan-dot');cell.appendChild(dot);}
     if(ov){
       if(ov==='NF'){
-        // NF klein anzeigen
-        const nfl=mk('div','nf-lbl');
-        nfl.textContent='NF';
-        cell.appendChild(nfl);
+        const nfl=mk('div','nf-lbl');nfl.textContent='NF';cell.appendChild(nfl);
         cell.style.outline=`1px solid var(--NF-c)`;
       } else {
         const o=OVDEFS[ov];
@@ -1341,23 +1244,17 @@ function renderCal(){
       chip.style.cssText=`background:${ss.b};color:${ss.c}`;
       chip.textContent=shift==='-'?'—':shift;
       cell.appendChild(chip);
-      if(!ov){
-        if(shift==='-') stats.free++;
-        else stats[shift]=(stats[shift]||0)+1;
-      }
+      if(!ov){if(shift==='-') stats.free++;else stats[shift]=(stats[shift]||0)+1;}
     }
     if(HL[key]){
       const hl=mk('div','fhlbl');hl.textContent=HL[key];cell.appendChild(hl);
     } else if(ferienName){
       const fl=mk('div','ferhlbl');
-      const ferienKurz = {'Sommerferien':'Sommer','Winterferien':'Winter',
-        'Osterferien':'Ostern','Herbstferien':'Herbst',
-        'Weihnachtsferien':'Weihnacht','Pfingstferien':'Pfingsten'};
-      fl.textContent = ferienKurz[ferienName] || ferienName.replace('ferien','').substring(0,7);
+      const ferienKurz={'Sommerferien':'Sommer','Winterferien':'Winter','Osterferien':'Ostern','Herbstferien':'Herbst','Weihnachtsferien':'Weihnacht','Pfingstferien':'Pfingsten'};
+      fl.textContent=ferienKurz[ferienName]||ferienName.replace('ferien','').substring(0,7);
       cell.appendChild(fl);
     }
-    // Persönliche Termine
-    const termin = getTerminForDate(key);
+    const termin=getTerminForDate(key);
     if(termin){
       const tc=mk('div','termin-chip');
       tc.textContent=termin.emoji+' '+termin.text;
@@ -1374,11 +1271,10 @@ function renderCal(){
 
 function renderMonthStats(st){
   const row=document.getElementById('stats');row.innerHTML='';
-  [
-    {k:'F',l:'Früh',c:'var(--F-c)'},{k:'S',l:'Spät',c:'var(--S-c)'},
-    {k:'N',l:'Nacht',c:'var(--N-c)'},{k:'free',l:'Frei',c:'var(--muted)'},
-    {k:'U',l:'Urlaub',c:'var(--U-c)'},{k:'Z',l:'Z-Tag',c:'var(--Z-c)'},
-    {k:'NF',l:'N-Frei',c:'var(--NF-c)'},
+  [{k:'F',l:'Früh',c:'var(--F-c)'},{k:'S',l:'Spät',c:'var(--S-c)'},
+   {k:'N',l:'Nacht',c:'var(--N-c)'},{k:'free',l:'Frei',c:'var(--muted)'},
+   {k:'U',l:'Urlaub',c:'var(--U-c)'},{k:'Z',l:'Z-Tag',c:'var(--Z-c)'},
+   {k:'NF',l:'N-Frei',c:'var(--NF-c)'},
   ].forEach(it=>{
     const el=mk('div','si');
     el.innerHTML=`<div class="sv" style="color:${it.c}">${st[it.k]||0}</div><div class="sl">${it.l}</div>`;
@@ -1391,26 +1287,24 @@ function renderJahresCard(){
   const jc=document.getElementById('jahresCard');
   if(!ST.segments.length){jc.innerHTML='';return;}
   const j=calcJahres(Y);
-  // Check if any segment for this year starts after 01.01
-  const firstSeg = ST.segments.find(s=>s.startDate.startsWith(Y));
-  const startsLate = firstSeg && firstSeg.startDate !== `${Y}-01-01`;
-
-  const stColor = j.stDiff>0?'var(--ok)':j.stDiff<0?'var(--err)':'var(--muted)';
-  const zTageNeu = j.stDiff>0 ? Math.round(j.stDiff/8) : 0;
-  const vTageNeu = j.stDiff<0 ? Math.round(Math.abs(j.stDiff)/8) : 0;
-  const stLabel = j.stDiff>0?`+${j.stDiff}h → ${zTageNeu} Z-Tage`:j.stDiff<0?`${j.stDiff}h → ${vTageNeu} V-Tage`:'ausgeglichen';
-  const urlColor = j.resturlaub>0?'var(--ok)':j.resturlaub===0?'var(--muted)':'var(--err)';
-  const nfColor = j.nfRest>0?'var(--ok)':j.nfRest<=0?'var(--muted)':'var(--muted)';
-  const winterColor = j.winterAnspruch?'var(--W-c)':'var(--muted)';
+  const firstSeg=ST.segments.find(s=>s.startDate.startsWith(Y));
+  const startsLate=firstSeg&&firstSeg.startDate!==`${Y}-01-01`;
+  const stColor=j.stDiff>0?'var(--ok)':j.stDiff<0?'var(--err)':'var(--muted)';
+  const zTageNeu=j.stDiff>0?Math.round(j.stDiff/8):0;
+  const vTageNeu=j.stDiff<0?Math.round(Math.abs(j.stDiff)/8):0;
+  const stLabel=j.stDiff>0?`+${j.stDiff}h → ${zTageNeu} Z-Tage`:j.stDiff<0?`${j.stDiff}h → ${vTageNeu} V-Tage`:'ausgeglichen';
+  const urlColor=j.resturlaub>0?'var(--ok)':j.resturlaub===0?'var(--muted)':'var(--err)';
+  const nfColor=j.nfRest>0?'var(--ok)':'var(--muted)';
+  const winterColor=j.winterAnspruch?'var(--W-c)':'var(--muted)';
 
   jc.innerHTML=`
     <div class="jc-title">${Y} · Jahresübersicht</div>
-    ${startsLate ? `<div style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);margin-bottom:8px;line-height:1.5;">⚠ Plan beginnt am ${firstSeg.startDate.split('-').reverse().slice(0,2).join('.')} – Jahreswerte vor diesem Datum fehlen. Für vollständige Berechnung Plan ab 01.01.${Y} anlegen.</div>` : ''}
+    ${startsLate?`<div style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);margin-bottom:8px;line-height:1.5;">⚠ Plan beginnt am ${firstSeg.startDate.split('-').reverse().slice(0,2).join('.')} – Jahreswerte vor diesem Datum fehlen.</div>`:''}
     <div class="jc-grid">
       <div class="jc-item">
         <div class="jc-val" style="color:${urlColor}">${j.resturlaub}</div>
         <div class="jc-lbl">Resturlaub</div>
-        <div class="jc-sub" style="color:var(--muted)">${j.urlaubDays} von ${ST.urlaubTage} verbraucht</div>
+        <div class="jc-sub" style="color:var(--muted)">${j.urlaubDays} von ${j.urlaubEff}${ST.gdb?' (+5 ♿)':''} verbraucht</div>
       </div>
       <div class="jc-item">
         <div class="jc-val" style="color:${stColor}">${j.istStunden}h</div>
@@ -1443,9 +1337,9 @@ function renderJahresCard(){
         <div class="jc-sub" style="color:${winterColor}">${j.winterAnspruch?'Anspruch vorhanden':'max '+Math.floor(ST.urlaubTage/3)+' Sommertage'}</div>
       </div>
       <div class="jc-item">
-        <div class="jc-val" style="color:var(--ok)">${ST.atzGesamtPkte!==null ? ST.atzGesamtPkte.toFixed(2).replace('.',',') : '–'}</div>
+        <div class="jc-val" style="color:var(--ok)">${ST.atzGesamtPkte!==null?ST.atzGesamtPkte.toFixed(2).replace('.',','):'–'}</div>
         <div class="jc-lbl">ATZ-Punkte</div>
-        <div class="jc-sub" style="color:var(--muted)">${ST.atzGesamtPkte!==null ? 'Stichtag 31.12.'+(ST.atzGesamtJahr||'') : 'Im ATZ-Rechner berechnen'}</div>
+        <div class="jc-sub" style="color:var(--muted)">${ST.atzGesamtPkte!==null?'Stichtag 31.12.'+(ST.atzGesamtJahr||''):'Im ATZ-Rechner berechnen'}</div>
       </div>
     </div>
     ${j.uebZTage-j.zDays>0?`<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! ${j.uebZTage-j.zDays} Z-Tage offen → wandern am 31.12. ins AZK</div>`:''}
@@ -1455,81 +1349,57 @@ function renderJahresCard(){
 // ─── DAY SHEET ───────────────────────────────────────────────────
 function openDay(key,d){
   editKey=key;editOvSel=ST.overrides[key]||null;
-  const [y,m]=key.split('-').map(Number);
+  const[y,m]=key.split('-').map(Number);
   document.getElementById('dayDate').textContent=`${d}. ${MONTHS[m-1]} ${y}`;
-
   const nfBox=document.getElementById('nfInfo');
   nfBox.innerHTML='';
   const dt=parseD(key);
   const Y=dt.getFullYear();
-  const yearN = countNSchichtenBisDate(dt);
-  const j = calcJahres(Y);
-
-  // Z-Tage Info-Box
+  const yearN=countNSchichtenBisDate(dt);
+  const j=calcJahres(Y);
   const zBox=mk('div','nf-info');
-  const zColor = (j.uebZTage - j.zDays)>0?'var(--Z-c)':'var(--muted)';
+  const zColor=(j.uebZTage-j.zDays)>0?'var(--Z-c)':'var(--muted)';
   zBox.innerHTML=`Z-Tage Übertrag: <span class="nf-count" style="color:var(--Z-c)">${j.uebZTage}</span>
     &nbsp;·&nbsp; Verbraucht: <span class="nf-count" style="color:var(--muted)">${j.zDays}</span>
-    &nbsp;·&nbsp; Offen: <span class="nf-count" style="color:${zColor}">${j.uebZTage - j.zDays}</span><br>
+    &nbsp;·&nbsp; Offen: <span class="nf-count" style="color:${zColor}">${j.uebZTage-j.zDays}</span><br>
     <span style="font-size:.65rem">📅 Nachtschichten ${Y}: <b style="color:var(--N-c)">${yearN}</b> &nbsp;·&nbsp; NF-Anspruch: <b style="color:var(--NF-c)">${ST.senior?4:Math.floor(yearN/17)}</b></span>`;
   nfBox.appendChild(zBox);
-
   const grid=document.getElementById('ovGrid');grid.innerHTML='';
-  // Kontingente berechnen
-  const urlaubRest = ST.urlaubTage - j.urlaubDays;
-  const zRest      = j.uebZTage - j.zDays;
-  const vRest      = j.vDays; // bereits verbrauchte V-Tage
-  const nfAnspruch = ST.senior ? 4 : Math.floor(yearN/17);
-  const nfVerbraucht = countNFVerbraucht(Y);
-  const nfRest     = nfAnspruch - nfVerbraucht;
-
+  const urlaubRest=j.urlaubEff-j.urlaubDays;  // ✅ GdB-adjustiert
+  const zRest=j.uebZTage-j.zDays;
+  const nfAnspruch=ST.senior?4:Math.floor(yearN/17);
+  const nfVerbraucht=countNFVerbraucht(Y);
+  const nfRest=nfAnspruch-nfVerbraucht;
   Object.entries(OVDEFS).forEach(([k,o])=>{
     const btn=mk('div','oo'+(editOvSel===k?' sel':''));
     btn.style.cssText=`background:${o.b};color:${o.c}`;
-
-    // Warnung als Badge wenn Kontingent erschöpft
-    let warn = '';
-    if(k==='U'  && urlaubRest<=0) warn = ' ⚠';
-    if(k==='Z'  && zRest<=0)      warn = ' ⚠';
-    if(k==='NF' && nfRest<=0)     warn = ' ⚠';
-    btn.textContent = o.l + warn;
-
+    let warn='';
+    if(k==='U'&&urlaubRest<=0) warn=' ⚠';
+    if(k==='Z'&&zRest<=0) warn=' ⚠';
+    if(k==='NF'&&nfRest<=0) warn=' ⚠';
+    btn.textContent=o.l+warn;
     if(k==='U'){
       btn.onclick=()=>{
-        // Erst Z-Tage Warnung
-        if(zRest > 0){
-          if(!confirm('⚠️ Z-Tage zuerst verbrauchen!\n\nDu hast noch ' + zRest + ' Z-Tage offen.\nNicht verbrauchte Z-Tage wandern am 31.12. ins AZK!\n\nTrotzdem Urlaub eintragen?')) return;
-        }
-        // Dann Kontingent-Warnung
-        if(urlaubRest <= 0){
-          if(!confirm('⚠️ Urlaubskontingent erschöpft!\n\nDu hast bereits alle ' + ST.urlaubTage + ' Urlaubstage eingetragen.\n\nTrotzdem eintragen?')) return;
-        }
+        if(zRest>0){if(!confirm('⚠️ Z-Tage zuerst verbrauchen!\n\nNoch '+zRest+' Z-Tage offen.\n\nTrotzdem Urlaub eintragen?')) return;}
+        if(urlaubRest<=0){if(!confirm('⚠️ Urlaubskontingent erschöpft!\n\nAlle '+j.urlaubEff+' Urlaubstage eingetragen.\n\nTrotzdem eintragen?')) return;}
         selOv(btn,k);
       };
     } else if(k==='Z'){
       btn.onclick=()=>{
-        if(zRest <= 0){
-          if(!confirm('⚠️ Keine Z-Tage mehr verfügbar!\n\nÜbertrag: ' + j.uebZTage + ' · Verbraucht: ' + j.zDays + '\n\nTrotzdem eintragen?')) return;
-        }
+        if(zRest<=0){if(!confirm('⚠️ Keine Z-Tage verfügbar!\n\nÜbertrag: '+j.uebZTage+' · Verbraucht: '+j.zDays+'\n\nTrotzdem eintragen?')) return;}
         selOv(btn,k);
       };
     } else if(k==='V'){
       btn.onclick=()=>{
-        if(j.uebVTage <= 0){
-          if(!confirm('⚠️ Kein V-Tage Übertrag vorhanden!\n\nIn den Einstellungen Vorjahres-V-Stunden eintragen.\n\nTrotzdem eintragen?')) return;
-        }
+        if(j.uebVTage<=0){if(!confirm('⚠️ Kein V-Tage Übertrag!\n\nTrotzdem eintragen?')) return;}
         selOv(btn,k);
       };
     } else if(k==='NF'){
       btn.onclick=()=>{
-        if(nfRest <= 0){
-          if(!confirm('⚠️ NF-Kontingent erschöpft!\n\nAnspruch: ' + nfAnspruch + ' · Verbraucht: ' + nfVerbraucht + '\n\nTrotzdem eintragen?')) return;
-        }
+        if(nfRest<=0){if(!confirm('⚠️ NF-Kontingent erschöpft!\n\nAnspruch: '+nfAnspruch+' · Verbraucht: '+nfVerbraucht+'\n\nTrotzdem eintragen?')) return;}
         selOv(btn,k);
       };
-    } else {
-      btn.onclick=()=>selOv(btn,k);
-    }
+    } else {btn.onclick=()=>selOv(btn,k);}
     grid.appendChild(btn);
   });
   open2('dayOvl');
@@ -1539,7 +1409,6 @@ function selOv(btn,k){
   document.querySelectorAll('.oo').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');editOvSel=k;
 }
-
 function countNSchichtenBisDate(dt){
   const Y=dt.getFullYear();
   const start=new Date(Y,0,1);start.setHours(0,0,0,0);
@@ -1552,24 +1421,13 @@ function countNSchichtenBisDate(dt){
   return count;
 }
 function countNFVerbraucht(Y){
-  return Object.entries(ST.overrides)
-    .filter(([k,v])=>k.startsWith(`${Y}`)&&v==='NF').length;
+  return Object.entries(ST.overrides).filter(([k,v])=>k.startsWith(`${Y}`)&&v==='NF').length;
 }
-
-function saveDay(){
-  if(editKey&&editOvSel){ST.overrides[editKey]=editOvSel;persist();render();}
-  close2('dayOvl');
-}
-function clearDay(){
-  if(editKey){delete ST.overrides[editKey];persist();render();}
-  close2('dayOvl');
-}
+function saveDay(){if(editKey&&editOvSel){ST.overrides[editKey]=editOvSel;persist();render();}close2('dayOvl');}
+function clearDay(){if(editKey){delete ST.overrides[editKey];persist();render();}close2('dayOvl');}
 
 // ─── PATTERN / SEGMENT SHEET ─────────────────────────────────────
-function openPatSheet(){
-  renderSegList();
-  open2('patOvl');
-}
+function openPatSheet(){renderSegList();open2('patOvl');}
 
 function renderSegList(){
   const list=document.getElementById('segList');list.innerHTML='';
@@ -1579,12 +1437,10 @@ function renderSegList(){
   }
   ST.segments.forEach((seg,i)=>{
     const item=mk('div','seg-item');
-    // date
     const dd=mk('div','seg-date');
-    const [y,m,d]=seg.startDate.split('-').map(Number);
+    const[y,m,d]=seg.startDate.split('-').map(Number);
     dd.textContent=`ab ${d}.${m}.${y}`;
     item.appendChild(dd);
-    // mini chips
     const chips=mk('div','seg-pat');
     const show=[...seg.pattern].slice(0,12);
     show.forEach(c=>{
@@ -1601,9 +1457,7 @@ function renderSegList(){
       chips.appendChild(more);
     }
     item.appendChild(chips);
-    // edit
     item.onclick=()=>editSeg(i);
-    // delete
     const del=mk('div','seg-del');del.textContent='✕';
     del.onclick=(e)=>{e.stopPropagation();deleteSeg(i);};
     item.appendChild(del);
@@ -1616,9 +1470,7 @@ function addNewSeg(){
   document.getElementById('segTitle').textContent='Neuer Planabschnitt';
   document.getElementById('segDateIn').value=todayStr();
   document.getElementById('segPatIn').value='';
-  buildSegKboard();
-  updateSegPreview();
-  open2('segOvl');
+  buildSegKboard();updateSegPreview();open2('segOvl');
 }
 function editSeg(i){
   editSegIdx=i;
@@ -1626,41 +1478,31 @@ function editSeg(i){
   document.getElementById('segTitle').textContent='Planabschnitt bearbeiten';
   document.getElementById('segDateIn').value=seg.startDate;
   document.getElementById('segPatIn').value=seg.pattern;
-  buildSegKboard();
-  updateSegPreview();
-  open2('segOvl');
+  buildSegKboard();updateSegPreview();open2('segOvl');
 }
 function deleteSeg(i){
-  if(confirm('Diesen Planabschnitt löschen?')){
-    ST.segments.splice(i,1);
-    persist();render();renderSegList();
-  }
+  if(confirm('Diesen Planabschnitt löschen?')){ST.segments.splice(i,1);persist();render();renderSegList();}
 }
 function checkStartDatum(){
-  const sd = document.getElementById('segDateIn').value;
-  const warn = document.getElementById('startDatumWarn');
-  if(!sd){ warn.style.display='none'; return; }
-  const [y,m,d] = sd.split('-').map(Number);
-  const is01Jan = (m===1 && d===1);
-  const is01 = (d===1);
-  if(is01Jan){
-    warn.style.display='none';
-  } else if(is01){
+  const sd=document.getElementById('segDateIn').value;
+  const warn=document.getElementById('startDatumWarn');
+  if(!sd){warn.style.display='none';return;}
+  const[y,m,d]=sd.split('-').map(Number);
+  if(m===1&&d===1){warn.style.display='none';}
+  else if(d===1){
     warn.style.display='block';
-    warn.innerHTML='⚠ Monatsbeginn gewählt. Für eine <strong>vollständige Jahresberechnung</strong> (Nachtschichten, Z-Tage, Urlaubsanspruch, N-Freischichten) empfehlen wir den <strong>01.01.' + y + '</strong> als Startdatum. Werte vor diesem Datum können unvollständig sein.';
+    warn.innerHTML='⚠ Monatsbeginn gewählt. Für vollständige Jahresberechnung empfehlen wir den <strong>01.01.'+y+'</strong>.';
   } else {
     warn.style.display='block';
-    warn.innerHTML='⚠ Für eine <strong>korrekte Jahresberechnung</strong> (Nachtschichten, Z-Tage, Urlaubsanspruch, N-Freischichten) empfehlen wir den <strong>01.01.' + y + '</strong> als Startdatum.<br>Bei einem späteren Datum fehlen die Schichten vom 01.01. bis ' + d + '.' + m + '. – Jahreswerte können unvollständig sein.';
+    warn.innerHTML='⚠ Für korrekte Jahresberechnung empfehlen wir den <strong>01.01.'+y+'</strong> als Startdatum.';
   }
 }
-
 function saveSeg(){
   const sd=document.getElementById('segDateIn').value;
   const pat=cleanPat(document.getElementById('segPatIn').value);
   if(!sd){alert('Bitte Startdatum wählen!');return;}
   if(!pat){alert('Bitte Schichtfolge eingeben!');return;}
   if(editSegIdx===-1){
-    // Check for duplicate startDate
     if(ST.segments.some(s=>s.startDate===sd)){
       if(!confirm('Es gibt bereits einen Plan ab diesem Datum. Überschreiben?')) return;
       ST.segments=ST.segments.filter(s=>s.startDate!==sd);
@@ -1669,12 +1511,8 @@ function saveSeg(){
   } else {
     ST.segments[editSegIdx]={startDate:sd,pattern:pat};
   }
-  sortSegs();
-  persist();render();
-  close2('segOvl');
-  renderSegList();
+  sortSegs();persist();render();close2('segOvl');renderSegList();
 }
-
 function buildSegKboard(){
   const kb=document.getElementById('segKboard');kb.innerHTML='';
   [['F','Früh'],['S','Spät'],['N','Nacht'],['B','Bereit.'],['−','Frei','-']].forEach(([disp,name,val])=>{
@@ -1683,17 +1521,11 @@ function buildSegKboard(){
     const btn=mk('button','kkey');
     btn.style.cssText=`background:${ss.b};color:${ss.c}`;
     btn.textContent=`${disp}  ${name}`;
-    btn.onclick=()=>{
-      const inp=document.getElementById('segPatIn');
-      inp.value+=k;updateSegPreview();
-    };
+    btn.onclick=()=>{const inp=document.getElementById('segPatIn');inp.value+=k;updateSegPreview();};
     kb.appendChild(btn);
   });
   const del=mk('button','kkey kdel');del.textContent='⌫ Löschen';
-  del.onclick=()=>{
-    const inp=document.getElementById('segPatIn');
-    inp.value=inp.value.slice(0,-1);updateSegPreview();
-  };
+  del.onclick=()=>{const inp=document.getElementById('segPatIn');inp.value=inp.value.slice(0,-1);updateSegPreview();};
   kb.appendChild(del);
 }
 function updateSegPreview(){
@@ -1701,10 +1533,7 @@ function updateSegPreview(){
   const clean=cleanPat(raw);
   document.getElementById('segPatIn').value=clean;
   const row=document.getElementById('segPrev');row.innerHTML='';
-  if(!clean){
-    row.innerHTML='<span style="color:var(--muted);font-size:.7rem">Vorschau erscheint hier…</span>';
-    return;
-  }
+  if(!clean){row.innerHTML='<span style="color:var(--muted);font-size:.7rem">Vorschau erscheint hier…</span>';return;}
   [...clean].forEach((c,i)=>{
     const ss=SDEFS[c]||SDEFS['-'];
     const chip=mk('div','pp');
@@ -1726,29 +1555,27 @@ function openStats(){
   const j=calcJahres(Y);
   const body=document.getElementById('statsBody');
   body.innerHTML='';
-
-  const sollStd=ST.azv?1792:1856;
-  const stDiff=j.stDiff;
-  const stColor=stDiff>0?'var(--ok)':stDiff<0?'var(--err)':'var(--muted)';
-
-  // Winter
-  const winterGrenze = Math.floor(ST.urlaubTage / 3);
-  const winterHtml = j.winterAnspruch
-    ? `<div class="ok-box">✓ Winterurlaubstag: ${j.urlaubSommer} von ${ST.urlaubTage} Urlaubstagen im Sommer (max. ${winterGrenze} = 1/3) → <strong>Anspruch auf 1 Zusatztag</strong></div>`
-    : `<div class="info-box">ℹ Winterurlaubstag: ${j.urlaubSommer} Sommertage – Grenze: max. ${winterGrenze} Tage (1/3 von ${ST.urlaubTage}) – kein Anspruch</div>`;
-
-  const nfHtml = ST.senior
-    ? `<div class="ok-box">Senior-Regelung aktiv: Pauschal <strong>4 N-Freischichten</strong> pro Jahr · verbraucht: ${j.nfDays}</div>`
-    : `<div class="info-box">Nachtschichten ${Y}: <strong>${j.N}</strong> · ÷17 = <strong>${j.nfAnspruch}</strong> Anspruch · verbraucht: ${j.nfDays} · offen: ${j.nfRest}</div>`;
+  const stColor=j.stDiff>0?'var(--ok)':j.stDiff<0?'var(--err)':'var(--muted)';
+  const winterGrenze=Math.floor(ST.urlaubTage/3);
+  const winterHtml=j.winterAnspruch
+    ?`<div class="ok-box">✓ Winterurlaubstag: ${j.urlaubSommer} von ${ST.urlaubTage} Urlaubstagen im Sommer (max. ${winterGrenze}) → <strong>Anspruch auf 1 Zusatztag</strong></div>`
+    :`<div class="info-box">ℹ Winterurlaubstag: ${j.urlaubSommer} Sommertage – Grenze: max. ${winterGrenze} – kein Anspruch</div>`;
+  const nfHtml=ST.senior
+    ?`<div class="ok-box">Senior-Regelung aktiv: Pauschal <strong>4 N-Freischichten</strong> pro Jahr · verbraucht: ${j.nfDays}</div>`
+    :`<div class="info-box">Nachtschichten ${Y}: <strong>${j.N}</strong> · ÷17 = <strong>${j.nfAnspruch}</strong> Anspruch · verbraucht: ${j.nfDays} · offen: ${j.nfRest}</div>`;
+  // ✅ GdB Info-Box
+  const gdbHtml=ST.gdb
+    ?`<div class="ok-box">♿ Schwerbehinderung aktiv (§ 208 SGB IX): <strong>+5 Tage Zusatzurlaub</strong> → Gesamtanspruch: <strong>${j.urlaubEff} Tage</strong></div>`
+    :'';
 
   body.innerHTML=`
     <div class="sg">
       <span class="slbl">Arbeitszeit</span>
       <div class="jc-grid" style="margin-bottom:10px">
         <div class="jc-item"><div class="jc-val">${j.istStunden}h</div><div class="jc-lbl">Ist-Stunden</div></div>
-        <div class="jc-item"><div class="jc-val">${sollStd}h</div><div class="jc-lbl">Soll (${ST.azv?'mit':'ohne'} AZV)</div></div>
-        <div class="jc-item"><div class="jc-val" style="color:${stColor}">${stDiff>0?'+':''}${stDiff}h</div>
-          <div class="jc-lbl">${stDiff>0?'→ Z-Tage':stDiff<0?'→ V-Tage':'ausgeglichen'}</div></div>
+        <div class="jc-item"><div class="jc-val">${j.sollStunden}h</div><div class="jc-lbl">Soll (${ST.azv?'mit':'ohne'} AZV)</div></div>
+        <div class="jc-item"><div class="jc-val" style="color:${stColor}">${j.stDiff>0?'+':''}${j.stDiff}h</div>
+          <div class="jc-lbl">${j.stDiff>0?'→ Z-Tage':j.stDiff<0?'→ V-Tage':'ausgeglichen'}</div></div>
         <div class="jc-item"><div class="jc-val">${j.F+j.S+j.N+j.B}</div><div class="jc-lbl">Schichttage</div></div>
       </div>
     </div>
@@ -1763,11 +1590,12 @@ function openStats(){
     </div>
     <div class="sg">
       <span class="slbl">Urlaub & Sondertage</span>
+      ${gdbHtml}
       <div class="jc-grid" style="margin-bottom:10px">
         <div class="jc-item">
           <div class="jc-val" style="color:${j.resturlaub>0?'var(--ok)':'var(--err)'}">${j.resturlaub}</div>
           <div class="jc-lbl">Resturlaub</div>
-          <div class="jc-sub" style="color:var(--muted)">${j.urlaubDays} / ${ST.urlaubTage}</div>
+          <div class="jc-sub" style="color:var(--muted)">${j.urlaubDays} / ${j.urlaubEff}${ST.gdb?' (+5 ♿)':''}</div>
         </div>
         <div class="jc-item"><div class="jc-val" style="color:var(--Z-c)">${j.zDays}</div><div class="jc-lbl">Z-Tage</div></div>
         <div class="jc-item"><div class="jc-val" style="color:var(--V-c)">${j.vDays}</div><div class="jc-lbl">V-Tage</div></div>
@@ -1780,7 +1608,6 @@ function openStats(){
       ${nfHtml}
     </div>
     <div style="height:30px;"></div>`;
-
   open2('statsOvl');
 }
 
@@ -1794,16 +1621,13 @@ function openSettings(){
   openThemePicker();
   document.getElementById('azvTog').className='tog'+(ST.azv?' on':'');
   document.getElementById('seniorTog').className='tog'+(ST.senior?' on':'');
+  document.getElementById('gdbTog').className='tog'+(ST.gdb?' on':'');  // ✅
   open2('setOvl');
 }
-function toggleAZV(){
-  const t=document.getElementById('azvTog');
-  t.classList.toggle('on');
-}
-function toggleSenior(){
-  const t=document.getElementById('seniorTog');
-  t.classList.toggle('on');
-}
+function toggleAZV(){document.getElementById('azvTog').classList.toggle('on');}
+function toggleSenior(){document.getElementById('seniorTog').classList.toggle('on');}
+function toggleGdB(){document.getElementById('gdbTog').classList.toggle('on');}  // ✅ NEU
+
 function saveSettings(){
   ST.name=document.getElementById('nameIn').value.trim();
   ST.urlaubTage=parseInt(document.getElementById('urlaubIn').value)||30;
@@ -1812,31 +1636,31 @@ function saveSettings(){
   ST.bundesland=document.getElementById('blIn').value;
   ST.azv=document.getElementById('azvTog').classList.contains('on');
   ST.senior=document.getElementById('seniorTog').classList.contains('on');
+  ST.gdb=document.getElementById('gdbTog').classList.contains('on');  // ✅
   persist();render();close2('setOvl');
 }
 function resetAll(){
   if(confirm('Wirklich alle Daten löschen?')){
-    ST={segments:[],overrides:{},name:'',urlaubTage:30,azv:false,senior:false,
-        vm:new Date().getMonth(),vy:new Date().getFullYear()};
+    ST={segments:[],overrides:{},name:'',urlaubTage:30,azv:false,senior:false,gdb:false,
+        vm:new Date().getMonth(),vy:new Date().getFullYear(),
+        uebertragZStd:0,uebertragVStd:0,termine:{},
+        customColors:null,ceHue:undefined,ceSat:undefined,ceBrightness:undefined,
+        bundesland:'HB',theme:'midnight',
+        atzGesamtPkte:null,atzGesamtJahr:null,
+        atzPktAlter:1.0,atzPktBetrieb:1.0,atzPktVoll:2.0,atzPktTeil:1.5,atzPktIgm:0.5};
     persist();render();close2('setOvl');
   }
 }
 
 // ─── NAV ─────────────────────────────────────────────────────────
-function openTerminHint(){
-  alert('💡 Termin eintragen:\nAuf einen Tag lang drücken (Handy)\noder Rechtsklick (PC)');
-}
-
+function openTerminHint(){alert('💡 Termin eintragen:\nAuf einen Tag lang drücken (Handy)\noder Rechtsklick (PC)');}
 function changeMonth(dir){
   ST.vm+=dir;
   if(ST.vm>11){ST.vm=0;ST.vy++;}
   if(ST.vm<0){ST.vm=11;ST.vy--;}
   renderCal();renderJahresCard();
 }
-function goToday(){
-  const n=new Date();ST.vm=n.getMonth();ST.vy=n.getFullYear();
-  renderCal();renderJahresCard();
-}
+function goToday(){const n=new Date();ST.vm=n.getMonth();ST.vy=n.getFullYear();renderCal();renderJahresCard();}
 
 // ─── SWIPE ───────────────────────────────────────────────────────
 let tx=0,ty=0;
@@ -1855,738 +1679,372 @@ function close2(id){document.getElementById(id).classList.remove('open');}
 function bgClose(e,id){if(e.target===document.getElementById(id))close2(id);}
 
 // ─── TERMINE ─────────────────────────────────────────────────────
-const EMOJIS = ['🎂','🎉','💍','🥳','🎁','❤️','🌹','🏆','⭐','🎊',
-                '🍺','🎶','✈️','🏖️','🏠','💼','🚗','⚽','🎯','📝',
-                '👶','🐣','🎓','💪','🌟','🔥','🍕','🎸','🏋️','🌈'];
-
-let editTerminKey = null;
-let editTerminRepeat = false;
-let editTerminEmoji = '🎂';
+const EMOJIS=['🎂','🎉','💍','🥳','🎁','❤️','🌹','🏆','⭐','🎊',
+              '🍺','🎶','✈️','🏖️','🏠','💼','🚗','⚽','🎯','📝',
+              '👶','🐣','🎓','💪','🌟','🔥','🍕','🎸','🏋️','🌈'];
+let editTerminKey=null,editTerminRepeat=false,editTerminEmoji='🎂';
 
 function getTerminForDate(dateStr){
-  // Exact match first
   if(ST.termine[dateStr]) return ST.termine[dateStr];
-  // Yearly repeat: check MM-DD
-  const mmdd = dateStr.slice(5); // "MM-DD"
-  for(const [k,v] of Object.entries(ST.termine)){
-    if(v.repeat && k.slice(5)===mmdd) return v;
+  const mmdd=dateStr.slice(5);
+  for(const[k,v] of Object.entries(ST.termine)){
+    if(v.repeat&&k.slice(5)===mmdd) return v;
   }
   return null;
 }
-
-function openTermin(key, d){
-  editTerminKey = key;
-  const [y,m] = key.split('-').map(Number);
-  document.getElementById('terminDate').textContent = `${d}. ${MONTHS[m-1]} ${y}`;
-
-  // Emoji picker
-  const picker = document.getElementById('emojiPicker');
-  picker.innerHTML = '';
-  editTerminEmoji = '🎂';
-  EMOJIS.forEach(em => {
-    const btn = mk('div','');
+function openTermin(key,d){
+  editTerminKey=key;
+  const[y,m]=key.split('-').map(Number);
+  document.getElementById('terminDate').textContent=`${d}. ${MONTHS[m-1]} ${y}`;
+  const picker=document.getElementById('emojiPicker');
+  picker.innerHTML='';editTerminEmoji='🎂';
+  EMOJIS.forEach(em=>{
+    const btn=mk('div','');
     btn.style.cssText='font-size:1.4rem;cursor:pointer;padding:4px;border-radius:6px;transition:background .1s;';
-    btn.textContent = em;
-    btn.onclick = () => {
-      editTerminEmoji = em;
-      picker.querySelectorAll('div').forEach(b=>b.style.background='');
-      btn.style.background = 'var(--surf3)';
-    };
+    btn.textContent=em;
+    btn.onclick=()=>{editTerminEmoji=em;picker.querySelectorAll('div').forEach(b=>b.style.background='');btn.style.background='var(--surf3)';};
     picker.appendChild(btn);
   });
-
-  // Existing termin?
-  const existing = ST.termine[key];
-  const existTog = document.getElementById('terminRepeatTog');
+  const existing=ST.termine[key];
+  const existTog=document.getElementById('terminRepeatTog');
   if(existing){
-    document.getElementById('terminText').value = existing.text || '';
-    editTerminRepeat = existing.repeat || false;
-    editTerminEmoji = existing.emoji || '🎂';
-    // Highlight current emoji
-    [...picker.children].forEach(b=>{
-      if(b.textContent===editTerminEmoji) b.style.background='var(--surf3)';
-    });
+    document.getElementById('terminText').value=existing.text||'';
+    editTerminRepeat=existing.repeat||false;
+    editTerminEmoji=existing.emoji||'🎂';
+    [...picker.children].forEach(b=>{if(b.textContent===editTerminEmoji)b.style.background='var(--surf3)';});
   } else {
-    document.getElementById('terminText').value = '';
-    editTerminRepeat = false;
+    document.getElementById('terminText').value='';
+    editTerminRepeat=false;
   }
-  existTog.className = 'tog' + (editTerminRepeat ? ' on' : '');
-
-  // Show existing termins for this MM-DD (recurring)
-  const mmdd = key.slice(5);
-  const existing2 = document.getElementById('terminExisting');
-  existing2.innerHTML = '';
-  const recurring = Object.entries(ST.termine).filter(([k,v])=>v.repeat && k.slice(5)===mmdd && k!==key);
+  existTog.className='tog'+(editTerminRepeat?' on':'');
+  const mmdd=key.slice(5);
+  const existing2=document.getElementById('terminExisting');
+  existing2.innerHTML='';
+  const recurring=Object.entries(ST.termine).filter(([k,v])=>v.repeat&&k.slice(5)===mmdd&&k!==key);
   if(recurring.length){
-    const info = mk('div','info-box');
+    const info=mk('div','info-box');
     info.style.cssText='font-size:.72rem;margin-top:4px;';
-    info.innerHTML = '📅 Wiederkehrender Termin: ' + recurring.map(([,v])=>v.emoji+' '+v.text).join(', ');
+    info.innerHTML='📅 Wiederkehrender Termin: '+recurring.map(([,v])=>v.emoji+' '+v.text).join(', ');
     existing2.appendChild(info);
   }
-
   open2('terminOvl');
 }
-
-function toggleTerminRepeat(){
-  const tog = document.getElementById('terminRepeatTog');
-  editTerminRepeat = !editTerminRepeat;
-  tog.className = 'tog' + (editTerminRepeat ? ' on' : '');
-}
-
+function toggleTerminRepeat(){editTerminRepeat=!editTerminRepeat;document.getElementById('terminRepeatTog').className='tog'+(editTerminRepeat?' on':'');}
 function saveTermin(){
-  const text = document.getElementById('terminText').value.trim();
-  if(!text){ alert('Bitte eine Bezeichnung eingeben!'); return; }
-  ST.termine[editTerminKey] = {
-    emoji: editTerminEmoji,
-    text: text,
-    repeat: editTerminRepeat,
-  };
-  persist(); render();
-  close2('terminOvl');
+  const text=document.getElementById('terminText').value.trim();
+  if(!text){alert('Bitte eine Bezeichnung eingeben!');return;}
+  ST.termine[editTerminKey]={emoji:editTerminEmoji,text,repeat:editTerminRepeat};
+  persist();render();close2('terminOvl');
 }
-
 function deleteTermin(){
-  if(ST.termine[editTerminKey]){
-    delete ST.termine[editTerminKey];
-    persist(); render();
-  }
+  if(ST.termine[editTerminKey]){delete ST.termine[editTerminKey];persist();render();}
   close2('terminOvl');
 }
 
 // ─── EXPORT / IMPORT ─────────────────────────────────────────────
 function exportData(){
-  const data = {
-    version: 'spv5',
-    exportDate: new Date().toISOString(),
-    name: ST.name,
-    segments: ST.segments,
-    overrides: ST.overrides,
-    termine: ST.termine,
-    urlaubTage: ST.urlaubTage,
-    azv: ST.azv,
-    senior: ST.senior,
-    bundesland: ST.bundesland,
-    uebertragZStd: ST.uebertragZStd,
-    uebertragVStd: ST.uebertragVStd,
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const d = new Date();
-  const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  a.href = url;
-  a.download = `SchichtPlan_${ST.name||'Backup'}_${ds}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  close2('setOvl');
+  const data={version:'spv5',exportDate:new Date().toISOString(),name:ST.name,
+    segments:ST.segments,overrides:ST.overrides,termine:ST.termine,
+    urlaubTage:ST.urlaubTage,azv:ST.azv,senior:ST.senior,gdb:ST.gdb,  // ✅ gdb im Export
+    bundesland:ST.bundesland,uebertragZStd:ST.uebertragZStd,uebertragVStd:ST.uebertragVStd};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const d=new Date();
+  const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  a.href=url;a.download=`SchichtPlan_${ST.name||'Backup'}_${ds}.json`;a.click();
+  URL.revokeObjectURL(url);close2('setOvl');
 }
-
 function importData(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const data = JSON.parse(ev.target.result);
-      if(!data.version || !data.segments){
-        alert('Ungültige Backup-Datei!'); return;
-      }
-      if(!confirm(`Backup vom ${data.exportDate?.slice(0,10)||'?'} laden?
-
-Alle aktuellen Daten werden überschrieben!`)) return;
-      if(data.segments)   ST.segments   = data.segments;
-      if(data.overrides)  ST.overrides  = data.overrides;
-      if(data.termine)    ST.termine    = data.termine;
-      if(data.name)       ST.name       = data.name;
-      if(data.urlaubTage) ST.urlaubTage = data.urlaubTage;
-      if(data.azv!==undefined)    ST.azv    = data.azv;
-      if(data.senior!==undefined) ST.senior = data.senior;
-      if(data.bundesland) ST.bundesland = data.bundesland;
-      if(data.uebertragZStd!==undefined) ST.uebertragZStd = data.uebertragZStd;
-      if(data.uebertragVStd!==undefined) ST.uebertragVStd = data.uebertragVStd;
-      persist(); render();
-      alert('✓ Daten erfolgreich importiert!');
-      close2('setOvl');
-    } catch(err) {
-      alert('Fehler beim Lesen der Datei: ' + err.message);
-    }
+  const file=e.target.files[0];if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(!data.version||!data.segments){alert('Ungültige Backup-Datei!');return;}
+      if(!confirm(`Backup vom ${data.exportDate?.slice(0,10)||'?'} laden?\n\nAlle aktuellen Daten werden überschrieben!`)) return;
+      if(data.segments) ST.segments=data.segments;
+      if(data.overrides) ST.overrides=data.overrides;
+      if(data.termine) ST.termine=data.termine;
+      if(data.name) ST.name=data.name;
+      if(data.urlaubTage) ST.urlaubTage=data.urlaubTage;
+      if(data.azv!==undefined) ST.azv=data.azv;
+      if(data.senior!==undefined) ST.senior=data.senior;
+      if(data.gdb!==undefined) ST.gdb=data.gdb;  // ✅ gdb beim Import
+      if(data.bundesland) ST.bundesland=data.bundesland;
+      if(data.uebertragZStd!==undefined) ST.uebertragZStd=data.uebertragZStd;
+      if(data.uebertragVStd!==undefined) ST.uebertragVStd=data.uebertragVStd;
+      persist();render();alert('✓ Daten erfolgreich importiert!');close2('setOvl');
+    }catch(err){alert('Fehler: '+err.message);}
   };
-  reader.readAsText(file);
-  e.target.value = ''; // reset so same file can be imported again
+  reader.readAsText(file);e.target.value='';
 }
 
-// ─── DATENSCHUTZ ──────────────────────────────────────────────────
-function acceptDatenschutz(){
-  localStorage.setItem('sp_ds_accepted','1');
-  document.getElementById('dsOverlay').classList.remove('open');
-}
-function checkDatenschutz(){
-  if(!localStorage.getItem('sp_ds_accepted')){
-    document.getElementById('dsOverlay').classList.add('open');
-  }
-}
+// ─── DATENSCHUTZ ─────────────────────────────────────────────────
+function acceptDatenschutz(){localStorage.setItem('sp_ds_accepted','1');document.getElementById('dsOverlay').classList.remove('open');}
+function checkDatenschutz(){if(!localStorage.getItem('sp_ds_accepted'))document.getElementById('dsOverlay').classList.add('open');}
 
-// ─── QR CODE (pure JS, no library) ───────────────────────────────
-function openQR(){
-  open2('qrOvl');
-  setTimeout(()=>drawQR('https://reiner66.github.io/Schichtplan/'),50);
-}
-
+// ─── QR CODE ─────────────────────────────────────────────────────
+function openQR(){open2('qrOvl');setTimeout(()=>drawQR('https://reiner66.github.io/Schichtplan/'),50);}
 function drawQR(url){
-  // Simple QR code using Google Charts API via img fallback
-  // Since we can't use external libs offline, use canvas with a simple matrix
-  const canvas = document.getElementById('qrCanvas');
-  const size = 200;
-  canvas.width = size; canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  // Draw placeholder with URL text until online
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0,0,size,size);
-  // Try to load from Google Charts (works when online)
-  const img = new Image();
-  const encoded = encodeURIComponent(url);
-  img.crossOrigin = 'anonymous';
-  img.onload = () => { ctx.clearRect(0,0,size,size); ctx.drawImage(img,0,0,size,size); };
-  img.onerror = () => {
-    // Offline fallback: show URL as text
-    ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,size,size);
-    ctx.fillStyle = '#1a1e3a'; ctx.font = 'bold 11px monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('QR-Code', size/2, 30);
-    ctx.font = '9px monospace';
-    const words = url.replace('https://','').split('/');
-    words.forEach((w,i) => ctx.fillText(w, size/2, 55+i*16));
-    ctx.font = '8px sans-serif'; ctx.fillStyle = '#888';
-    ctx.fillText('(Internet für QR benötigt)', size/2, size-10);
+  const canvas=document.getElementById('qrCanvas');
+  const size=200;canvas.width=size;canvas.height=size;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,size,size);
+  const img=new Image();img.crossOrigin='anonymous';
+  img.onload=()=>{ctx.clearRect(0,0,size,size);ctx.drawImage(img,0,0,size,size);};
+  img.onerror=()=>{
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,size,size);
+    ctx.fillStyle='#1a1e3a';ctx.font='bold 11px monospace';ctx.textAlign='center';
+    ctx.fillText('QR-Code',size/2,30);ctx.font='9px monospace';
+    url.replace('https://','').split('/').forEach((w,i)=>ctx.fillText(w,size/2,55+i*16));
+    ctx.font='8px sans-serif';ctx.fillStyle='#888';ctx.fillText('(Internet für QR benötigt)',size/2,size-10);
   };
-  img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encoded}&bgcolor=ffffff&color=1a1e3a&margin=2`;
+  img.src=`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=1a1e3a&margin=2`;
 }
 
 // ─── FARB EDITOR ─────────────────────────────────────────────────
-const CE_COLORS = [
-  {id:'F',  label:'Früh',         default:'#f59e0b'},
-  {id:'S',  label:'Spät',         default:'#38bdf8'},
-  {id:'N',  label:'Nacht',        default:'#a78bfa'},
-  {id:'B',  label:'Bereitschaft', default:'#34d399'},
-  {id:'U',  label:'Urlaub',       default:'#f43f5e'},
-  {id:'Z',  label:'Z-Tag',        default:'#22d3ee'},
-  {id:'V',  label:'V-Tag',        default:'#fb923c'},
-  {id:'NF', label:'N-Freischicht',default:'#a78bfa'},
-  {id:'SU', label:'Sonderurlaub', default:'#e879f9'},
+const CE_COLORS=[
+  {id:'F',label:'Früh',default:'#f59e0b'},{id:'S',label:'Spät',default:'#38bdf8'},
+  {id:'N',label:'Nacht',default:'#a78bfa'},{id:'B',label:'Bereitschaft',default:'#34d399'},
+  {id:'U',label:'Urlaub',default:'#f43f5e'},{id:'Z',label:'Z-Tag',default:'#22d3ee'},
+  {id:'V',label:'V-Tag',default:'#fb923c'},{id:'NF',label:'N-Freischicht',default:'#a78bfa'},
+  {id:'SU',label:'Sonderurlaub',default:'#e879f9'},
 ];
-
-// Custom color overrides stored in ST
-// ST.customColors = { F:'#hex', S:'#hex', ... }
-
 function openColorEditor(){
-  // Init sliders from current theme bg
-  const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
-  // Build color swatches
-  const grid = document.getElementById('ce-colors-grid');
-  grid.innerHTML = '';
-  CE_COLORS.forEach(c => {
-    const current = (ST.customColors && ST.customColors[c.id]) || c.default;
-    const item = document.createElement('div');
-    item.className = 'ce-item';
-    item.innerHTML = `
-      <input type="color" class="ce-swatch" id="ce-color-${c.id}"
-        value="${current}" oninput="updateColorPreview()"
-        style="background:${current}"/>
-      <label>${c.label}</label>`;
+  const grid=document.getElementById('ce-colors-grid');grid.innerHTML='';
+  CE_COLORS.forEach(c=>{
+    const current=(ST.customColors&&ST.customColors[c.id])||c.default;
+    const item=document.createElement('div');item.className='ce-item';
+    item.innerHTML=`<input type="color" class="ce-swatch" id="ce-color-${c.id}" value="${current}" oninput="updateColorPreview()" style="background:${current}"/><label>${c.label}</label>`;
     grid.appendChild(item);
   });
-  // Init sliders
-  const h = ST.ceHue !== undefined ? ST.ceHue : 240;
-  const s = ST.ceSat !== undefined ? ST.ceSat : 30;
-  const b = ST.ceBrightness !== undefined ? ST.ceBrightness : 5;
-  document.getElementById('ce-brightness').value = b;
-  document.getElementById('ce-hue').value = h;
-  document.getElementById('ce-sat').value = s;
-  updateColorPreview();
-  open2('colorOvl');
+  const h=ST.ceHue!==undefined?ST.ceHue:240;
+  const s=ST.ceSat!==undefined?ST.ceSat:30;
+  const b=ST.ceBrightness!==undefined?ST.ceBrightness:5;
+  document.getElementById('ce-brightness').value=b;
+  document.getElementById('ce-hue').value=h;
+  document.getElementById('ce-sat').value=s;
+  updateColorPreview();open2('colorOvl');
 }
-
 function updateColorPreview(){
-  const brightness = parseInt(document.getElementById('ce-brightness').value);
-  const hue = parseInt(document.getElementById('ce-hue').value);
-  const sat = parseInt(document.getElementById('ce-sat').value);
-  document.getElementById('ce-brightness-val').textContent = brightness;
-  document.getElementById('ce-hue-val').textContent = hue + '°';
-  document.getElementById('ce-sat-val').textContent = sat + '%';
-
-  // Calculate background colors from sliders
-  // brightness 0-100 → lightness 3-92 (schwarz bis weiß)
-  const bLight  = Math.round(brightness * 0.89 + 3);    // bg:   3-92
-  const sLight  = Math.round(brightness * 0.87 + 6);    // surf: 6-93
-  const s2Light = Math.round(brightness * 0.85 + 9);    // surf2
-  const s3Light = Math.round(brightness * 0.83 + 12);   // surf3
-  const bdrLight= Math.round(brightness * 0.80 + 14);   // bdr
-  const txtLight= brightness > 50                        // txt: hell=dunkel, dunkel=hell
-    ? Math.round(95 - brightness * 0.85)
-    : Math.round(95 - brightness * 0.10);
-  const mutedLight = brightness > 50
-    ? Math.round(40 - brightness * 0.25)
-    : Math.round(40 + brightness * 0.25);
-
-  // Preview chips
-  const preview = document.getElementById('ce-preview');
-  preview.style.background = `hsl(${hue},${sat}%,${bLight}%)`;
-  preview.innerHTML = '';
-  CE_COLORS.forEach(c => {
-    const col = document.getElementById('ce-color-'+c.id)?.value || c.default;
-    const chip = document.createElement('div');
-    chip.className = 'ce-prev-chip';
-    chip.style.cssText = `background:${col}22;color:${col};border:1px solid ${col}55`;
-    chip.textContent = c.label;
-    preview.appendChild(chip);
+  const brightness=parseInt(document.getElementById('ce-brightness').value);
+  const hue=parseInt(document.getElementById('ce-hue').value);
+  const sat=parseInt(document.getElementById('ce-sat').value);
+  document.getElementById('ce-brightness-val').textContent=brightness;
+  document.getElementById('ce-hue-val').textContent=hue+'°';
+  document.getElementById('ce-sat-val').textContent=sat+'%';
+  const bLight=Math.round(brightness*0.89+3);
+  const preview=document.getElementById('ce-preview');
+  preview.style.background=`hsl(${hue},${sat}%,${bLight}%)`;
+  preview.innerHTML='';
+  CE_COLORS.forEach(c=>{
+    const col=document.getElementById('ce-color-'+c.id)?.value||c.default;
+    const chip=document.createElement('div');chip.className='ce-prev-chip';
+    chip.style.cssText=`background:${col}22;color:${col};border:1px solid ${col}55`;
+    chip.textContent=c.label;preview.appendChild(chip);
   });
 }
-
 function applyColorEditor(){
-  const brightness = parseInt(document.getElementById('ce-brightness').value);
-  const hue = parseInt(document.getElementById('ce-hue').value);
-  const sat = parseInt(document.getElementById('ce-sat').value);
-
-  const bLight  = Math.round(brightness * 0.89 + 3);
-  const sLight  = Math.round(brightness * 0.87 + 6);
-  const s2Light = Math.round(brightness * 0.85 + 9);
-  const s3Light = Math.round(brightness * 0.83 + 12);
-  const bdrLight= Math.round(brightness * 0.80 + 14);
-  const txtLight= brightness > 50
-    ? Math.round(95 - brightness * 0.85)
-    : Math.round(95 - brightness * 0.10);
-  const mutedLight = brightness > 50
-    ? Math.round(40 - brightness * 0.25)
-    : Math.round(40 + brightness * 0.25);
-
-  const root = document.documentElement;
-  root.style.setProperty('--bg',   `hsl(${hue},${sat}%,${bLight}%)`);
-  root.style.setProperty('--surf', `hsl(${hue},${sat}%,${sLight}%)`);
+  const brightness=parseInt(document.getElementById('ce-brightness').value);
+  const hue=parseInt(document.getElementById('ce-hue').value);
+  const sat=parseInt(document.getElementById('ce-sat').value);
+  const bLight=Math.round(brightness*0.89+3);
+  const sLight=Math.round(brightness*0.87+6);
+  const s2Light=Math.round(brightness*0.85+9);
+  const s3Light=Math.round(brightness*0.83+12);
+  const bdrLight=Math.round(brightness*0.80+14);
+  const txtLight=brightness>50?Math.round(95-brightness*0.85):Math.round(95-brightness*0.10);
+  const mutedLight=brightness>50?Math.round(40-brightness*0.25):Math.round(40+brightness*0.25);
+  const root=document.documentElement;
+  root.style.setProperty('--bg',`hsl(${hue},${sat}%,${bLight}%)`);
+  root.style.setProperty('--surf',`hsl(${hue},${sat}%,${sLight}%)`);
   root.style.setProperty('--surf2',`hsl(${hue},${sat}%,${s2Light}%)`);
   root.style.setProperty('--surf3',`hsl(${hue},${sat}%,${s3Light}%)`);
-  root.style.setProperty('--bdr',  `hsl(${hue},${sat}%,${bdrLight}%)`);
-  root.style.setProperty('--txt',  `hsl(${hue},10%,${txtLight}%)`);
+  root.style.setProperty('--bdr',`hsl(${hue},${sat}%,${bdrLight}%)`);
+  root.style.setProperty('--txt',`hsl(${hue},10%,${txtLight}%)`);
   root.style.setProperty('--muted',`hsl(${hue},20%,${mutedLight}%)`);
-
-  // Apply accent colors
-  CE_COLORS.forEach(c => {
-    const col = document.getElementById('ce-color-'+c.id)?.value || c.default;
-    const r = parseInt(col.slice(1,3),16);
-    const g = parseInt(col.slice(3,5),16);
-    const b = parseInt(col.slice(5,7),16);
-    root.style.setProperty(`--${c.id}-c`, col);
-    root.style.setProperty(`--${c.id}-b`, `rgba(${r},${g},${b},.15)`);
+  CE_COLORS.forEach(c=>{
+    const col=document.getElementById('ce-color-'+c.id)?.value||c.default;
+    const r=parseInt(col.slice(1,3),16),g=parseInt(col.slice(3,5),16),b=parseInt(col.slice(5,7),16);
+    root.style.setProperty(`--${c.id}-c`,col);
+    root.style.setProperty(`--${c.id}-b`,`rgba(${r},${g},${b},.15)`);
   });
 }
-
 function saveColorEditor(){
-  const brightness = parseInt(document.getElementById('ce-brightness').value);
-  const hue = parseInt(document.getElementById('ce-hue').value);
-  const sat = parseInt(document.getElementById('ce-sat').value);
-  ST.ceHue = hue; ST.ceSat = sat; ST.ceBrightness = brightness;
-  ST.customColors = {};
-  CE_COLORS.forEach(c => {
-    ST.customColors[c.id] = document.getElementById('ce-color-'+c.id)?.value || c.default;
-  });
-  applyColorEditor();
-  persist();
-  close2('colorOvl');
+  const brightness=parseInt(document.getElementById('ce-brightness').value);
+  const hue=parseInt(document.getElementById('ce-hue').value);
+  const sat=parseInt(document.getElementById('ce-sat').value);
+  ST.ceHue=hue;ST.ceSat=sat;ST.ceBrightness=brightness;
+  ST.customColors={};
+  CE_COLORS.forEach(c=>{ST.customColors[c.id]=document.getElementById('ce-color-'+c.id)?.value||c.default;});
+  applyColorEditor();persist();close2('colorOvl');
 }
-
 function resetColorEditor(){
-  ST.customColors = null;
-  ST.ceHue = undefined; ST.ceSat = undefined; ST.ceBrightness = undefined;
-  // Remove inline styles
-  const root = document.documentElement;
+  ST.customColors=null;ST.ceHue=undefined;ST.ceSat=undefined;ST.ceBrightness=undefined;
+  const root=document.documentElement;
   ['--bg','--surf','--surf2','--surf3','--bdr','--txt','--muted'].forEach(v=>root.style.removeProperty(v));
-  CE_COLORS.forEach(c => {
-    root.style.removeProperty(`--${c.id}-c`);
-    root.style.removeProperty(`--${c.id}-b`);
-  });
-  applyTheme(ST.theme||'midnight');
-  persist();
-  close2('colorOvl');
+  CE_COLORS.forEach(c=>{root.style.removeProperty(`--${c.id}-c`);root.style.removeProperty(`--${c.id}-b`);});
+  applyTheme(ST.theme||'midnight');persist();close2('colorOvl');
 }
-
 function restoreCustomColors(){
-  if(!ST.customColors && ST.ceHue === undefined) return;
-  // Re-open and apply without showing sheet
-  const brightness = ST.ceBrightness !== undefined ? ST.ceBrightness : 50;
-  const hue = ST.ceHue !== undefined ? ST.ceHue : 240;
-  const sat = ST.ceSat !== undefined ? ST.ceSat : 30;
-  const bLight  = Math.round(brightness * 0.89 + 3);
-  const sLight  = Math.round(brightness * 0.87 + 6);
-  const s2Light = Math.round(brightness * 0.85 + 9);
-  const s3Light = Math.round(brightness * 0.83 + 12);
-  const bdrLight= Math.round(brightness * 0.80 + 14);
-  const txtLight= brightness > 50
-    ? Math.round(95 - brightness * 0.85)
-    : Math.round(95 - brightness * 0.10);
-  const mutedLight = brightness > 50
-    ? Math.round(40 - brightness * 0.25)
-    : Math.round(40 + brightness * 0.25);
-  const root = document.documentElement;
-  root.style.setProperty('--bg',   `hsl(${hue},${sat}%,${bLight}%)`);
-  root.style.setProperty('--surf', `hsl(${hue},${sat}%,${sLight}%)`);
+  if(!ST.customColors&&ST.ceHue===undefined) return;
+  const brightness=ST.ceBrightness!==undefined?ST.ceBrightness:50;
+  const hue=ST.ceHue!==undefined?ST.ceHue:240;
+  const sat=ST.ceSat!==undefined?ST.ceSat:30;
+  const bLight=Math.round(brightness*0.89+3);
+  const sLight=Math.round(brightness*0.87+6);
+  const s2Light=Math.round(brightness*0.85+9);
+  const s3Light=Math.round(brightness*0.83+12);
+  const bdrLight=Math.round(brightness*0.80+14);
+  const txtLight=brightness>50?Math.round(95-brightness*0.85):Math.round(95-brightness*0.10);
+  const mutedLight=brightness>50?Math.round(40-brightness*0.25):Math.round(40+brightness*0.25);
+  const root=document.documentElement;
+  root.style.setProperty('--bg',`hsl(${hue},${sat}%,${bLight}%)`);
+  root.style.setProperty('--surf',`hsl(${hue},${sat}%,${sLight}%)`);
   root.style.setProperty('--surf2',`hsl(${hue},${sat}%,${s2Light}%)`);
   root.style.setProperty('--surf3',`hsl(${hue},${sat}%,${s3Light}%)`);
-  root.style.setProperty('--bdr',  `hsl(${hue},${sat}%,${bdrLight}%)`);
-  root.style.setProperty('--txt',  `hsl(${hue},10%,${txtLight}%)`);
+  root.style.setProperty('--bdr',`hsl(${hue},${sat}%,${bdrLight}%)`);
+  root.style.setProperty('--txt',`hsl(${hue},10%,${txtLight}%)`);
   root.style.setProperty('--muted',`hsl(${hue},20%,${mutedLight}%)`);
   if(ST.customColors){
-    CE_COLORS.forEach(c => {
-      const col = ST.customColors[c.id] || c.default;
-      const r = parseInt(col.slice(1,3),16);
-      const g = parseInt(col.slice(3,5),16);
-      const b = parseInt(col.slice(5,7),16);
-      root.style.setProperty(`--${c.id}-c`, col);
-      root.style.setProperty(`--${c.id}-b`, `rgba(${r},${g},${b},.15)`);
+    CE_COLORS.forEach(c=>{
+      const col=ST.customColors[c.id]||c.default;
+      const r=parseInt(col.slice(1,3),16),g=parseInt(col.slice(3,5),16),b=parseInt(col.slice(5,7),16);
+      root.style.setProperty(`--${c.id}-c`,col);
+      root.style.setProperty(`--${c.id}-b`,`rgba(${r},${g},${b},.15)`);
     });
   }
 }
 
 // ─── ERSTEINRICHTUNG ─────────────────────────────────────────────
-const SETUP_SLIDES = [
-  {
-    icon: '👤',
-    title: 'Schritt 1 – Name & Bundesland',
-    html: `
-      Öffne die <strong>Einstellungen ⚙️</strong> und trage zuerst ein:<br><br>
-      <div class="tip">
-        <strong>Name:</strong><br>
-        Dein Name erscheint im Export-Dateinamen der Datensicherung.<br><br>
-        <strong>Bundesland:</strong><br>
-        Wähle dein Bundesland – die App zeigt dann automatisch die richtigen
-        <strong>Feiertage</strong> und <strong>Schulferien</strong> im Kalender an.<br>
-        Standard: <em>Bremen</em>
-      </div>
-      <div class="ok" style="margin-top:10px;">
-        ✓ Diese Angaben kannst du jederzeit in den Einstellungen ändern.
-      </div>`
-  },
-  {
-    icon: '⚙️',
-    title: 'Schritt 2 – AZV & Senior-Regelung',
-    html: `
-      <div class="tip">
-        <strong>AZV (Arbeitszeitverkürzung 4%)</strong><br>
-        Prüfe in deinem Tarifvertrag ob AZV für dich gilt:<br>
-        → Mit AZV: Sollstunden <strong>1.792 h/Jahr</strong><br>
-        → Ohne AZV: Sollstunden <strong>1.856 h/Jahr</strong>
-      </div>
-      <div class="tip" style="margin-top:8px;border-left-color:var(--N-c);">
-        <strong>Senior-Regelung</strong><br>
-        Aktivieren wenn <strong>beide</strong> Bedingungen erfüllt sind:<br>
-        → Über <strong>45 Jahre alt</strong><br>
-        → Mindestens <strong>10 Jahre Schichtarbeit</strong><br><br>
-        Dann: pauschal <strong>4 N-Freischichten/Jahr</strong><br>
-        Sonst: <strong>1 NF</strong> pro 17 Nachtschichten
-      </div>`
-  },
-  {
-    icon: '🏖',
-    title: 'Schritt 3 – Jahresurlaub',
-    html: `
-      <div class="tip">
-        <strong>Urlaubstage pro Jahr</strong><br>
-        Trage deinen tariflichen Jahresurlaub ein.<br>
-        Standard: <strong>30 Tage</strong><br><br>
-        Die App zeigt automatisch wie viele Urlaubstage du noch hast
-        und warnt wenn das Kontingent erschöpft ist.
-      </div>
-      <div class="warn" style="margin-top:8px;">
-        ⚠️ <strong>Wichtig – Z-Tage zuerst!</strong><br>
-        Bevor du Urlaub einträgst: erst alle <strong>Z-Tage verbrauchen!</strong><br>
-        Nicht verbrauchte Z-Tage wandern am 31.12. ins AZK.
-      </div>`
-  },
-  {
-    icon: '⏱',
-    title: 'Schritt 4 – Vorjahresübertrag Z/V-Stunden',
-    html: `
-      Wenn du Stunden aus dem Vorjahr übernimmst:<br><br>
-      <div class="tip">
-        <strong>Z-Stunden Übertrag (Guthaben)</strong><br>
-        z.B. <strong>160 Stunden = 20 Z-Tage</strong><br>
-        Diese werden zuerst verbraucht bevor neue Z-Tage entstehen.<br><br>
-        <strong>V-Stunden Übertrag (Schulden)</strong><br>
-        Stunden die du aus dem Vorjahr noch nacharbeiten musst.
-      </div>
-      <div class="ok" style="margin-top:8px;">
-        💡 Wenn du keine Überträge hast: einfach auf <strong>0</strong> lassen.
-      </div>`
-  },
-  {
-    icon: '📋',
-    title: 'Schritt 5 – Schichtmuster anlegen',
-    html: `
-      Tippe unten auf <strong>„📋 Muster"</strong> → <strong>„+ Neuer Plan"</strong><br><br>
-      <div class="tip">
-        <strong>Startdatum: immer 01.01.JJJJ!</strong><br>
-        Nur so werden alle Jahreswerte korrekt berechnet.<br><br>
-        <strong>Buchstaben:</strong><br>
-        <strong>F</strong> = Früh &nbsp;·&nbsp; <strong>S</strong> = Spät &nbsp;·&nbsp;
-        <strong>N</strong> = Nacht &nbsp;·&nbsp; <strong>B</strong> = Bereitschaft &nbsp;·&nbsp;
-        <strong>-</strong> = Frei
-      </div>
-      <div class="tip" style="margin-top:8px;border-left-color:var(--S-c);">
-        <strong>⚠️ Das Muster ist eine Endlosschleife!</strong><br><br>
-        Das Muster wiederholt sich immer wieder ab dem Startdatum.
-        Daher musst du schauen <strong>wo du am 01.01. im Zyklus stehst</strong>
-        und genau dort beginnen.<br><br>
-        <strong>Beispiel 5-Schicht-Betrieb:</strong><br>
-        Der 01.01. ist ein <em>Donnerstag</em> → du bist in der <em>Spätschicht</em>.<br>
-        Also beginnt das Muster mit <strong>S</strong>:<br><br>
-        <span style="font-family:'DM Mono',monospace;font-size:.78rem;color:var(--S-c);">
-        SNNN----FFSS<br>NNN----FFFSS<br>SNN----FFFSS<br>...</span><br><br>
-        Der gesamte 5-Wochen-Zyklus muss <strong>einmal vollständig</strong>
-        eingetragen werden – danach läuft er automatisch endlos weiter!
-      </div>`
-  },
-  {
-    icon: '🧮',
-    title: 'Schritt 6 – IG Metall & ATZ-Rechner',
-    html: `
-      <div class="tip">
-        <strong>🧮 ATZ-Rechner</strong><br>
-        Unter dem Button <strong>„🧮 ATZ"</strong> kannst du deine
-        AltersTeilZeit-Punkte berechnen:<br><br>
-        → Geburtsdatum eingeben<br>
-        → Eintrittsdatum eingeben<br>
-        → IG Metall Mitgliedschaft aktivieren + Datum<br>
-        → Schichtperioden anlegen (Vollkonti/Teilkonti/Tagschicht)<br><br>
-        Die Punkte werden <strong>tagesgenau</strong> zum Stichtag
-        <strong>31.12. des letzten Jahres</strong> berechnet.
-      </div>
-      <div class="ok" style="margin-top:8px;">
-        🎉 Fertig! Die App ist jetzt vollständig eingerichtet.
-      </div>`
-  },
+const SETUP_SLIDES=[
+  {icon:'👤',title:'Schritt 1 – Name & Bundesland',html:`
+    Öffne die <strong>Einstellungen ⚙️</strong> und trage zuerst ein:<br><br>
+    <div class="tip"><strong>Name:</strong><br>Dein Name erscheint im Export-Dateinamen.<br><br>
+    <strong>Bundesland:</strong><br>Wähle dein Bundesland für korrekte <strong>Feiertage</strong> und <strong>Schulferien</strong>.</div>
+    <div class="ok" style="margin-top:10px;">✓ Diese Angaben kannst du jederzeit ändern.</div>`},
+  {icon:'⚙️',title:'Schritt 2 – AZV, Senior & GdB',html:`
+    <div class="tip"><strong>AZV (Arbeitszeitverkürzung 4%)</strong><br>
+    Mit AZV: <strong>1.792 h/Jahr</strong> · Ohne: <strong>1.856 h/Jahr</strong></div>
+    <div class="tip" style="margin-top:8px;border-left-color:var(--N-c);">
+    <strong>Senior-Regelung (N-Freischicht)</strong><br>
+    <strong>Über 45 Jahre</strong> UND <strong>10+ Jahre Schichtarbeit</strong> → 4 NF/Jahr</div>
+    <div class="tip" style="margin-top:8px;border-left-color:var(--ok);">
+    <strong>♿ Schwerbehinderung (GdB ≥ 50)</strong><br>
+    § 208 SGB IX → automatisch <strong>+5 Tage Zusatzurlaub</strong> pro Jahr</div>`},
+  {icon:'🏖',title:'Schritt 3 – Jahresurlaub',html:`
+    <div class="tip"><strong>Urlaubstage pro Jahr</strong><br>Standard: <strong>30 Tage</strong><br>
+    Bei aktivierter Schwerbehinderung (GdB ≥ 50) werden automatisch <strong>+5 Tage</strong> addiert.<br><br>
+    Die App warnt wenn das Kontingent erschöpft ist.</div>
+    <div class="warn" style="margin-top:8px;">⚠️ <strong>Z-Tage zuerst verbrauchen!</strong><br>
+    Nicht verbrauchte Z-Tage wandern am 31.12. ins AZK.</div>`},
+  {icon:'⏱',title:'Schritt 4 – Vorjahresübertrag',html:`
+    <div class="tip"><strong>Z-Stunden Übertrag (Guthaben)</strong><br>z.B. <strong>160 Stunden = 20 Z-Tage</strong><br><br>
+    <strong>V-Stunden Übertrag (Schulden)</strong><br>Stunden die noch nachgearbeitet werden müssen.</div>
+    <div class="ok" style="margin-top:8px;">💡 Ohne Überträge: einfach auf <strong>0</strong> lassen.</div>`},
+  {icon:'📋',title:'Schritt 5 – Schichtmuster anlegen',html:`
+    Tippe auf <strong>„📋 Muster"</strong> → <strong>„+ Neuer Plan"</strong><br><br>
+    <div class="tip"><strong>Startdatum: immer 01.01.JJJJ!</strong><br>
+    <strong>F</strong>=Früh · <strong>S</strong>=Spät · <strong>N</strong>=Nacht · <strong>B</strong>=Bereitschaft · <strong>-</strong>=Frei</div>
+    <div class="tip" style="margin-top:8px;border-left-color:var(--S-c);">
+    ⚠️ Das Muster wiederholt sich endlos ab Startdatum. Du musst schauen <strong>wo du am 01.01. im Zyklus stehst</strong>!</div>`},
+  {icon:'🧮',title:'Schritt 6 – ATZ-Rechner',html:`
+    <div class="tip"><strong>🧮 ATZ-Rechner</strong><br>
+    → Geburtsdatum + Eintrittsdatum eingeben<br>→ IG Metall Mitgliedschaft + Datum<br>
+    → Schichtperioden anlegen<br><br>
+    Punkte werden <strong>tagesgenau</strong> zum Stichtag <strong>31.12. des letzten Jahres</strong> berechnet.</div>
+    <div class="ok" style="margin-top:8px;">🎉 Fertig! Die App ist vollständig eingerichtet.</div>`},
 ];
-
-let setupPage = 0;
-
-function openSetup(){
-  setupPage = 0;
-  renderSetupSlide();
-  open2('setupOvl');
-}
-
+let setupPage=0;
+function openSetup(){setupPage=0;renderSetupSlide();open2('setupOvl');}
 function renderSetupSlide(){
-  const slide = SETUP_SLIDES[setupPage];
-  const total = SETUP_SLIDES.length;
-  document.getElementById('setupPageNum').textContent = `${setupPage+1} / ${total}`;
-  document.getElementById('setupSlides').innerHTML = `
-    <div class="info-slide">
-      <div class="info-icon">${slide.icon}</div>
-      <div class="info-title">${slide.title}</div>
-      <div class="info-body">${slide.html}</div>
-    </div>`;
-  const dots = document.getElementById('setupDots');
-  dots.innerHTML = '';
-  SETUP_SLIDES.forEach((_,i) => {
-    const d = mk('div','info-dot'+(i===setupPage?' on':''));
-    d.onclick = () => { setupPage=i; renderSetupSlide(); };
-    dots.appendChild(d);
-  });
-  document.getElementById('setupPrev').style.opacity = setupPage===0 ? '0.3' : '1';
-  document.getElementById('setupNext').textContent = setupPage===total-1 ? '✓ Fertig!' : 'Weiter →';
+  const slide=SETUP_SLIDES[setupPage];const total=SETUP_SLIDES.length;
+  document.getElementById('setupPageNum').textContent=`${setupPage+1} / ${total}`;
+  document.getElementById('setupSlides').innerHTML=`<div class="info-slide"><div class="info-icon">${slide.icon}</div><div class="info-title">${slide.title}</div><div class="info-body">${slide.html}</div></div>`;
+  const dots=document.getElementById('setupDots');dots.innerHTML='';
+  SETUP_SLIDES.forEach((_,i)=>{const d=mk('div','info-dot'+(i===setupPage?' on':''));d.onclick=()=>{setupPage=i;renderSetupSlide();};dots.appendChild(d);});
+  document.getElementById('setupPrev').style.opacity=setupPage===0?'0.3':'1';
+  document.getElementById('setupNext').textContent=setupPage===total-1?'✓ Fertig!':'Weiter →';
 }
-
 function setupNav(dir){
-  const total = SETUP_SLIDES.length;
-  if(dir===1 && setupPage===total-1){ close2('setupOvl'); return; }
-  setupPage = Math.max(0, Math.min(total-1, setupPage+dir));
-  renderSetupSlide();
+  const total=SETUP_SLIDES.length;
+  if(dir===1&&setupPage===total-1){close2('setupOvl');return;}
+  setupPage=Math.max(0,Math.min(total-1,setupPage+dir));renderSetupSlide();
 }
 
 // ─── INFO / ANLEITUNG ────────────────────────────────────────────
-const INFO_SLIDES = [
-  {
-    icon: '📅',
-    title: 'Schichtverlauf richtig eingeben',
-    html: `
-      <strong>Wichtig: Immer ab 01.01. beginnen!</strong><br><br>
-      Der Schichtverlauf wird ab deinem Startdatum <em>endlos wiederholt</em>.
-      Damit Nachtschichten, Z-Tage und Urlaubsanspruch korrekt berechnet werden,
-      muss der Plan am <strong>1. Januar</strong> des Jahres beginnen.<br><br>
-      <div class="tip">
-        💡 <strong>So geht's:</strong><br>
-        Unterer Menüpunkt <strong>„Muster"</strong> → <strong>„+ Neuer Plan"</strong>
-        → Startdatum auf <strong>01.01.JJJJ</strong> setzen<br><br>
-        Muster z.B.: <strong>FFSSNNN----</strong><br>
-        F = Früh &nbsp;·&nbsp; S = Spät &nbsp;·&nbsp; N = Nacht &nbsp;·&nbsp; - = Frei
-      </div>
-      <div class="warn">
-        ⚠️ Bei einem späteren Startdatum fehlen Schichten vom 01.01. – Jahreswerte werden unvollständig berechnet!
-      </div>`
-  },
-  {
-    icon: '⚙️',
-    title: 'Einstellungen – Tarifregeln',
-    html: `
-      In den <strong>Einstellungen</strong> (⚙️) trägst du deine persönlichen Tarifangaben ein:<br><br>
-      <div class="tip">
-        <strong>AZV (Arbeitszeitverkürzung 4%)</strong><br>
-        Mit AZV: Sollstunden <strong>1.792 h/Jahr</strong><br>
-        Ohne AZV: Sollstunden <strong>1.856 h/Jahr</strong><br>
-        → Bitte im Tarifvertrag prüfen ob AZV für dich gilt!
-      </div>
-      <div class="tip" style="border-left-color:var(--N-c);margin-top:8px;">
-        <strong>Senior-Regelung (N-Freischicht)</strong><br>
-        <strong>Über 45 Jahre</strong> UND <strong>10+ Jahre Schichtarbeit</strong>:<br>
-        → Pauschal <strong>4 N-Freischichten</strong> pro Jahr<br>
-        <em style="font-size:.75rem;color:var(--warn)">⚠ Beide Bedingungen müssen erfüllt sein!</em><br><br>
-        Jünger / kürzer in Schicht:<br>
-        → <strong>1 N-Freischicht</strong> pro 17 Nachtschichten
-      </div>`
-  },
-  {
-    icon: '⏱',
-    title: 'Z-Tage & AZK',
-    html: `
-      <strong>Z-Tage (Zeitausgleich)</strong> entstehen wenn du mehr Stunden arbeitest als dein Soll.<br><br>
-      <div class="warn">
-        ⚠️ <strong>Wichtige Regel:</strong><br>
-        Z-Tage <strong>zuerst verbrauchen</strong> – bevor du Urlaub einträgst!<br><br>
-        Nicht verbrauchte Z-Tage wandern am <strong>31.12. ins AZK</strong>
-        (Arbeitszeitkonto) und sind dann schwerer zugänglich.
-      </div>
-      <div class="tip">
-        💡 <strong>Vorjahresübertrag:</strong><br>
-        In den Einstellungen kannst du Z-Stunden aus dem Vorjahr eintragen
-        (z.B. 160 Std. = 20 Z-Tage).<br>
-        Die App warnt dich automatisch wenn noch Z-Tage offen sind!
-      </div>`
-  },
-  {
-    icon: '🧮',
-    title: 'ATZ-Rechner',
-    html: `
-      Der <strong>AltersTeilZeit-Rechner</strong> (🧮 ATZ) berechnet deine
-      Gesamtpunkte tagesgenau – Stichtag ist immer der <strong>31.12. des letzten Jahres</strong>.<br><br>
-      <div class="tip">
-        <strong>Punkte-System:</strong><br>
-        🎂 Alter: <strong>1 Pkt/Jahr</strong><br>
-        🏭 Betriebszugehörigkeit: <strong>1 Pkt/Jahr</strong><br>
-        ⚙️ IG Metall Mitgliedschaft: <strong>0,5 Pkt/Jahr</strong><br>
-        🌙 Vollkonti Schicht: <strong>2 Pkt/Jahr</strong> (ab 01.01.2001)<br>
-        🌙 Teilkonti F+S: <strong>1,5 Pkt/Jahr</strong> (ab 01.01.2001)
-      </div>
-      <div class="warn">
-        ⚠️ Schichtpunkte entfallen komplett wenn mehr als <strong>50% der Zeit seit 01.01.2001</strong> in Tagschicht!
-      </div>`
-  },
-  {
-    icon: '💾',
-    title: 'Datensicherung',
-    html: `
-      <div class="ok">
-        🔒 <strong>Alle Daten bleiben auf deinem Gerät!</strong><br>
-        Nichts wird an einen Server übertragen.
-      </div>
-      <br>
-      Damit du deine Daten nicht verlierst (z.B. bei Handywechsel oder
-      Browser-Reset), solltest du regelmäßig eine Sicherung erstellen:<br><br>
-      <div class="tip">
-        💡 <strong>Export & Import:</strong><br>
-        Einstellungen (⚙️) → <strong>„Export (JSON)"</strong><br>
-        → Datei wird auf deinem Gerät gespeichert<br><br>
-        Wiederherstellen: <strong>„Import (JSON)"</strong><br>
-        → Gesicherte Datei auswählen
-      </div>`
-  },
+const INFO_SLIDES=[
+  {icon:'📅',title:'Schichtverlauf richtig eingeben',html:`
+    <strong>Immer ab 01.01. beginnen!</strong><br><br>
+    Der Schichtverlauf wird ab deinem Startdatum <em>endlos wiederholt</em>.<br><br>
+    <div class="tip">💡 <strong>So geht's:</strong><br>„Muster" → „+ Neuer Plan" → Startdatum <strong>01.01.JJJJ</strong><br><br>
+    F=Früh · S=Spät · N=Nacht · B=Bereitschaft · -=Frei</div>
+    <div class="warn">⚠️ Späterer Start = unvollständige Jahreswerte!</div>`},
+  {icon:'⚙️',title:'Einstellungen – Tarifregeln',html:`
+    <div class="tip"><strong>AZV</strong>: Mit AZV 1.792 h/Jahr, ohne 1.856 h/Jahr</div>
+    <div class="tip" style="border-left-color:var(--N-c);margin-top:8px;">
+    <strong>Senior-Regelung</strong>: Über 45 + 10 Jahre Schicht → 4 NF/Jahr<br>
+    Sonst: 1 NF pro 17 Nachtschichten</div>
+    <div class="tip" style="border-left-color:var(--ok);margin-top:8px;">
+    <strong>♿ GdB ≥ 50</strong>: § 208 SGB IX → +5 Tage Zusatzurlaub automatisch</div>`},
+  {icon:'⏱',title:'Z-Tage & AZK',html:`
+    <div class="warn">⚠️ Z-Tage <strong>zuerst verbrauchen</strong> – vor Urlaub!<br>
+    Nicht verbrauchte Z-Tage → 31.12. ins AZK.</div>
+    <div class="tip">💡 Vorjahresübertrag in den Einstellungen eintragen.</div>`},
+  {icon:'🧮',title:'ATZ-Rechner',html:`
+    Stichtag: <strong>31.12. des letzten Jahres</strong><br><br>
+    <div class="tip">🎂 Alter · 🏭 Betrieb · ⚙️ IGM · 🌙 Vollkonti (2 Pkt) · 🌙 Teilkonti (1,5 Pkt)</div>
+    <div class="warn">⚠️ Mehr als 50% Tagschicht seit 01.01.2001 = Schichtpunkte entfallen!</div>`},
+  {icon:'💾',title:'Datensicherung',html:`
+    <div class="ok">🔒 Alle Daten bleiben auf deinem Gerät!</div><br>
+    <div class="tip">💡 Einstellungen → <strong>Export (JSON)</strong> regelmäßig nutzen!</div>`},
 ];
-
-let infoPage = 0;
-
-function openInfo(){
-  infoPage = 0;
-  renderInfoSlide();
-  open2('infoOvl');
-}
-
+let infoPage=0;
+function openInfo(){infoPage=0;renderInfoSlide();open2('infoOvl');}
 function renderInfoSlide(){
-  const slide = INFO_SLIDES[infoPage];
-  const total = INFO_SLIDES.length;
-
-  document.getElementById('infoPageNum').textContent = `${infoPage+1} / ${total}`;
-
-  document.getElementById('infoSlides').innerHTML = `
-    <div class="info-slide">
-      <div class="info-icon">${slide.icon}</div>
-      <div class="info-title">${slide.title}</div>
-      <div class="info-body">${slide.html}</div>
-    </div>`;
-
-  // Dots
-  const dots = document.getElementById('infoDots');
-  dots.innerHTML = '';
-  INFO_SLIDES.forEach((_,i) => {
-    const d = mk('div','info-dot'+(i===infoPage?' on':''));
-    d.onclick = () => { infoPage=i; renderInfoSlide(); };
-    dots.appendChild(d);
-  });
-
-  // Buttons
-  document.getElementById('infoPrev').style.opacity = infoPage===0 ? '0.3' : '1';
-  document.getElementById('infoNext').textContent = infoPage===total-1 ? '✓ Schließen' : 'Weiter →';
+  const slide=INFO_SLIDES[infoPage];const total=INFO_SLIDES.length;
+  document.getElementById('infoPageNum').textContent=`${infoPage+1} / ${total}`;
+  document.getElementById('infoSlides').innerHTML=`<div class="info-slide"><div class="info-icon">${slide.icon}</div><div class="info-title">${slide.title}</div><div class="info-body">${slide.html}</div></div>`;
+  const dots=document.getElementById('infoDots');dots.innerHTML='';
+  INFO_SLIDES.forEach((_,i)=>{const d=mk('div','info-dot'+(i===infoPage?' on':''));d.onclick=()=>{infoPage=i;renderInfoSlide();};dots.appendChild(d);});
+  document.getElementById('infoPrev').style.opacity=infoPage===0?'0.3':'1';
+  document.getElementById('infoNext').textContent=infoPage===total-1?'✓ Schließen':'Weiter →';
 }
-
 function infoNav(dir){
-  const total = INFO_SLIDES.length;
-  if(dir === 1 && infoPage === total-1){
-    close2('infoOvl'); return;
-  }
-  infoPage = Math.max(0, Math.min(total-1, infoPage + dir));
-  renderInfoSlide();
+  const total=INFO_SLIDES.length;
+  if(dir===1&&infoPage===total-1){close2('infoOvl');return;}
+  infoPage=Math.max(0,Math.min(total-1,infoPage+dir));renderInfoSlide();
 }
 
 // ─── ATZ RECHNER ─────────────────────────────────────────────────
-let atzIgm = false;
-let atzPerioden = []; // [{typ:'vollkonti'|'teilkonti'|'tagschicht', von:'YYYY-MM-DD', bis:'YYYY-MM-DD'}]
-
+let atzIgm=false;
+let atzPerioden=[];
 function openATZ(){
-  // Load saved pkt values into fields
-  document.getElementById('atzPktAlter').value   = ST.atzPktAlter   || 1.0;
-  document.getElementById('atzPktBetrieb').value = ST.atzPktBetrieb || 1.0;
-  document.getElementById('atzPktVoll').value    = ST.atzPktVoll    || 2.0;
-  document.getElementById('atzPktTeil').value    = ST.atzPktTeil    || 1.5;
-  document.getElementById('atzPktIgm').value     = ST.atzPktIgm     || 0.5;
-  renderATZPerioden();
-  calcATZ();
-  open2('atzOvl');
+  document.getElementById('atzPktAlter').value=ST.atzPktAlter||1.0;
+  document.getElementById('atzPktBetrieb').value=ST.atzPktBetrieb||1.0;
+  document.getElementById('atzPktVoll').value=ST.atzPktVoll||2.0;
+  document.getElementById('atzPktTeil').value=ST.atzPktTeil||1.5;
+  document.getElementById('atzPktIgm').value=ST.atzPktIgm||0.5;
+  renderATZPerioden();calcATZ();open2('atzOvl');
 }
-
 function toggleATZigm(){
-  atzIgm = !atzIgm;
-  document.getElementById('atzIgmTog').className = 'tog' + (atzIgm?' on':'');
-  document.getElementById('atzIgmDateWrap').style.display = atzIgm ? 'block' : 'none';
+  atzIgm=!atzIgm;
+  document.getElementById('atzIgmTog').className='tog'+(atzIgm?' on':'');
+  document.getElementById('atzIgmDateWrap').style.display=atzIgm?'block':'none';
   calcATZ();
 }
-
-function addATZPeriode(){
-  atzPerioden.push({typ:'vollkonti', von:'2001-01-01', bis:stichtag()});
-  renderATZPerioden();
-  calcATZ();
-}
-
-function removeATZPeriode(i){
-  atzPerioden.splice(i,1);
-  renderATZPerioden();
-  calcATZ();
-}
-
+function addATZPeriode(){atzPerioden.push({typ:'vollkonti',von:'2001-01-01',bis:stichtag()});renderATZPerioden();calcATZ();}
+function removeATZPeriode(i){atzPerioden.splice(i,1);renderATZPerioden();calcATZ();}
 function renderATZPerioden(){
-  const wrap = document.getElementById('atzPerioden');
-  wrap.innerHTML = '';
+  const wrap=document.getElementById('atzPerioden');wrap.innerHTML='';
   if(!atzPerioden.length){
-    wrap.innerHTML = '<div style="color:var(--muted);font-size:.78rem;padding:6px 0">Keine Schichtperioden – Tagschicht die ganze Zeit.</div>';
+    wrap.innerHTML='<div style="color:var(--muted);font-size:.78rem;padding:6px 0">Keine Schichtperioden – Tagschicht die ganze Zeit.</div>';
     return;
   }
-  atzPerioden.forEach((p,i) => {
-    const div = mk('div','periode-item');
-    div.innerHTML = `
+  atzPerioden.forEach((p,i)=>{
+    const div=mk('div','periode-item');
+    div.innerHTML=`
       <div class="periode-row">
         <select class="periode-sel" onchange="atzPerioden[${i}].typ=this.value;calcATZ()">
           <option value="vollkonti" ${p.typ==='vollkonti'?'selected':''}>Vollkonti (${ST.atzPktVoll||2} Pkt/Jahr)</option>
@@ -2596,181 +2054,98 @@ function renderATZPerioden(){
         <span class="periode-del" onclick="removeATZPeriode(${i})">✕</span>
       </div>
       <div class="periode-dates">
-        <div>
-          <div class="slbl" style="margin-bottom:4px">Von</div>
-          <input type="date" class="sinput" style="padding:8px;" value="${p.von}"
-            onchange="atzPerioden[${i}].von=this.value;calcATZ()"/>
-        </div>
-        <div>
-          <div class="slbl" style="margin-bottom:4px">Bis</div>
-          <input type="date" class="sinput" style="padding:8px;" value="${p.bis}"
-            onchange="atzPerioden[${i}].bis=this.value;calcATZ()"/>
-        </div>
+        <div><div class="slbl" style="margin-bottom:4px">Von</div>
+          <input type="date" class="sinput" style="padding:8px;" value="${p.von}" onchange="atzPerioden[${i}].von=this.value;calcATZ()"/></div>
+        <div><div class="slbl" style="margin-bottom:4px">Bis</div>
+          <input type="date" class="sinput" style="padding:8px;" value="${p.bis}" onchange="atzPerioden[${i}].bis=this.value;calcATZ()"/></div>
       </div>`;
     wrap.appendChild(div);
   });
 }
-
-function stichtag(){
-  const y = new Date().getFullYear() - 1;
-  return `${y}-12-31`;
+function stichtag(){const y=new Date().getFullYear()-1;return `${y}-12-31`;}
+function daysBetween(from,to){
+  const a=new Date(from);a.setHours(0,0,0,0);
+  const b=new Date(to);b.setHours(0,0,0,0);
+  return Math.max(0,Math.round((b-a)/86400000));
 }
-
-function daysBetween(from, to){
-  const a = new Date(from); a.setHours(0,0,0,0);
-  const b = new Date(to);   b.setHours(0,0,0,0);
-  return Math.max(0, Math.round((b - a) / 86400000));
-}
-
-function yearsFraction(from, to){
-  return daysBetween(from, to) / 365.25;
-}
-
+function yearsFraction(from,to){return daysBetween(from,to)/365.25;}
 function calcATZ(){
-  const stich = stichtag(); // 31.12. letztes Jahr
-  const geburt  = document.getElementById('atzGeburt').value;
-  const eintritt= document.getElementById('atzEintritt').value;
-  const igmSeit = document.getElementById('atzIgmSeit').value;
-  const ergebnis= document.getElementById('atzErgebnis');
-
-  if(!geburt || !eintritt){ ergebnis.innerHTML=''; return; }
-
-  // ── Alterspunkte ──
-  const alterJahre = yearsFraction(geburt, stich);
-  const alterPkte  = alterJahre * (ST.atzPktAlter || 1.0);
-
-  // ── Betriebspunkte ──
-  const betriebStart = eintritt > '2001-01-01' ? eintritt : eintritt;
-  const betriebJahre = yearsFraction(eintritt, stich);
-  const betriebPkte  = betriebJahre * (ST.atzPktBetrieb || 1.0);
-
-  // ── IG Metall ──
-  let igmPkte = 0;
-  let igmJahre = 0;
-  if(atzIgm && igmSeit){
-    igmJahre = yearsFraction(igmSeit, stich);
-    igmPkte  = igmJahre * (ST.atzPktIgm || 0.5);
-  }
-
-  // ── Schichtpunkte ──
-  const schichtStart = '2001-01-01';
-  const gesamtTage   = daysBetween(schichtStart, stich);
-
-  // Perioden auf 01.01.2001 – Stichtag begrenzen
-  let schichtPkte = 0;
-  let tagschichtTage = 0;
-  let schichtTage = 0;
-  let warnSchicht = '';
-
-  if(atzPerioden.length > 0){
-    atzPerioden.forEach(p => {
-      const von = p.von < schichtStart ? schichtStart : p.von;
-      const bis = p.bis > stich ? stich : p.bis;
-      if(von >= bis) return;
-      const tage = daysBetween(von, bis);
-      const jahre = tage / 365.25;
-      if(p.typ === 'vollkonti')  schichtTage += tage;
-      else if(p.typ === 'teilkonti') schichtTage += tage;
-      else if(p.typ === 'tagschicht') tagschichtTage += tage;
+  const stich=stichtag();
+  const geburt=document.getElementById('atzGeburt').value;
+  const eintritt=document.getElementById('atzEintritt').value;
+  const igmSeit=document.getElementById('atzIgmSeit').value;
+  const ergebnis=document.getElementById('atzErgebnis');
+  if(!geburt||!eintritt){ergebnis.innerHTML='';return;}
+  const alterJahre=yearsFraction(geburt,stich);
+  const alterPkte=alterJahre*(ST.atzPktAlter||1.0);
+  const betriebJahre=yearsFraction(eintritt,stich);
+  const betriebPkte=betriebJahre*(ST.atzPktBetrieb||1.0);
+  let igmPkte=0,igmJahre=0;
+  if(atzIgm&&igmSeit){igmJahre=yearsFraction(igmSeit,stich);igmPkte=igmJahre*(ST.atzPktIgm||0.5);}
+  const schichtStart='2001-01-01';
+  let schichtPkte=0,tagschichtTage=0,schichtTage=0,warnSchicht='';
+  if(atzPerioden.length>0){
+    atzPerioden.forEach(p=>{
+      const von=p.von<schichtStart?schichtStart:p.von;
+      const bis=p.bis>stich?stich:p.bis;
+      if(von>=bis) return;
+      const tage=daysBetween(von,bis);
+      if(p.typ==='vollkonti'||p.typ==='teilkonti') schichtTage+=tage;
+      else if(p.typ==='tagschicht') tagschichtTage+=tage;
     });
-
-    // Prüfe ob >50% Tagschicht
-    const gesamtErfasst = schichtTage + tagschichtTage;
-    const tagschichtAnteil = gesamtErfasst > 0 ? tagschichtTage / gesamtErfasst : 0;
-
-    if(tagschichtAnteil > 0.5){
-      schichtPkte = 0;
-      warnSchicht = `⚠️ Mehr als 50% des Zeitraums in Tagschicht (${(tagschichtAnteil*100).toFixed(0)}%) – Schichtpunkte entfallen!`;
+    const gesamtErfasst=schichtTage+tagschichtTage;
+    const tagschichtAnteil=gesamtErfasst>0?tagschichtTage/gesamtErfasst:0;
+    if(tagschichtAnteil>0.5){
+      schichtPkte=0;
+      warnSchicht=`⚠️ Mehr als 50% Tagschicht (${(tagschichtAnteil*100).toFixed(0)}%) – Schichtpunkte entfallen!`;
     } else {
-      atzPerioden.forEach(p => {
-        const von = p.von < schichtStart ? schichtStart : p.von;
-        const bis = p.bis > stich ? stich : p.bis;
-        if(von >= bis) return;
-        const jahre = daysBetween(von, bis) / 365.25;
-        if(p.typ === 'vollkonti')  schichtPkte += jahre * (ST.atzPktVoll || 2.0);
-        else if(p.typ === 'teilkonti') schichtPkte += jahre * (ST.atzPktTeil || 1.5);
+      atzPerioden.forEach(p=>{
+        const von=p.von<schichtStart?schichtStart:p.von;
+        const bis=p.bis>stich?stich:p.bis;
+        if(von>=bis) return;
+        const jahre=daysBetween(von,bis)/365.25;
+        if(p.typ==='vollkonti') schichtPkte+=jahre*(ST.atzPktVoll||2.0);
+        else if(p.typ==='teilkonti') schichtPkte+=jahre*(ST.atzPktTeil||1.5);
       });
     }
   }
-
-  // ── Gesamt ──
-  const gesamt = alterPkte + betriebPkte + igmPkte + schichtPkte;
-
-  // Ergebnis in ST speichern → Hauptseite zeigt es neben Winterurlaubstag
-  ST.atzGesamtPkte = gesamt;
-  ST.atzGesamtJahr = new Date().getFullYear() - 1;
-  // Jahres-Card neu zeichnen falls sichtbar
+  const gesamt=alterPkte+betriebPkte+igmPkte+schichtPkte;
+  ST.atzGesamtPkte=gesamt;ST.atzGesamtJahr=new Date().getFullYear()-1;
   renderJahresCard();
-
-  // ── Anzeige ──
-  const fmt = v => v.toFixed(2).replace('.',',');
-  const fmtJ = v => v.toFixed(2).replace('.',',');
-
-  ergebnis.innerHTML = `
+  const fmt=v=>v.toFixed(2).replace('.',',');
+  ergebnis.innerHTML=`
     <div class="atz-result">
       <div class="atz-total">${fmt(gesamt)}</div>
       <div class="atz-total-lbl">Gesamtpunkte (Stichtag 31.12.${new Date().getFullYear()-1})</div>
       <div class="atz-rows">
-        <div class="atz-row">
-          <div class="atz-row-lbl">🎂 Alter (${fmtJ(alterJahre)} Jahre)</div>
-          <div class="atz-row-val" style="color:var(--F-c)">${fmt(alterPkte)} Pkt</div>
-        </div>
-        <div class="atz-row">
-          <div class="atz-row-lbl">🏭 Betrieb (${fmtJ(betriebJahre)} Jahre)</div>
-          <div class="atz-row-val" style="color:var(--S-c)">${fmt(betriebPkte)} Pkt</div>
-        </div>
-        ${atzIgm && igmSeit ? `
-        <div class="atz-row">
-          <div class="atz-row-lbl">⚙️ IG Metall (${fmtJ(igmJahre)} Jahre)</div>
-          <div class="atz-row-val" style="color:var(--B-c)">${fmt(igmPkte)} Pkt</div>
-        </div>` : ''}
-        <div class="atz-row">
-          <div class="atz-row-lbl">🌙 Schicht</div>
-          <div class="atz-row-val" style="color:var(--N-c)">${fmt(schichtPkte)} Pkt</div>
-        </div>
+        <div class="atz-row"><div class="atz-row-lbl">🎂 Alter (${fmt(alterJahre)} Jahre)</div><div class="atz-row-val" style="color:var(--F-c)">${fmt(alterPkte)} Pkt</div></div>
+        <div class="atz-row"><div class="atz-row-lbl">🏭 Betrieb (${fmt(betriebJahre)} Jahre)</div><div class="atz-row-val" style="color:var(--S-c)">${fmt(betriebPkte)} Pkt</div></div>
+        ${atzIgm&&igmSeit?`<div class="atz-row"><div class="atz-row-lbl">⚙️ IG Metall (${fmt(igmJahre)} Jahre)</div><div class="atz-row-val" style="color:var(--B-c)">${fmt(igmPkte)} Pkt</div></div>`:''}
+        <div class="atz-row"><div class="atz-row-lbl">🌙 Schicht</div><div class="atz-row-val" style="color:var(--N-c)">${fmt(schichtPkte)} Pkt</div></div>
       </div>
-      ${warnSchicht ? `<div class="atz-warn">${warnSchicht}</div>` : ''}
+      ${warnSchicht?`<div class="atz-warn">${warnSchicht}</div>`:''}
     </div>`;
 }
 
 // ─── THEME ───────────────────────────────────────────────────────
 function setTheme(t){
-  ST.theme = t;
-  // Theme-Wechsel löscht Custom Colors – sonst überschreiben sie das neue Theme
-  ST.customColors = null;
-  ST.ceHue = undefined; ST.ceSat = undefined; ST.ceBrightness = undefined;
-  // Inline-Styles entfernen die vom Farb-Editor gesetzt wurden
-  const root = document.documentElement;
+  ST.theme=t;
+  ST.customColors=null;ST.ceHue=undefined;ST.ceSat=undefined;ST.ceBrightness=undefined;
+  const root=document.documentElement;
   ['--bg','--surf','--surf2','--surf3','--bdr','--txt','--muted'].forEach(v=>root.style.removeProperty(v));
-  ['F','S','N','B','U','Z','V','NF','SU'].forEach(id=>{
-    root.style.removeProperty('--'+id+'-c');
-    root.style.removeProperty('--'+id+'-b');
-  });
+  ['F','S','N','B','U','Z','V','NF','SU'].forEach(id=>{root.style.removeProperty('--'+id+'-c');root.style.removeProperty('--'+id+'-b');});
   applyTheme(t);
-  // Update selection highlight
-  ['midnight','dusk','slate','day'].forEach(n=>{
-    const el = document.getElementById('tc-'+n);
-    if(el) el.classList.toggle('sel', n===t);
-  });
+  ['midnight','dusk','slate','day'].forEach(n=>{const el=document.getElementById('tc-'+n);if(el)el.classList.toggle('sel',n===t);});
   persist();
 }
-
 function applyTheme(t){
-  document.documentElement.setAttribute('data-theme', t==='midnight' ? '' : t);
-  // Update PWA theme-color meta
-  const mc = document.querySelector('meta[name="theme-color"]');
-  if(mc){
-    const colors = {midnight:'#0b0b10', dusk:'#181824', slate:'#1e2235', day:'#f0f2f8'};
-    mc.setAttribute('content', colors[t]||'#0b0b10');
-  }
+  document.documentElement.setAttribute('data-theme',t==='midnight'?'':t);
+  const mc=document.querySelector('meta[name="theme-color"]');
+  if(mc){const colors={midnight:'#0b0b10',dusk:'#181824',slate:'#1e2235',day:'#f0f2f8'};mc.setAttribute('content',colors[t]||'#0b0b10');}
 }
-
 function openThemePicker(){
-  const t = ST.theme || 'midnight';
-  ['midnight','dusk','slate','day'].forEach(n=>{
-    const el = document.getElementById('tc-'+n);
-    if(el) el.classList.toggle('sel', n===t);
-  });
+  const t=ST.theme||'midnight';
+  ['midnight','dusk','slate','day'].forEach(n=>{const el=document.getElementById('tc-'+n);if(el)el.classList.toggle('sel',n===t);});
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────
@@ -2778,22 +2153,18 @@ restore();applyTheme(ST.theme||'midnight');restoreCustomColors();render();checkD
 
 // ─── SERVICE WORKER ───────────────────────────────────────────────
 if('serviceWorker' in navigator){
-  window.addEventListener('load', () => {
+  window.addEventListener('load',()=>{
     navigator.serviceWorker.register('sw.js')
-      .then(reg => {
-        console.log('SW registriert:', reg.scope);
-        // Auto-Update wenn neue Version
-        reg.addEventListener('updatefound', () => {
-          const newSW = reg.installing;
-          newSW.addEventListener('statechange', () => {
-            if(newSW.state === 'installed' && navigator.serviceWorker.controller){
-              // Neue Version verfügbar – still updaten
-              newSW.postMessage('SKIP_WAITING');
-            }
+      .then(reg=>{
+        console.log('SW registriert:',reg.scope);
+        reg.addEventListener('updatefound',()=>{
+          const newSW=reg.installing;
+          newSW.addEventListener('statechange',()=>{
+            if(newSW.state==='installed'&&navigator.serviceWorker.controller) newSW.postMessage('SKIP_WAITING');
           });
         });
       })
-      .catch(err => console.log('SW Fehler:', err));
+      .catch(err=>console.log('SW Fehler:',err));
   });
 }
 </script>
