@@ -623,7 +623,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         <div class="toggle-row" onclick="toggleAZV()">
           <div>
             <div class="toggle-lbl">AZV (4% Arbeitszeitverkürzung)</div>
-            <div class="toggle-sub">Mit AZV: Sollstunden 1792 · Ohne: 1856</div>
+            <div class="toggle-sub">Mit AZV: Sollstunden 1781,76 · Ohne: 1856</div>
           </div>
           <div class="tog" id="azvTog"></div>
         </div>
@@ -1123,7 +1123,7 @@ function calcJahres(Y){
       if(shift&&shift in SDEFS&&shift!=='-'){stats[shift]=(stats[shift]||0)+1;}
     }
   }
-  const sollStunden=ST.azv?1792:1856;
+  const sollStunden=ST.azv?1781.76:1856;
   const stDiff=stats.istStunden-sollStunden;
   const uebZStd=ST.uebertragZStd||0;
   const uebVStd=ST.uebertragVStd||0;
