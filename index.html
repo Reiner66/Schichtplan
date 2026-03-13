@@ -1140,12 +1140,18 @@ function calcJahres(Y){
   // ✅ GdB: effektiver Urlaubsanspruch
   const urlaubEff = ST.urlaubTage + (ST.gdb ? 5 : 0);
 
+  // Z-Tage Gesamt = Übertrag + neu erarbeitet dieses Jahr
+  const zNeu = stDiff > 0 ? Math.floor(stDiff / 8) : 0;
+  const zGesamt = (uebZTage + zNeu);
+  const zOffen = Math.max(0, zGesamt - stats.zDays);
+
   return {
     ...stats, sollStunden, stDiff, nfAnspruch, winterAnspruch,
     urlaubEff,
     resturlaub: urlaubEff - stats.urlaubDays,
     nfRest: nfAnspruch-stats.nfDays,
     uebZStd,uebVStd,uebZTage,uebVTage,zBilanzStd,vBilanzStd,azKStunden,
+    zNeu, zGesamt, zOffen,
   };
 }
 
@@ -1322,14 +1328,14 @@ function renderJahresCard(){
         <div class="jc-sub" style="color:${nfColor}">${j.nfDays} verbraucht · ${j.nfRest} frei</div>
       </div>
       <div class="jc-item">
-        <div class="jc-val" style="color:var(--Z-c)">${j.uebZTage}</div>
-        <div class="jc-lbl">Z-Tage Übertrag</div>
-        <div class="jc-sub" style="color:var(--muted)">${j.zDays} verbraucht · ${Math.max(0,j.uebZTage-j.zDays)} offen</div>
+        <div class="jc-val" style="color:var(--Z-c)">${j.zGesamt}</div>
+        <div class="jc-lbl">Z-Tage Gesamt</div>
+        <div class="jc-sub" style="color:var(--muted)">${j.zDays} verbraucht · <b style="color:${j.zOffen>0?'var(--warn)':'var(--muted)'}">${j.zOffen} offen</b></div>
       </div>
       <div class="jc-item">
-        <div class="jc-val" style="color:${j.uebZTage-j.zDays>0?'var(--warn)':'var(--ok)'}">${j.uebZTage-j.zDays>0?'⚠':'✓'}</div>
+        <div class="jc-val" style="color:${j.zOffen>0?'var(--warn)':'var(--ok)'}">${j.zOffen>0?'⚠':'✓'}</div>
         <div class="jc-lbl">AZK am 31.12.</div>
-        <div class="jc-sub" style="color:${j.uebZTage-j.zDays>0?'var(--warn)':'var(--muted)'}">${j.uebZTage-j.zDays>0?`${j.uebZTage-j.zDays} Z-Tage offen!`:'Keine Z-Tage offen'}</div>
+        <div class="jc-sub" style="color:${j.zOffen>0?'var(--warn)':'var(--muted)'}">${j.zOffen>0?`${j.zOffen} Z-Tage offen!`:'Keine Z-Tage offen'}</div>
       </div>
       <div class="jc-item">
         <div class="jc-val" style="color:${winterColor}">${j.winterAnspruch?'✓':'–'}</div>
@@ -1342,7 +1348,7 @@ function renderJahresCard(){
         <div class="jc-sub" style="color:var(--muted)">${ST.atzGesamtPkte!==null?'Stichtag 31.12.'+(ST.atzGesamtJahr||''):'Im ATZ-Rechner berechnen'}</div>
       </div>
     </div>
-    ${j.uebZTage-j.zDays>0?`<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! ${j.uebZTage-j.zDays} Z-Tage offen → wandern am 31.12. ins AZK</div>`:''}
+    ${j.zOffen>0?`<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! ${j.zOffen} Z-Tage offen → wandern am 31.12. ins AZK</div>`:''}
     <div style="height:90px;"></div>`;
 }
 
@@ -1358,15 +1364,15 @@ function openDay(key,d){
   const yearN=countNSchichtenBisDate(dt);
   const j=calcJahres(Y);
   const zBox=mk('div','nf-info');
-  const zColor=(j.uebZTage-j.zDays)>0?'var(--Z-c)':'var(--muted)';
-  zBox.innerHTML=`Z-Tage Übertrag: <span class="nf-count" style="color:var(--Z-c)">${j.uebZTage}</span>
+  const zColor=j.zOffen>0?'var(--Z-c)':'var(--muted)';
+  zBox.innerHTML=`Z-Tage Gesamt: <span class="nf-count" style="color:var(--Z-c)">${j.zGesamt}</span>
     &nbsp;·&nbsp; Verbraucht: <span class="nf-count" style="color:var(--muted)">${j.zDays}</span>
-    &nbsp;·&nbsp; Offen: <span class="nf-count" style="color:${zColor}">${j.uebZTage-j.zDays}</span><br>
+    &nbsp;·&nbsp; Offen: <span class="nf-count" style="color:${zColor}">${j.zOffen}</span><br>
     <span style="font-size:.65rem">📅 Nachtschichten ${Y}: <b style="color:var(--N-c)">${yearN}</b> &nbsp;·&nbsp; NF-Anspruch: <b style="color:var(--NF-c)">${ST.senior?4:Math.floor(yearN/17)}</b></span>`;
   nfBox.appendChild(zBox);
   const grid=document.getElementById('ovGrid');grid.innerHTML='';
   const urlaubRest=j.urlaubEff-j.urlaubDays;  // ✅ GdB-adjustiert
-  const zRest=j.uebZTage-j.zDays;
+  const zRest=j.zOffen;
   const nfAnspruch=ST.senior?4:Math.floor(yearN/17);
   const nfVerbraucht=countNFVerbraucht(Y);
   const nfRest=nfAnspruch-nfVerbraucht;
