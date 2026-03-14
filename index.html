@@ -1098,7 +1098,8 @@ function easter(Y){
 
 // ─── JAHRES STATS CALC ───────────────────────────────────────────
 function calcJahres(Y){
-  const stats={F:0,S:0,N:0,B:0,free:0,urlaubDays:0,zDays:0,vDays:0,nfDays:0,suDays:0,istStunden:0,urlaubSommer:0,wuDays:0};
+  const HL=holidays(Y,ST.bundesland);
+  const stats={F:0,S:0,N:0,B:0,free:0,urlaubDays:0,zDays:0,vDays:0,nfDays:0,suDays:0,istStunden:0,urlaubSommer:0,wuDays:0,vbDays:0};
   const start=new Date(Y,0,1);start.setHours(0,0,0,0);
   const end=new Date(Y,11,31);end.setHours(0,0,0,0);
   for(let dt=new Date(start);dt<=end;dt.setDate(dt.getDate()+1)){
@@ -1122,36 +1123,57 @@ function calcJahres(Y){
       stats.istStunden+=sh;
       if(shift&&shift in SDEFS&&shift!=='-'){stats[shift]=(stats[shift]||0)+1;}
     }
+    // VB-Tag: Feiertag Mo-Fr + Schicht=Frei + kein Override (kein U/NF/Z/SU/WU)
+    if(!ov && shift==='-'){
+      const dow=dt.getDay(); // 0=So,1=Mo,...,5=Fr,6=Sa
+      if(dow>=1 && dow<=5 && HL[key]){
+        stats.vbDays++;
+        // VB-Stunden werden NICHT zu istStunden addiert - sie reduzieren das Soll
+      }
+    }
   }
-  const sollStunden=ST.azv?1781.76:1856;
-  const stDiff=stats.istStunden-sollStunden;
-  const uebZStd=ST.uebertragZStd||0;
-  const uebVStd=ST.uebertragVStd||0;
-  const uebZTage=Math.round(uebZStd/8);
-  const uebVTage=Math.round(uebVStd/8);
-  const zBilanzStd=uebZStd+(stDiff>0?stDiff:0)-(stats.zDays*8);
-  const vBilanzStd=uebVStd+(stDiff<0?Math.abs(stDiff):0)-(stats.vDays*8);
-  const azKStunden=Math.max(0,zBilanzStd);
+  const sollStunden = ST.azv ? 1781.76 : 1856;
+
+  // VB-Tage reduzieren das Jahressoll (Feiertag auf Freischicht = 8h Gutschrift)
+  const sollEffektiv = Math.round((sollStunden - stats.vbDays * 8) * 100) / 100;
+
+  // V-Tage zaehlen als geleistete Stunden (Schulden abarbeiten, je 8h)
+  const vTageGeleistet = stats.vDays * 8;
+  const stDiff = Math.round((stats.istStunden + vTageGeleistet - sollEffektiv) * 100) / 100;
+
+  const uebZStd = ST.uebertragZStd || 0;
+  const uebVStd = ST.uebertragVStd || 0;
+  const uebZTage = Math.round(uebZStd / 8);
+  const uebVTage = Math.round(uebVStd / 8);
+  const azKStunden = Math.max(0, uebZStd + (stDiff > 0 ? stDiff : 0) - (stats.zDays * 8));
+
   let nfAnspruch;
   if(ST.senior){ nfAnspruch=4; } else { nfAnspruch=Math.floor(stats.N/17); }
-  const winterGrenze=Math.floor(ST.urlaubTage/3);
-  const winterAnspruch=stats.urlaubDays>0&&stats.urlaubSommer<=winterGrenze&&stats.wuDays===0;
+  const winterGrenze = Math.floor(ST.urlaubTage / 3);
+  const winterAnspruch = stats.urlaubDays > 0 && stats.urlaubSommer <= winterGrenze && stats.wuDays === 0;
 
-  // ✅ GdB: effektiver Urlaubsanspruch
+  // GdB: effektiver Urlaubsanspruch
   const urlaubEff = ST.urlaubTage + (ST.gdb ? 5 : 0);
 
-  // Z-Tage Gesamt = Übertrag + neu erarbeitet dieses Jahr
+  // Z-Tage: nur wenn Guthaben
   const zNeu = stDiff > 0 ? Math.floor(stDiff / 8) : 0;
-  const zGesamt = (uebZTage + zNeu);
+  const zGesamt = uebZTage + zNeu;
   const zOffen = Math.max(0, zGesamt - stats.zDays);
 
+  // V-Tage: nur wenn Schulden
+  const vNeu = stDiff < 0 ? Math.ceil(Math.abs(stDiff) / 8) : 0;
+  const vGesamt = uebVTage + vNeu;
+  const vOffen = Math.max(0, vGesamt - stats.vDays);
+
   return {
-    ...stats, sollStunden, stDiff, nfAnspruch, winterAnspruch,
+    ...stats, sollStunden, sollEffektiv, stDiff, nfAnspruch, winterAnspruch,
     urlaubEff,
     resturlaub: urlaubEff - stats.urlaubDays,
-    nfRest: nfAnspruch-stats.nfDays,
-    uebZStd,uebVStd,uebZTage,uebVTage,zBilanzStd,vBilanzStd,azKStunden,
+    nfRest: nfAnspruch - stats.nfDays,
+    uebZStd, uebVStd, uebZTage, uebVTage, azKStunden,
     zNeu, zGesamt, zOffen,
+    vNeu, vGesamt, vOffen,
+    vbDays: stats.vbDays,
   };
 }
 
@@ -1254,6 +1276,13 @@ function renderCal(){
     }
     if(HL[key]){
       const hl=mk('div','fhlbl');hl.textContent=HL[key];cell.appendChild(hl);
+      // VB-Tag anzeigen: Feiertag Mo-Fr + Frei + kein Override
+      if(!ov && shift==='-' && dow>=1 && dow<=5){
+        const vbl=mk('div','');
+        vbl.style.cssText='font-size:.46rem;font-weight:700;text-align:center;color:var(--B-c);line-height:1.2;';
+        vbl.textContent='VB+8h';
+        cell.appendChild(vbl);
+      }
     } else if(ferienName){
       const fl=mk('div','ferhlbl');
       const ferienKurz={'Sommerferien':'Sommer','Winterferien':'Winter','Osterferien':'Ostern','Herbstferien':'Herbst','Weihnachtsferien':'Weihnacht','Pfingstferien':'Pfingsten'};
@@ -1298,7 +1327,8 @@ function renderJahresCard(){
   const stColor=j.stDiff>0?'var(--ok)':j.stDiff<0?'var(--err)':'var(--muted)';
   const zTageNeu=j.stDiff>0?Math.round(j.stDiff/8):0;
   const vTageNeu=j.stDiff<0?Math.round(Math.abs(j.stDiff)/8):0;
-  const stLabel=j.stDiff>0?`+${j.stDiff}h → ${zTageNeu} Z-Tage`:j.stDiff<0?`${j.stDiff}h → ${vTageNeu} V-Tage`:'ausgeglichen';
+  const stDiffAbs = Math.abs(j.stDiff);
+  const stLabel=j.stDiff>0?`+${j.stDiff}h → ${zTageNeu} Z-Tage`:j.stDiff<0?`-${stDiffAbs}h → ${vTageNeu} V-Tage`:'ausgeglichen';
   const urlColor=j.resturlaub>0?'var(--ok)':j.resturlaub===0?'var(--muted)':'var(--err)';
   const nfColor=j.nfRest>0?'var(--ok)':'var(--muted)';
   const winterColor=j.winterAnspruch?'var(--W-c)':'var(--muted)';
@@ -1328,14 +1358,18 @@ function renderJahresCard(){
         <div class="jc-sub" style="color:${nfColor}">${j.nfDays} verbraucht · ${j.nfRest} frei</div>
       </div>
       <div class="jc-item">
-        <div class="jc-val" style="color:var(--Z-c)">${j.zGesamt}</div>
-        <div class="jc-lbl">Z-Tage Gesamt</div>
-        <div class="jc-sub" style="color:var(--muted)">${j.zDays} verbraucht · <b style="color:${j.zOffen>0?'var(--warn)':'var(--muted)'}">${j.zOffen} offen</b></div>
+        ${j.stDiff>=0 ? `
+          <div class="jc-val" style="color:var(--Z-c)">${j.zGesamt}</div>
+          <div class="jc-lbl">Z-Tage Gesamt</div>
+          <div class="jc-sub" style="color:var(--muted)">${j.zDays} verbraucht · <b style="color:${j.zOffen>0?'var(--warn)':'var(--muted)'}">${j.zOffen} offen</b></div>
+        ` : `
+          <div class="jc-val" style="color:var(--V-c)">${j.vGesamt}</div>
+          <div class="jc-lbl">V-Tage Gesamt</div>
+          <div class="jc-sub" style="color:var(--muted)">${j.vDays} abgebaut · <b style="color:${j.vOffen>0?'var(--err)':'var(--muted)'}">${j.vOffen} offen</b></div>
+        `}
       </div>
       <div class="jc-item">
-        <div class="jc-val" style="color:${j.zOffen>0?'var(--warn)':'var(--ok)'}">${j.zOffen>0?'⚠':'✓'}</div>
-        <div class="jc-lbl">AZK am 31.12.</div>
-        <div class="jc-sub" style="color:${j.zOffen>0?'var(--warn)':'var(--muted)'}">${j.zOffen>0?`${j.zOffen} Z-Tage offen!`:'Keine Z-Tage offen'}</div>
+        ${j.stDiff>=0 ? '<div class="jc-val" style="color:'+(j.zOffen>0?'var(--warn)':'var(--ok)')+'">'+( j.zOffen>0?'⚠':'✓')+'</div><div class="jc-lbl">AZK am 31.12.</div><div class="jc-sub" style="color:'+(j.zOffen>0?'var(--warn)':'var(--muted)')+'">'+( j.zOffen>0? j.zOffen+' Z-Tage offen!':'Keine Z-Tage offen')+'</div>' : '<div class="jc-val" style="color:'+(j.vOffen>0?'var(--err)':'var(--ok)')+'">'+( j.vOffen>0?'⚠':'✓')+'</div><div class="jc-lbl">V-Tage Schulden</div><div class="jc-sub" style="color:'+(j.vOffen>0?'var(--err)':'var(--muted)')+'">'+( j.vOffen>0? j.vOffen+' V-Tage offen!':'Alle V-Tage abgebaut')+'</div>'}
       </div>
       <div class="jc-item">
         <div class="jc-val" style="color:${winterColor}">${j.winterAnspruch?'✓':'–'}</div>
@@ -1343,12 +1377,17 @@ function renderJahresCard(){
         <div class="jc-sub" style="color:${winterColor}">${j.winterAnspruch?'Anspruch vorhanden':'max '+Math.floor(ST.urlaubTage/3)+' Sommertage'}</div>
       </div>
       <div class="jc-item">
+        <div class="jc-val" style="color:var(--B-c)">${j.vbDays}</div>
+        <div class="jc-lbl">VB-Tage</div>
+        <div class="jc-sub" style="color:var(--muted)">Feiertag auf Freischicht · +${j.vbDays*8}h</div>
+      </div>
+      <div class="jc-item">
         <div class="jc-val" style="color:var(--ok)">${ST.atzGesamtPkte!==null?ST.atzGesamtPkte.toFixed(2).replace('.',','):'–'}</div>
         <div class="jc-lbl">ATZ-Punkte</div>
         <div class="jc-sub" style="color:var(--muted)">${ST.atzGesamtPkte!==null?'Stichtag 31.12.'+(ST.atzGesamtJahr||''):'Im ATZ-Rechner berechnen'}</div>
       </div>
     </div>
-    ${j.zOffen>0?`<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! ${j.zOffen} Z-Tage offen → wandern am 31.12. ins AZK</div>`:''}
+    ${j.stDiff>=0 && j.zOffen>0 ? '<div style="margin-top:8px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--warn);">⚠️ Z-Tage zuerst verbrauchen! '+j.zOffen+' Z-Tage offen → wandern am 31.12. ins AZK</div>' : j.stDiff<0 && j.vOffen>0 ? '<div style="margin-top:8px;background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.3);border-radius:8px;padding:8px 10px;font-size:.7rem;color:var(--err);">⚠️ V-Tage abbauen! '+j.vOffen+' V-Tage noch offen – bitte eintragen.</div>' : ''}
     <div style="height:90px;"></div>`;
 }
 
@@ -1579,7 +1618,7 @@ function openStats(){
       <span class="slbl">Arbeitszeit</span>
       <div class="jc-grid" style="margin-bottom:10px">
         <div class="jc-item"><div class="jc-val">${j.istStunden}h</div><div class="jc-lbl">Ist-Stunden</div></div>
-        <div class="jc-item"><div class="jc-val">${j.sollStunden}h</div><div class="jc-lbl">Soll (${ST.azv?'mit':'ohne'} AZV)</div></div>
+        <div class="jc-item"><div class="jc-val">${j.sollEffektiv}h</div><div class="jc-lbl">Soll${j.vbDays>0?' (−'+j.vbDays*8+'h VB)':' ('}${ST.azv?'mit':'ohne'} AZV)</div></div>
         <div class="jc-item"><div class="jc-val" style="color:${stColor}">${j.stDiff>0?'+':''}${j.stDiff}h</div>
           <div class="jc-lbl">${j.stDiff>0?'→ Z-Tage':j.stDiff<0?'→ V-Tage':'ausgeglichen'}</div></div>
         <div class="jc-item"><div class="jc-val">${j.F+j.S+j.N+j.B}</div><div class="jc-lbl">Schichttage</div></div>
@@ -1608,6 +1647,10 @@ function openStats(){
         <div class="jc-item"><div class="jc-val" style="color:var(--SU-c)">${j.suDays}</div><div class="jc-lbl">Sonderurlaub</div></div>
       </div>
       ${winterHtml}
+    </div>
+    <div class="sg">
+      <span class="slbl">VB-Tage (Feiertag auf Freischicht)</span>
+      <div class="ok-box">📅 VB-Tage ${Y}: <strong>${j.vbDays}</strong> · +<strong>${j.vbDays*8} Stunden</strong> gutgeschrieben (Feiertag Mo–Fr auf Freischicht ohne Override)</div>
     </div>
     <div class="sg">
       <span class="slbl">Nachtfreischichten</span>
