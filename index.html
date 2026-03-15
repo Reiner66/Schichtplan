@@ -25,12 +25,14 @@
   --S-c:#38bdf8; --S-b:rgba(56,189,248,.15);
   --N-c:#a78bfa; --N-b:rgba(167,139,250,.15);
   --B-c:#34d399; --B-b:rgba(52,211,153,.15);
+  --T-c:#2dd4bf; --T-b:rgba(45,212,191,.15);
   --fr-c:#2a2a42; --fr-t:#55557a;
   --U-c:#f43f5e; --U-b:rgba(244,63,94,.18);
   --Z-c:#22d3ee; --Z-b:rgba(34,211,238,.15);
   --V-c:#fb923c; --V-b:rgba(251,146,60,.16);
   --NF-c:#a78bfa; --NF-b:rgba(167,139,250,.22);
   --SU-c:#e879f9; --SU-b:rgba(232,121,249,.16);
+  --VU-c:#fb923c; --VU-b:rgba(251,146,60,.20);
   --W-c:#fbbf24; --W-b:rgba(251,191,36,.15);
   --ok:#34d399; --warn:#fb923c; --err:#f43f5e;
 }
@@ -41,12 +43,14 @@
   --S-c:#60c8f8; --S-b:rgba(96,200,248,.16);
   --N-c:#b8a0ff; --N-b:rgba(184,160,255,.16);
   --B-c:#4eeaaa; --B-b:rgba(78,234,170,.16);
+  --T-c:#34d9cc; --T-b:rgba(52,217,204,.16);
   --fr-c:#32325a; --fr-t:#6868a0;
   --U-c:#ff6088; --U-b:rgba(255,96,136,.18);
   --Z-c:#40e0f0; --Z-b:rgba(64,224,240,.16);
   --V-c:#ff9f50; --V-b:rgba(255,159,80,.18);
   --NF-c:#b8a0ff; --NF-b:rgba(184,160,255,.24);
   --SU-c:#f090ff; --SU-b:rgba(240,144,255,.18);
+  --VU-c:#fb923c; --VU-b:rgba(251,146,60,.22);
   --W-c:#ffd050; --W-b:rgba(255,208,80,.16);
   --ok:#4eeaaa; --warn:#ff9f50; --err:#ff6088;
 }
@@ -57,12 +61,14 @@
   --S-c:#50d0ff; --S-b:rgba(80,208,255,.16);
   --N-c:#c0a8ff; --N-b:rgba(192,168,255,.16);
   --B-c:#40f0b0; --B-b:rgba(64,240,176,.16);
+  --T-c:#30e8d8; --T-b:rgba(48,232,216,.16);
   --fr-c:#30385a; --fr-t:#6070a8;
   --U-c:#ff5580; --U-b:rgba(255,85,128,.18);
   --Z-c:#30e8f8; --Z-b:rgba(48,232,248,.16);
   --V-c:#ff8840; --V-b:rgba(255,136,64,.18);
   --NF-c:#c0a8ff; --NF-b:rgba(192,168,255,.24);
   --SU-c:#e870ff; --SU-b:rgba(232,112,255,.18);
+  --VU-c:#fb923c; --VU-b:rgba(251,146,60,.22);
   --W-c:#ffd040; --W-b:rgba(255,208,64,.16);
   --ok:#40f0b0; --warn:#ff8840; --err:#ff5580;
 }
@@ -73,12 +79,14 @@
   --S-c:#0080c8; --S-b:rgba(0,128,200,.10);
   --N-c:#6040c8; --N-b:rgba(96,64,200,.10);
   --B-c:#008060; --B-b:rgba(0,128,96,.10);
+  --T-c:#008080; --T-b:rgba(0,128,128,.10);
   --fr-c:#dde2f5; --fr-t:#9098c8;
   --U-c:#c81840; --U-b:rgba(200,24,64,.10);
   --Z-c:#0098b0; --Z-b:rgba(0,152,176,.10);
   --V-c:#c85000; --V-b:rgba(200,80,0,.12);
   --NF-c:#6040c8; --NF-b:rgba(96,64,200,.14);
   --SU-c:#9020c0; --SU-b:rgba(144,32,192,.10);
+  --VU-c:#c2410c; --VU-b:rgba(194,65,12,.12);
   --W-c:#b06800; --W-b:rgba(176,104,0,.12);
   --ok:#008060; --warn:#c85000; --err:#c81840;
 }
@@ -504,7 +512,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         <input class="sinput" id="segPatIn" placeholder="z.B. FFSSNNN----"
           maxlength="200" oninput="updateSegPreview()"
           autocomplete="off" autocorrect="off" spellcheck="false"/>
-        <div class="shint">F=Früh · S=Spät · N=Nacht · B=Bereitschaft · -=Frei</div>
+        <div class="shint">F=Früh · S=Spät · N=Nacht · B=Bereitschaft · T=Tag · -=Frei</div>
         <div class="kboard" id="segKboard"></div>
         <div class="pat-prev-row" id="segPrev"></div>
       </div>
@@ -620,12 +628,31 @@ body{background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;
         <div class="shint">Standard-Urlaubsanspruch pro Kalenderjahr.</div>
       </div>
       <div class="sg">
+        <span class="slbl">Jahresarbeitszeit (Stunden)</span>
+        <input type="number" class="sinput" id="jahresAZIn" min="1000" max="2500" value="1856"/>
+        <div class="shint">Tarifliche Jahresarbeitszeit deines Schichtmodells (z.B. 1856h bei 100%).</div>
+      </div>
+      <div class="sg">
+        <span class="slbl">Stunden pro Schicht</span>
+        <input type="number" class="sinput" id="schichtStundenIn" min="1" max="12" step="0.5" value="8"/>
+        <div class="shint">Stunden pro Schichttag · 5-Schicht/4-Schicht/3-Schicht F+S+N = <strong>8h</strong> · Tagschicht T oder 3-Schicht T+S = <strong>7h</strong></div>
+      </div>
+      <div class="sg">
         <div class="toggle-row" onclick="toggleAZV()">
           <div>
             <div class="toggle-lbl">AZV (4% Arbeitszeitverkürzung)</div>
-            <div class="toggle-sub">Mit AZV: Sollstunden 1781,76 · Ohne: 1856</div>
+            <div class="toggle-sub" id="azvSub">Mit AZV: Sollstunden werden automatisch berechnet · Ohne: Basiswert</div>
           </div>
           <div class="tog" id="azvTog"></div>
+        </div>
+      </div>
+      <div class="sg">
+        <div class="toggle-row" onclick="toggleVollkonti()">
+          <div>
+            <div class="toggle-lbl">🔄 Vollkontinuierlicher Betrieb</div>
+            <div class="toggle-sub">Sa+So Schichtbetrieb → VB-Tage werden berechnet</div>
+          </div>
+          <div class="tog" id="vollkontiTog"></div>
         </div>
       </div>
       <div class="sg">
@@ -877,6 +904,7 @@ const SDEFS = {
   'S':{l:'Spät',   c:'var(--S-c)',b:'var(--S-b)',h:8},
   'N':{l:'Nacht',  c:'var(--N-c)',b:'var(--N-b)',h:8},
   'B':{l:'Bereit.',c:'var(--B-c)',b:'var(--B-b)',h:8},
+  'T':{l:'Tag',    c:'var(--T-c)',b:'var(--T-b)',h:8},
   '-':{l:'Frei',   c:'var(--fr-t)',b:'var(--fr-c)',h:0},
 };
 const OVDEFS = {
@@ -886,8 +914,9 @@ const OVDEFS = {
   'NF':{l:'N-Freischicht',c:'var(--NF-c)',b:'var(--NF-b)'},
   'SU':{l:'Sonderurlaub', c:'var(--SU-c)',b:'var(--SU-b)'},
   'WU':{l:'Winterurl.',   c:'var(--W-c)', b:'var(--W-b)'},
+  'VU':{l:'V+Urlaub',    c:'var(--VU-c)',b:'var(--VU-b)'},
 };
-const VALID = new Set(['F','S','N','B','-']);
+const VALID = new Set(['F','S','N','B','T','-']);
 const MONTHS = ['Januar','Februar','März','April','Mai','Juni',
                 'Juli','August','September','Oktober','November','Dezember'];
 
@@ -897,7 +926,10 @@ let ST = {
   overrides: {},
   name: '',
   urlaubTage: 30,
+  jahresAZ: 1856,
+  schichtStunden: 8,
   azv: false,
+  vollkonti: false,
   senior: false,
   gdb: false,           // ✅ NEU: Schwerbehinderung GdB ≥50 → +5 Urlaubstage
   bundesland: 'HB',
@@ -925,7 +957,7 @@ function persist(){
   try{localStorage.setItem('spv5',JSON.stringify({
     segments:ST.segments, overrides:ST.overrides,
     name:ST.name, urlaubTage:ST.urlaubTage,
-    azv:ST.azv, senior:ST.senior, gdb:ST.gdb,  // ✅ gdb gespeichert
+    jahresAZ:ST.jahresAZ||1856, schichtStunden:ST.schichtStunden||8, azv:ST.azv, vollkonti:ST.vollkonti||false, senior:ST.senior, gdb:ST.gdb,
     bundesland:ST.bundesland, theme:ST.theme,
     customColors:ST.customColors, ceHue:ST.ceHue, ceSat:ST.ceSat, ceBrightness:ST.ceBrightness,
     termine:ST.termine,
@@ -943,7 +975,10 @@ function restore(){
     if(d.overrides)  ST.overrides=d.overrides;
     if(d.name)       ST.name=d.name;
     if(d.urlaubTage) ST.urlaubTage=d.urlaubTage;
+    if(d.jahresAZ!==undefined) ST.jahresAZ=d.jahresAZ;
+    if(d.schichtStunden!==undefined) ST.schichtStunden=d.schichtStunden;
     if(d.azv!==undefined) ST.azv=d.azv;
+    if(d.vollkonti!==undefined) ST.vollkonti=d.vollkonti;
     if(d.senior!==undefined) ST.senior=d.senior;
     if(d.gdb!==undefined) ST.gdb=d.gdb;  // ✅ gdb wiederhergestellt
     if(d.bundesland) ST.bundesland=d.bundesland;
@@ -1099,7 +1134,9 @@ function easter(Y){
 // ─── JAHRES STATS CALC ───────────────────────────────────────────
 function calcJahres(Y){
   const HL=holidays(Y,ST.bundesland);
-  const stats={F:0,S:0,N:0,B:0,free:0,urlaubDays:0,zDays:0,vDays:0,nfDays:0,suDays:0,istStunden:0,urlaubSommer:0,wuDays:0,vbDays:0};
+  const sh=ST.schichtStunden||8; // Stunden pro Schicht (konfigurierbar)
+  const shiftH=(s)=>s&&s!=='-'?sh:0; // '-' immer 0h
+  const stats={F:0,S:0,N:0,B:0,T:0,free:0,urlaubDays:0,zDays:0,vDays:0,nfDays:0,suDays:0,vuDays:0,istStunden:0,urlaubSommer:0,wuDays:0,vbDays:0};
   const start=new Date(Y,0,1);start.setHours(0,0,0,0);
   const end=new Date(Y,11,31);end.setHours(0,0,0,0);
   for(let dt=new Date(start);dt<=end;dt.setDate(dt.getDate()+1)){
@@ -1108,6 +1145,7 @@ function calcJahres(Y){
     const shift=shiftForDate(new Date(dt));
     const m=dt.getMonth();
     if(ov==='U'){stats.urlaubDays++;if(m>=3&&m<=8)stats.urlaubSommer++;}
+    else if(ov==='VU'){stats.urlaubDays++;stats.vuDays++;if(m>=3&&m<=8)stats.urlaubSommer++;}
     else if(ov==='Z') stats.zDays++;
     else if(ov==='V') stats.vDays++;
     else if(ov==='NF') stats.nfDays++;
@@ -1116,36 +1154,48 @@ function calcJahres(Y){
     if(shift&&!ov){
       if(shift in SDEFS) stats[shift]=(stats[shift]||0)+1;
       if(shift==='-') stats.free++;
-      if(shift&&shift!=='-') stats.istStunden+=SDEFS[shift].h;
+      if(shift&&shift!=='-') stats.istStunden+=shiftH(shift);
     }
-    if(ov&&ov!=='V'){
-      const sh=shift&&shift!=='-'?SDEFS[shift].h:8;
-      stats.istStunden+=sh;
-      if(shift&&shift in SDEFS&&shift!=='-'){stats[shift]=(stats[shift]||0)+1;}
+    if(ov){
+      // Stunden-Logik je Override:
+      // U   → nur auf F/S/N/B gültig → Schichtstunden zählen
+      // VU  → nur auf '-' gültig → +8h (V-Schicht)
+      // V   → nur auf '-' gültig → +8h (extra Arbeitstag)
+      // SU/WU → wie U, auf Schichttagen → Schichtstunden zählen
+      // Z/NF → kein Stundenbeitrag
+      if(ov==='U' || ov==='SU' || ov==='WU'){
+        // Nur auf echten Schichttagen (nicht auf Frei)
+        if(shift && shift!=='-'){
+          stats.istStunden+=shiftH(shift);
+          stats[shift]=(stats[shift]||0)+1;
+        }
+        // U auf '-' → 0h, kein Stundenbeitrag
+      } else if(ov==='V' || ov==='VU'){
+        // Nur auf Frei-Tagen sinnvoll → sh Stunden
+        stats.istStunden+=sh;
+      }
+      // Z, NF → keine Stunden
     }
-    // VB-Tag: Feiertag Mo-Fr + Schicht=Frei + kein Override (kein U/NF/Z/SU/WU)
-    if(!ov && shift==='-'){
-      const dow=dt.getDay(); // 0=So,1=Mo,...,5=Fr,6=Sa
+    // VB-Tag: nur Vollkonti + Feiertag Mo-Fr + Schicht=Frei + kein Override
+    if(ST.vollkonti && !ov && shift==='-'){
+      const dow=dt.getDay();
       if(dow>=1 && dow<=5 && HL[key]){
         stats.vbDays++;
-        // VB-Stunden werden NICHT zu istStunden addiert - sie reduzieren das Soll
+        stats.istStunden+=sh; // VB = sh Gutschrift auf Ist-Stunden
       }
     }
   }
-  const sollStunden = ST.azv ? 1781.76 : 1856;
+  const jahresAZ = ST.jahresAZ || 1856;
+  const sollStunden = ST.azv ? Math.round(jahresAZ * 0.96 * 100) / 100 : jahresAZ;
 
-  // VB-Tage reduzieren das Jahressoll (Feiertag auf Freischicht = 8h Gutschrift)
-  const sollEffektiv = Math.round((sollStunden - stats.vbDays * 8) * 100) / 100;
-
-  // V-Tage zaehlen als geleistete Stunden (Schulden abarbeiten, je 8h)
-  const vTageGeleistet = stats.vDays * 8;
-  const stDiff = Math.round((stats.istStunden + vTageGeleistet - sollEffektiv) * 100) / 100;
+  // stDiff = Ist - Soll (V-Tage stecken bereits als gearbeitete Schichten in istStunden)
+  const stDiff = Math.round((stats.istStunden - sollStunden) * 100) / 100;
 
   const uebZStd = ST.uebertragZStd || 0;
   const uebVStd = ST.uebertragVStd || 0;
-  const uebZTage = Math.round(uebZStd / 8);
-  const uebVTage = Math.round(uebVStd / 8);
-  const azKStunden = Math.max(0, uebZStd + (stDiff > 0 ? stDiff : 0) - (stats.zDays * 8));
+  const uebZTage = Math.round(uebZStd / sh);
+  const uebVTage = Math.round(uebVStd / sh);
+  const azKStunden = Math.max(0, uebZStd + (stDiff > 0 ? stDiff : 0) - (stats.zDays * sh));
 
   let nfAnspruch;
   if(ST.senior){ nfAnspruch=4; } else { nfAnspruch=Math.floor(stats.N/17); }
@@ -1156,17 +1206,17 @@ function calcJahres(Y){
   const urlaubEff = ST.urlaubTage + (ST.gdb ? 5 : 0);
 
   // Z-Tage: nur wenn Guthaben
-  const zNeu = stDiff > 0 ? Math.floor(stDiff / 8) : 0;
+  const zNeu = stDiff > 0 ? Math.floor(stDiff / sh) : 0;
   const zGesamt = uebZTage + zNeu;
   const zOffen = Math.max(0, zGesamt - stats.zDays);
 
   // V-Tage: nur wenn Schulden
-  const vNeu = stDiff < 0 ? Math.ceil(Math.abs(stDiff) / 8) : 0;
+  const vNeu = stDiff < 0 ? Math.ceil(Math.abs(stDiff) / sh) : 0;
   const vGesamt = uebVTage + vNeu;
-  const vOffen = Math.max(0, vGesamt - stats.vDays);
+  const vOffen = Math.max(0, vGesamt - stats.vDays - stats.vuDays); // VU baut auch V-Schulden ab
 
   return {
-    ...stats, sollStunden, sollEffektiv, stDiff, nfAnspruch, winterAnspruch,
+    ...stats, sollStunden, stDiff, sh, nfAnspruch, winterAnspruch,
     urlaubEff,
     resturlaub: urlaubEff - stats.urlaubDays,
     nfRest: nfAnspruch - stats.nfDays,
@@ -1174,6 +1224,7 @@ function calcJahres(Y){
     zNeu, zGesamt, zOffen,
     vNeu, vGesamt, vOffen,
     vbDays: stats.vbDays,
+    vuDays: stats.vuDays,
   };
 }
 
@@ -1225,7 +1276,7 @@ function renderCal(){
   const pad=fd===0?6:fd-1;
   const dim=new Date(Y,M+1,0).getDate();
   const prev=new Date(Y,M,0).getDate();
-  const stats={F:0,S:0,N:0,B:0,free:0,U:0,Z:0,V:0,NF:0,SU:0};
+  const stats={F:0,S:0,N:0,B:0,T:0,free:0,U:0,Z:0,V:0,VU:0,NF:0,SU:0};
 
   for(let i=pad-1;i>=0;i--){
     const c=mk('div','dc other');
@@ -1276,11 +1327,11 @@ function renderCal(){
     }
     if(HL[key]){
       const hl=mk('div','fhlbl');hl.textContent=HL[key];cell.appendChild(hl);
-      // VB-Tag anzeigen: Feiertag Mo-Fr + Frei + kein Override
-      if(!ov && shift==='-' && dow>=1 && dow<=5){
+      // VB-Tag anzeigen: nur Vollkonti + Feiertag Mo-Fr + Frei + kein Override
+      if(ST.vollkonti && !ov && shift==='-' && dow>=1 && dow<=5){
         const vbl=mk('div','');
         vbl.style.cssText='font-size:.46rem;font-weight:700;text-align:center;color:var(--B-c);line-height:1.2;';
-        vbl.textContent='VB+8h';
+        vbl.textContent='VB+'+(ST.schichtStunden||8)+'h';
         cell.appendChild(vbl);
       }
     } else if(ferienName){
@@ -1307,8 +1358,9 @@ function renderCal(){
 function renderMonthStats(st){
   const row=document.getElementById('stats');row.innerHTML='';
   [{k:'F',l:'Früh',c:'var(--F-c)'},{k:'S',l:'Spät',c:'var(--S-c)'},
-   {k:'N',l:'Nacht',c:'var(--N-c)'},{k:'free',l:'Frei',c:'var(--muted)'},
+   {k:'N',l:'Nacht',c:'var(--N-c)'},{k:'T',l:'Tag',c:'var(--T-c)'},{k:'free',l:'Frei',c:'var(--muted)'},
    {k:'U',l:'Urlaub',c:'var(--U-c)'},{k:'Z',l:'Z-Tag',c:'var(--Z-c)'},
+   {k:'V',l:'V-Tag',c:'var(--V-c)'},{k:'VU',l:'V+Url.',c:'var(--VU-c)'},
    {k:'NF',l:'N-Frei',c:'var(--NF-c)'},
   ].forEach(it=>{
     const el=mk('div','si');
@@ -1325,10 +1377,8 @@ function renderJahresCard(){
   const firstSeg=ST.segments.find(s=>s.startDate.startsWith(Y));
   const startsLate=firstSeg&&firstSeg.startDate!==`${Y}-01-01`;
   const stColor=j.stDiff>0?'var(--ok)':j.stDiff<0?'var(--err)':'var(--muted)';
-  const zTageNeu=j.stDiff>0?Math.round(j.stDiff/8):0;
-  const vTageNeu=j.stDiff<0?Math.round(Math.abs(j.stDiff)/8):0;
   const stDiffAbs = Math.abs(j.stDiff);
-  const stLabel=j.stDiff>0?`+${j.stDiff}h → ${zTageNeu} Z-Tage`:j.stDiff<0?`-${stDiffAbs}h → ${vTageNeu} V-Tage`:'ausgeglichen';
+  const stLabel=j.stDiff>0?`+${j.stDiff}h → ${j.zNeu} Z-Tage`:j.stDiff<0?`-${stDiffAbs}h → ${j.vNeu} V-Tage`:'ausgeglichen';
   const urlColor=j.resturlaub>0?'var(--ok)':j.resturlaub===0?'var(--muted)':'var(--err)';
   const nfColor=j.nfRest>0?'var(--ok)':'var(--muted)';
   const winterColor=j.winterAnspruch?'var(--W-c)':'var(--muted)';
@@ -1340,11 +1390,11 @@ function renderJahresCard(){
       <div class="jc-item">
         <div class="jc-val" style="color:${urlColor}">${j.resturlaub}</div>
         <div class="jc-lbl">Resturlaub</div>
-        <div class="jc-sub" style="color:var(--muted)">${j.urlaubDays} von ${j.urlaubEff}${ST.gdb?' (+5 ♿)':''} verbraucht</div>
+        <div class="jc-sub" style="color:var(--muted)">${j.urlaubDays} von ${j.urlaubEff}${ST.gdb?' (+5 ♿)':''}${j.vuDays>0?' (davon '+j.vuDays+' VU)':''} verbraucht</div>
       </div>
       <div class="jc-item">
         <div class="jc-val" style="color:${stColor}">${j.istStunden}h</div>
-        <div class="jc-lbl">Ist-Stunden</div>
+        <div class="jc-lbl">Ist-Stunden${ST.vollkonti&&j.vbDays>0?' (inkl. VB)':''}</div>
         <div class="jc-sub" style="color:${stColor}">${stLabel}</div>
       </div>
       <div class="jc-item">
@@ -1365,7 +1415,7 @@ function renderJahresCard(){
         ` : `
           <div class="jc-val" style="color:var(--V-c)">${j.vGesamt}</div>
           <div class="jc-lbl">V-Tage Gesamt</div>
-          <div class="jc-sub" style="color:var(--muted)">${j.vDays} abgebaut · <b style="color:${j.vOffen>0?'var(--err)':'var(--muted)'}">${j.vOffen} offen</b></div>
+          <div class="jc-sub" style="color:var(--muted)">${j.vDays+j.vuDays} abgebaut${j.vuDays>0?' (davon '+j.vuDays+' VU)':''} · <b style="color:${j.vOffen>0?'var(--err)':'var(--muted)'}">${j.vOffen} offen</b></div>
         `}
       </div>
       <div class="jc-item">
@@ -1376,11 +1426,11 @@ function renderJahresCard(){
         <div class="jc-lbl">Winterurlaubstag</div>
         <div class="jc-sub" style="color:${winterColor}">${j.winterAnspruch?'Anspruch vorhanden':'max '+Math.floor(ST.urlaubTage/3)+' Sommertage'}</div>
       </div>
-      <div class="jc-item">
+      ${ST.vollkonti ? `<div class="jc-item">
         <div class="jc-val" style="color:var(--B-c)">${j.vbDays}</div>
         <div class="jc-lbl">VB-Tage</div>
-        <div class="jc-sub" style="color:var(--muted)">Feiertag auf Freischicht · +${j.vbDays*8}h</div>
-      </div>
+        <div class="jc-sub" style="color:var(--muted)">Feiertag Freischicht · +${j.vbDays*j.sh}h</div>
+      </div>` : ''}
       <div class="jc-item">
         <div class="jc-val" style="color:var(--ok)">${ST.atzGesamtPkte!==null?ST.atzGesamtPkte.toFixed(2).replace('.',','):'–'}</div>
         <div class="jc-lbl">ATZ-Punkte</div>
@@ -1400,14 +1450,23 @@ function openDay(key,d){
   nfBox.innerHTML='';
   const dt=parseD(key);
   const Y=dt.getFullYear();
+  const dayShift=shiftForDate(new Date(dt)); // Schicht des geöffneten Tages
   const yearN=countNSchichtenBisDate(dt);
   const j=calcJahres(Y);
   const zBox=mk('div','nf-info');
-  const zColor=j.zOffen>0?'var(--Z-c)':'var(--muted)';
-  zBox.innerHTML=`Z-Tage Gesamt: <span class="nf-count" style="color:var(--Z-c)">${j.zGesamt}</span>
-    &nbsp;·&nbsp; Verbraucht: <span class="nf-count" style="color:var(--muted)">${j.zDays}</span>
-    &nbsp;·&nbsp; Offen: <span class="nf-count" style="color:${zColor}">${j.zOffen}</span><br>
-    <span style="font-size:.65rem">📅 Nachtschichten ${Y}: <b style="color:var(--N-c)">${yearN}</b> &nbsp;·&nbsp; NF-Anspruch: <b style="color:var(--NF-c)">${ST.senior?4:Math.floor(yearN/17)}</b></span>`;
+  if(j.stDiff>=0){
+    const zColor=j.zOffen>0?'var(--warn)':'var(--muted)';
+    zBox.innerHTML=`Z-Tage Gesamt: <span class="nf-count" style="color:var(--Z-c)">${j.zGesamt}</span>
+      &nbsp;·&nbsp; Verbraucht: <span class="nf-count" style="color:var(--muted)">${j.zDays}</span>
+      &nbsp;·&nbsp; Offen: <span class="nf-count" style="color:${zColor}">${j.zOffen}</span><br>
+      <span style="font-size:.65rem">📅 Nachtschichten ${Y}: <b style="color:var(--N-c)">${yearN}</b> &nbsp;·&nbsp; NF-Anspruch: <b style="color:var(--NF-c)">${ST.senior?4:Math.floor(yearN/17)}</b></span>`;
+  } else {
+    const vColor=j.vOffen>0?'var(--err)':'var(--muted)';
+    zBox.innerHTML=`V-Tage Gesamt: <span class="nf-count" style="color:var(--V-c)">${j.vGesamt}</span>
+      &nbsp;·&nbsp; Abgebaut: <span class="nf-count" style="color:var(--muted)">${j.vDays}</span>
+      &nbsp;·&nbsp; Offen: <span class="nf-count" style="color:${vColor}">${j.vOffen}</span><br>
+      <span style="font-size:.65rem">📅 Nachtschichten ${Y}: <b style="color:var(--N-c)">${yearN}</b> &nbsp;·&nbsp; NF-Anspruch: <b style="color:var(--NF-c)">${ST.senior?4:Math.floor(yearN/17)}</b></span>`;
+  }
   nfBox.appendChild(zBox);
   const grid=document.getElementById('ovGrid');grid.innerHTML='';
   const urlaubRest=j.urlaubEff-j.urlaubDays;  // ✅ GdB-adjustiert
@@ -1419,12 +1478,16 @@ function openDay(key,d){
     const btn=mk('div','oo'+(editOvSel===k?' sel':''));
     btn.style.cssText=`background:${o.b};color:${o.c}`;
     let warn='';
-    if(k==='U'&&urlaubRest<=0) warn=' ⚠';
+    if(k==='U'&&(urlaubRest<=0||dayShift==='-'||dayShift===null)) warn=' ⚠';
+    if(k==='VU'&&dayShift!=='-') warn=' ⚠'; // VU nur auf Frei-Tag
+    if(k==='VU'&&(j.vOffen<=0||urlaubRest<=0)) warn=' ⚠';
+    if(k==='V'&&j.vOffen<=0) warn=' ⚠';
     if(k==='Z'&&zRest<=0) warn=' ⚠';
     if(k==='NF'&&nfRest<=0) warn=' ⚠';
     btn.textContent=o.l+warn;
     if(k==='U'){
       btn.onclick=()=>{
+        if(dayShift==='-'||dayShift===null){if(!confirm('⚠️ Urlaub auf Frei-Tag!\n\nUrlaub gilt nur auf Schichttagen (F/S/N/B).\n\nTrotzdem eintragen?')) return;}
         if(zRest>0){if(!confirm('⚠️ Z-Tage zuerst verbrauchen!\n\nNoch '+zRest+' Z-Tage offen.\n\nTrotzdem Urlaub eintragen?')) return;}
         if(urlaubRest<=0){if(!confirm('⚠️ Urlaubskontingent erschöpft!\n\nAlle '+j.urlaubEff+' Urlaubstage eingetragen.\n\nTrotzdem eintragen?')) return;}
         selOv(btn,k);
@@ -1436,7 +1499,16 @@ function openDay(key,d){
       };
     } else if(k==='V'){
       btn.onclick=()=>{
-        if(j.uebVTage<=0){if(!confirm('⚠️ Kein V-Tage Übertrag!\n\nTrotzdem eintragen?')) return;}
+        if(dayShift!=='-'){if(!confirm('⚠️ V-Tag nur auf Frei-Tag!\n\nDieser Tag ist kein Frei-Tag laut Plan.\n\nTrotzdem eintragen?')) return;}
+        if(j.vOffen<=0){if(!confirm('⚠️ Keine V-Tage offen!\n\nAlle V-Tage bereits abgebaut.\n\nTrotzdem eintragen?')) return;}
+        selOv(btn,k);
+      };
+    } else if(k==='VU'){
+      btn.onclick=()=>{
+        if(dayShift!=='-'){if(!confirm('⚠️ VU nur auf Frei-Tag!\n\nVU = V-Schicht + Urlaubstag opfern.\n\nTrotzdem eintragen?')) return;}
+        if(j.vOffen<=0&&urlaubRest<=0){if(!confirm('⚠️ Weder V-Tage offen noch Urlaub verfügbar!\n\nTrotzdem eintragen?')) return;}
+        else if(j.vOffen<=0){if(!confirm('⚠️ Keine V-Tage offen!\n\nTrotzdem eintragen?')) return;}
+        else if(urlaubRest<=0){if(!confirm('⚠️ Kein Urlaub mehr verfügbar!\n\nTrotzdem eintragen?')) return;}
         selOv(btn,k);
       };
     } else if(k==='NF'){
@@ -1617,8 +1689,8 @@ function openStats(){
     <div class="sg">
       <span class="slbl">Arbeitszeit</span>
       <div class="jc-grid" style="margin-bottom:10px">
-        <div class="jc-item"><div class="jc-val">${j.istStunden}h</div><div class="jc-lbl">Ist-Stunden</div></div>
-        <div class="jc-item"><div class="jc-val">${j.sollEffektiv}h</div><div class="jc-lbl">Soll${j.vbDays>0?' (−'+j.vbDays*8+'h VB)':' ('}${ST.azv?'mit':'ohne'} AZV)</div></div>
+        <div class="jc-item"><div class="jc-val">${j.istStunden}h</div><div class="jc-lbl">Ist-Stunden${ST.vollkonti&&j.vbDays>0?'<br><span style="font-size:.6rem;color:var(--muted)">(davon '+j.vbDays*j.sh+'h VB)</span>':''}</div></div>
+        <div class="jc-item"><div class="jc-val">${j.sollStunden}h</div><div class="jc-lbl">Soll (${ST.azv?'mit':'ohne'} AZV)</div></div>
         <div class="jc-item"><div class="jc-val" style="color:${stColor}">${j.stDiff>0?'+':''}${j.stDiff}h</div>
           <div class="jc-lbl">${j.stDiff>0?'→ Z-Tage':j.stDiff<0?'→ V-Tage':'ausgeglichen'}</div></div>
         <div class="jc-item"><div class="jc-val">${j.F+j.S+j.N+j.B}</div><div class="jc-lbl">Schichttage</div></div>
@@ -1630,6 +1702,7 @@ function openStats(){
         <div class="jc-item"><div class="jc-val" style="color:var(--F-c)">${j.F}</div><div class="jc-lbl">Früh</div></div>
         <div class="jc-item"><div class="jc-val" style="color:var(--S-c)">${j.S}</div><div class="jc-lbl">Spät</div></div>
         <div class="jc-item"><div class="jc-val" style="color:var(--N-c)">${j.N}</div><div class="jc-lbl">Nacht</div></div>
+        <div class="jc-item"><div class="jc-val" style="color:var(--T-c)">${j.T||0}</div><div class="jc-lbl">Tag</div></div>
         <div class="jc-item"><div class="jc-val" style="color:var(--muted)">${j.free}</div><div class="jc-lbl">Frei</div></div>
       </div>
     </div>
@@ -1644,14 +1717,15 @@ function openStats(){
         </div>
         <div class="jc-item"><div class="jc-val" style="color:var(--Z-c)">${j.zDays}</div><div class="jc-lbl">Z-Tage</div></div>
         <div class="jc-item"><div class="jc-val" style="color:var(--V-c)">${j.vDays}</div><div class="jc-lbl">V-Tage</div></div>
+        <div class="jc-item"><div class="jc-val" style="color:var(--VU-c)">${j.vuDays}</div><div class="jc-lbl">VU-Tage</div></div>
         <div class="jc-item"><div class="jc-val" style="color:var(--SU-c)">${j.suDays}</div><div class="jc-lbl">Sonderurlaub</div></div>
       </div>
       ${winterHtml}
     </div>
-    <div class="sg">
-      <span class="slbl">VB-Tage (Feiertag auf Freischicht)</span>
-      <div class="ok-box">📅 VB-Tage ${Y}: <strong>${j.vbDays}</strong> · +<strong>${j.vbDays*8} Stunden</strong> gutgeschrieben (Feiertag Mo–Fr auf Freischicht ohne Override)</div>
-    </div>
+    ${ST.vollkonti ? `<div class="sg">
+      <span class="slbl">VB-Tage (Feiertag auf Freischicht Mo–Fr)</span>
+      <div class="${j.vbDays>0?'ok-box':'info-box'}">📅 VB-Tage ${Y}: <strong>${j.vbDays}</strong> · +<strong>${j.vbDays*j.sh} Stunden</strong> gutgeschrieben</div>
+    </div>` : ''}
     <div class="sg">
       <span class="slbl">Nachtfreischichten</span>
       ${nfHtml}
@@ -1668,14 +1742,25 @@ function openSettings(){
   document.getElementById('uebVIn').value=ST.uebertragVStd||0;
   document.getElementById('blIn').value=ST.bundesland||'HB';
   openThemePicker();
+  document.getElementById('jahresAZIn').value=ST.jahresAZ||1856;
+  document.getElementById('schichtStundenIn').value=ST.schichtStunden||8;
   document.getElementById('azvTog').className='tog'+(ST.azv?' on':'');
+  document.getElementById('vollkontiTog').className='tog'+(ST.vollkonti?' on':'');
   document.getElementById('seniorTog').className='tog'+(ST.senior?' on':'');
+  updateAzvSub();
   document.getElementById('gdbTog').className='tog'+(ST.gdb?' on':'');  // ✅
   open2('setOvl');
 }
-function toggleAZV(){document.getElementById('azvTog').classList.toggle('on');}
+function toggleAZV(){document.getElementById('azvTog').classList.toggle('on');updateAzvSub();}
+function toggleVollkonti(){document.getElementById('vollkontiTog').classList.toggle('on');}
 function toggleSenior(){document.getElementById('seniorTog').classList.toggle('on');}
-function toggleGdB(){document.getElementById('gdbTog').classList.toggle('on');}  // ✅ NEU
+function toggleGdB(){document.getElementById('gdbTog').classList.toggle('on');}
+function updateAzvSub(){
+  const az=parseFloat(document.getElementById('jahresAZIn').value)||1856;
+  const mitAZV=Math.round(az*0.96*100)/100;
+  const sub=document.getElementById('azvSub');
+  if(sub) sub.textContent='Mit AZV: '+mitAZV.toFixed(2).replace('.',',')+'h · Ohne: '+az+'h';
+}
 
 function saveSettings(){
   ST.name=document.getElementById('nameIn').value.trim();
@@ -1683,14 +1768,17 @@ function saveSettings(){
   ST.uebertragZStd=parseInt(document.getElementById('uebZIn').value)||0;
   ST.uebertragVStd=parseInt(document.getElementById('uebVIn').value)||0;
   ST.bundesland=document.getElementById('blIn').value;
+  ST.jahresAZ=parseFloat(document.getElementById('jahresAZIn').value)||1856;
+  ST.schichtStunden=parseFloat(document.getElementById('schichtStundenIn').value)||8;
   ST.azv=document.getElementById('azvTog').classList.contains('on');
+  ST.vollkonti=document.getElementById('vollkontiTog').classList.contains('on');
   ST.senior=document.getElementById('seniorTog').classList.contains('on');
   ST.gdb=document.getElementById('gdbTog').classList.contains('on');  // ✅
   persist();render();close2('setOvl');
 }
 function resetAll(){
   if(confirm('Wirklich alle Daten löschen?')){
-    ST={segments:[],overrides:{},name:'',urlaubTage:30,azv:false,senior:false,gdb:false,
+    ST={segments:[],overrides:{},name:'',urlaubTage:30,jahresAZ:1856,schichtStunden:8,azv:false,vollkonti:false,senior:false,gdb:false,
         vm:new Date().getMonth(),vy:new Date().getFullYear(),
         uebertragZStd:0,uebertragVStd:0,termine:{},
         customColors:null,ceHue:undefined,ceSat:undefined,ceBrightness:undefined,
@@ -1794,8 +1882,12 @@ function deleteTermin(){
 function exportData(){
   const data={version:'spv5',exportDate:new Date().toISOString(),name:ST.name,
     segments:ST.segments,overrides:ST.overrides,termine:ST.termine,
-    urlaubTage:ST.urlaubTage,azv:ST.azv,senior:ST.senior,gdb:ST.gdb,  // ✅ gdb im Export
-    bundesland:ST.bundesland,uebertragZStd:ST.uebertragZStd,uebertragVStd:ST.uebertragVStd};
+    urlaubTage:ST.urlaubTage,jahresAZ:ST.jahresAZ||1856,azv:ST.azv,vollkonti:ST.vollkonti||false,
+    senior:ST.senior,gdb:ST.gdb,
+    bundesland:ST.bundesland,uebertragZStd:ST.uebertragZStd,uebertragVStd:ST.uebertragVStd,
+    atzGesamtPkte:ST.atzGesamtPkte,atzGesamtJahr:ST.atzGesamtJahr,
+    atzPktAlter:ST.atzPktAlter,atzPktBetrieb:ST.atzPktBetrieb,
+    atzPktVoll:ST.atzPktVoll,atzPktTeil:ST.atzPktTeil,atzPktIgm:ST.atzPktIgm};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
@@ -1817,12 +1909,17 @@ function importData(e){
       if(data.termine) ST.termine=data.termine;
       if(data.name) ST.name=data.name;
       if(data.urlaubTage) ST.urlaubTage=data.urlaubTage;
+      if(data.jahresAZ!==undefined) ST.jahresAZ=data.jahresAZ;
+      if(data.schichtStunden!==undefined) ST.schichtStunden=data.schichtStunden;
       if(data.azv!==undefined) ST.azv=data.azv;
+      if(data.vollkonti!==undefined) ST.vollkonti=data.vollkonti;
       if(data.senior!==undefined) ST.senior=data.senior;
-      if(data.gdb!==undefined) ST.gdb=data.gdb;  // ✅ gdb beim Import
+      if(data.gdb!==undefined) ST.gdb=data.gdb;
       if(data.bundesland) ST.bundesland=data.bundesland;
       if(data.uebertragZStd!==undefined) ST.uebertragZStd=data.uebertragZStd;
       if(data.uebertragVStd!==undefined) ST.uebertragVStd=data.uebertragVStd;
+      const atzKeys=['atzGesamtPkte','atzGesamtJahr','atzPktAlter','atzPktBetrieb','atzPktVoll','atzPktTeil','atzPktIgm'];
+      atzKeys.forEach(k=>{ if(data[k]!==undefined) ST[k]=data[k]; });
       persist();render();alert('✓ Daten erfolgreich importiert!');close2('setOvl');
     }catch(err){alert('Fehler: '+err.message);}
   };
@@ -1855,7 +1952,7 @@ function drawQR(url){
 // ─── FARB EDITOR ─────────────────────────────────────────────────
 const CE_COLORS=[
   {id:'F',label:'Früh',default:'#f59e0b'},{id:'S',label:'Spät',default:'#38bdf8'},
-  {id:'N',label:'Nacht',default:'#a78bfa'},{id:'B',label:'Bereitschaft',default:'#34d399'},
+  {id:'N',label:'Nacht',default:'#a78bfa'},{id:'B',label:'Bereitschaft',default:'#34d399'},{id:'T',label:'Tagschicht',default:'#2dd4bf'},
   {id:'U',label:'Urlaub',default:'#f43f5e'},{id:'Z',label:'Z-Tag',default:'#22d3ee'},
   {id:'V',label:'V-Tag',default:'#fb923c'},{id:'NF',label:'N-Freischicht',default:'#a78bfa'},
   {id:'SU',label:'Sonderurlaub',default:'#e879f9'},
@@ -2027,27 +2124,38 @@ const INFO_SLIDES=[
   {icon:'📅',title:'Schichtverlauf richtig eingeben',html:`
     <strong>Immer ab 01.01. beginnen!</strong><br><br>
     Der Schichtverlauf wird ab deinem Startdatum <em>endlos wiederholt</em>.<br><br>
-    <div class="tip">💡 <strong>So geht's:</strong><br>„Muster" → „+ Neuer Plan" → Startdatum <strong>01.01.JJJJ</strong><br><br>
-    F=Früh · S=Spät · N=Nacht · B=Bereitschaft · -=Frei</div>
+    <div class="tip">💡 <strong>So geht's:</strong><br>„Muster" → „+ Neuer Plan" → Startdatum <strong>01.01.JJJJ</strong><br>
+    Muster eingeben: <strong>F</strong>=Früh · <strong>S</strong>=Spät · <strong>N</strong>=Nacht · <strong>B</strong>=Bereitschaft · <strong>T</strong>=Tag · <strong>-</strong>=Frei</div>
     <div class="warn">⚠️ Späterer Start = unvollständige Jahreswerte!</div>`},
+  {icon:'🏭',title:'Schichtplan-Vorlagen',html:`
+    <strong>Bekannte Schichtmuster ab 01.01.:</strong><br><br>
+    <div class="tip">🔵 <strong>5-Schicht Vollkonti</strong> (z.B. Plan 5695 Mann.2):<br>
+    Muster: <code>FSNB-</code> rotierend · JAZ: 1856h · 8h/Schicht · Vollkonti ✓</div>
+    <div class="tip" style="border-left-color:var(--S-c);margin-top:6px;">🟦 <strong>3-Schicht F+S+N</strong> (z.B. Plan 4031 Mann.2):<br>
+    Muster: <code>FSN---</code> rotierend · JAZ: 1856h · 8h/Schicht</div>
+    <div class="tip" style="border-left-color:var(--T-c);margin-top:6px;">🟩 <strong>Tagschicht</strong> (z.B. Plan 0613):<br>
+    Muster: <code>TTTTT--</code> · JAZ: 1826h · 7h/Schicht</div>
+    <div class="tip" style="border-left-color:var(--N-c);margin-top:6px;">🟣 <strong>3-Schicht T+S</strong> (z.B. Plan 3527):<br>
+    Muster: <code>TSTS---</code> rotierend · JAZ: 1826h · 7h/Schicht</div>`},
   {icon:'⚙️',title:'Einstellungen – Tarifregeln',html:`
-    <div class="tip"><strong>AZV</strong>: Mit AZV 1.792 h/Jahr, ohne 1.856 h/Jahr</div>
-    <div class="tip" style="border-left-color:var(--N-c);margin-top:8px;">
-    <strong>Senior-Regelung</strong>: Über 45 + 10 Jahre Schicht → 4 NF/Jahr<br>
-    Sonst: 1 NF pro 17 Nachtschichten</div>
-    <div class="tip" style="border-left-color:var(--ok);margin-top:8px;">
-    <strong>♿ GdB ≥ 50</strong>: § 208 SGB IX → +5 Tage Zusatzurlaub automatisch</div>`},
-  {icon:'⏱',title:'Z-Tage & AZK',html:`
-    <div class="warn">⚠️ Z-Tage <strong>zuerst verbrauchen</strong> – vor Urlaub!<br>
-    Nicht verbrauchte Z-Tage → 31.12. ins AZK.</div>
-    <div class="tip">💡 Vorjahresübertrag in den Einstellungen eintragen.</div>`},
+    <div class="tip"><strong>Jahresarbeitszeit</strong>: z.B. 1856h (5-Schicht) oder 1826h (Tagschicht)</div>
+    <div class="tip" style="margin-top:6px;"><strong>Stunden pro Schicht</strong>: 8h (F/S/N/B) oder 7h (T oder T+S-Pläne)</div>
+    <div class="tip" style="border-left-color:var(--warn);margin-top:6px;"><strong>AZV</strong>: Jahresarbeitszeit × 0,96 (z.B. 1856 × 0,96 = 1781,76h)</div>
+    <div class="tip" style="border-left-color:var(--N-c);margin-top:6px;"><strong>Senior</strong>: Über 45 + 10 Jahre Schicht → 4 NF/Jahr pauschal</div>
+    <div class="tip" style="border-left-color:var(--ok);margin-top:6px;"><strong>♿ GdB ≥ 50</strong>: § 208 SGB IX → +5 Tage Zusatzurlaub</div>`},
+  {icon:'📊',title:'Z-Tage · V-Tage · VB-Tage',html:`
+    <div class="tip">✅ <strong>Z-Tag</strong>: Guthaben abheben (Freizeit) – zuerst verbrauchen vor Urlaub!<br>Nicht verbrauchte Z-Tage → 31.12. ins AZK.</div>
+    <div class="tip" style="border-left-color:var(--V-c);margin-top:6px;">⚠️ <strong>V-Tag</strong>: Schulden abarbeiten – extra Arbeitstag auf einem Frei-Tag</div>
+    <div class="tip" style="border-left-color:var(--VU-c);margin-top:6px;">🔀 <strong>VU-Tag</strong>: V-Schicht + Urlaub opfern – Frei-Tag wird zur Extra-Schicht, kostet 1 Urlaubstag</div>
+    <div class="tip" style="border-left-color:var(--B-c);margin-top:6px;">📅 <strong>VB-Tag</strong>: Nur bei Vollkonti – Feiertag Mo–Fr auf Freischicht → +8h Gutschrift</div>`},
   {icon:'🧮',title:'ATZ-Rechner',html:`
     Stichtag: <strong>31.12. des letzten Jahres</strong><br><br>
     <div class="tip">🎂 Alter · 🏭 Betrieb · ⚙️ IGM · 🌙 Vollkonti (2 Pkt) · 🌙 Teilkonti (1,5 Pkt)</div>
     <div class="warn">⚠️ Mehr als 50% Tagschicht seit 01.01.2001 = Schichtpunkte entfallen!</div>`},
   {icon:'💾',title:'Datensicherung',html:`
     <div class="ok">🔒 Alle Daten bleiben auf deinem Gerät!</div><br>
-    <div class="tip">💡 Einstellungen → <strong>Export (JSON)</strong> regelmäßig nutzen!</div>`},
+    <div class="tip">💡 Einstellungen → <strong>Export (JSON)</strong> regelmäßig nutzen!</div><br>
+    <div class="tip" style="border-left-color:var(--ok)">📱 Als PWA installierbar – Homescreen-Icon hinzufügen!</div>`},
 ];
 let infoPage=0;
 function openInfo(){infoPage=0;renderInfoSlide();open2('infoOvl');}
