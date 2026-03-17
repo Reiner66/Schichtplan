@@ -1157,30 +1157,15 @@ function calcJahres(Y){
     else if(ov==='NF') stats.nfDays++;
     else if(ov==='SU') stats.suDays++;
     else if(ov==='WU') stats.wuDays++;
-    if(shift&&!ov){
-      if(shift in SDEFS) stats[shift]=(stats[shift]||0)+1;
-      if(shift==='-') stats.free++;
-      if(shift&&shift!=='-') stats.istStunden+=shiftH(shift);
-    }
-    if(ov){
-      // Stunden-Logik je Override:
-      // U   → nur auf F/S/N/B gültig → Schichtstunden zählen
-      // VU  → nur auf '-' gültig → +8h (V-Schicht)
-      // V   → nur auf '-' gültig → +8h (extra Arbeitstag)
-      // SU/WU → wie U, auf Schichttagen → Schichtstunden zählen
-      // Z/NF → kein Stundenbeitrag
-      if(ov==='U' || ov==='SU' || ov==='WU'){
-        // Nur auf echten Schichttagen (nicht auf Frei)
-        if(shift && shift!=='-'){
-          stats.istStunden+=shiftH(shift);
-          stats[shift]=(stats[shift]||0)+1;
-        }
-        // U auf '-' → 0h, kein Stundenbeitrag
-      } else if(ov==='V' || ov==='VU'){
-        // Nur auf Frei-Tagen sinnvoll → sh Stunden
-        stats.istStunden+=sh;
-      }
-      // Z, NF → keine Stunden
+    // Ist-Stunden = immer aus dem Schichtplan, Overrides aendern NIE die Jahresarbeitszeit!
+    if(shift && shift!=='-'){
+      // Schichttag: Stunden immer zaehlen, egal ob Override
+      stats.istStunden+=shiftH(shift);
+      stats[shift]=(stats[shift]||0)+1;
+    } else if(shift==='-'){
+      // Frei-Tag: nur V und VU addieren extra Stunden
+      if(ov==='V' || ov==='VU') stats.istStunden+=sh;
+      else stats.free++;
     }
     // VB-Tag: nur Vollkonti + Feiertag Mo-Fr + Schicht=Frei + kein Override
     if(ST.vollkonti && !ov && shift==='-'){
@@ -1201,7 +1186,8 @@ function calcJahres(Y){
   const uebVStd = ST.uebertragVStd || 0;
   const uebZTage = Math.round(uebZStd / sh);
   const uebVTage = Math.round(uebVStd / sh);
-  const azKStunden = Math.max(0, uebZStd + (stDiff > 0 ? stDiff : 0) - (stats.zDays * sh));
+  // AZK = nicht verbrauchte Z-Stunden (wandern am 31.12. ins AZK)
+  // wird nach zOffen berechnet, daher erst im return als Getter
 
   let nfAnspruch;
   if(ST.senior){ nfAnspruch=4; } else { nfAnspruch=Math.floor(stats.N/17); }
@@ -1215,6 +1201,7 @@ function calcJahres(Y){
   const zNeu = stDiff > 0 ? Math.floor(stDiff / sh) : 0;
   const zGesamt = uebZTage + zNeu;
   const zOffen = Math.max(0, zGesamt - stats.zDays);
+  const azKStunden = zOffen * sh; // nicht verbrauchte Z-Stunden → AZK
 
   // V-Tage: nur wenn Schulden
   const vNeu = stDiff < 0 ? Math.ceil(Math.abs(stDiff) / sh) : 0;
@@ -1226,8 +1213,8 @@ function calcJahres(Y){
     urlaubEff,
     resturlaub: urlaubEff - stats.urlaubDays,
     nfRest: nfAnspruch - stats.nfDays,
-    uebZStd, uebVStd, uebZTage, uebVTage, azKStunden,
-    zNeu, zGesamt, zOffen,
+    uebZStd, uebVStd, uebZTage, uebVTage,
+    zNeu, zGesamt, zOffen, azKStunden,
     vNeu, vGesamt, vOffen,
     vbDays: stats.vbDays,
     vuDays: stats.vuDays,
@@ -1415,13 +1402,13 @@ function renderJahresCard(){
       </div>
       <div class="jc-item">
         ${j.stDiff>=0 ? `
-          <div class="jc-val" style="color:var(--Z-c)">${j.zGesamt}</div>
-          <div class="jc-lbl">Z-Tage Gesamt</div>
-          <div class="jc-sub" style="color:var(--muted)">${j.zDays} verbraucht · <b style="color:${j.zOffen>0?'var(--warn)':'var(--muted)'}">${j.zOffen} offen</b></div>
+          <div class="jc-val" style="color:${j.zOffen>0?'var(--Z-c)':'var(--muted)'}">${j.zOffen}</div>
+          <div class="jc-lbl">Z-Tage offen</div>
+          <div class="jc-sub" style="color:var(--muted)">${j.zDays} von ${j.zGesamt} verbraucht</div>
         ` : `
-          <div class="jc-val" style="color:var(--V-c)">${j.vGesamt}</div>
-          <div class="jc-lbl">V-Tage Gesamt</div>
-          <div class="jc-sub" style="color:var(--muted)">${j.vDays+j.vuDays} abgebaut${j.vuDays>0?' (davon '+j.vuDays+' VU)':''} · <b style="color:${j.vOffen>0?'var(--err)':'var(--muted)'}">${j.vOffen} offen</b></div>
+          <div class="jc-val" style="color:${j.vOffen>0?'var(--err)':'var(--muted)'}">${j.vOffen}</div>
+          <div class="jc-lbl">V-Tage offen</div>
+          <div class="jc-sub" style="color:var(--muted)">${j.vDays+j.vuDays} von ${j.vGesamt} abgebaut${j.vuDays>0?' (davon '+j.vuDays+' VU)':''}</div>
         `}
       </div>
       <div class="jc-item">
